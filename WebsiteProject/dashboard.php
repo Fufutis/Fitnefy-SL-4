@@ -12,7 +12,8 @@ if (!isset($_SESSION['username'])) {
 <body>
 <div class="container mt-5">
     <h1>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
-    
+    <a href="calc/Calculator.html" class="btn btn-primary">Go to Calculator</a>
+
     <p>This is a protected page only visible to logged-in users.</p>
     <a href="logout.php" class="btn btn-danger">Logout</a>
 </div>

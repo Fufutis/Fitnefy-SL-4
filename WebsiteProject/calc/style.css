@@ -1,0 +1,78 @@
+body{
+    background-color:#051F20;
+    color: #DAF1D3;
+}
+input{
+    background-color: #266354;
+    border-color: aquamarine;
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    font-size: 40px;
+    text-align: left;
+
+}
+.buttons{
+    margin-left: 4%;
+    position: absolute;
+    top: 10%;
+    display: flex;
+    flex-direction: column;
+}
+.button{
+    height: 35px;
+    width: 550%;
+    margin: 15% 0% 15% 0%;
+}
+.button:hover{
+    background-color: #8EB69B;
+    color: #051F20;
+    box-shadow:0px 0px 20px 5px aquamarine;
+}
+.button:hover:active{
+    background-color: #DAF1D3;
+    color: #051F20;
+    box-shadow:0px 0px 20px 5px aquamarine;
+}
+#resultf{
+    display: flex;
+    justify-content:bottom;
+    margin-left: 34.5%;
+    border: 3px solid black;
+    border-radius: 30px;
+    width: 48.5%;
+    line-height: 0.1;
+    margin-top: -3px;
+    background-color: #266354;
+
+}
+
+.top{
+    margin-top: 4%;
+}
+
+.numbers{
+    display: flex;
+    flex-direction: column;
+    width: 400%;
+    height: 17.5%;
+    border-radius: 100px;
+    padding-left: 7%;
+    font-size: large;
+    
+}
+
+.inputs{
+    font-size: 20px;
+    margin-left: -18.5%;
+    text-align: left;
+}
+
+#result {
+    text-align: left;
+    display: block; /* Ensure it behaves like a block element */
+    margin-left: 0; /* Remove any left margin if necessary */
+}
