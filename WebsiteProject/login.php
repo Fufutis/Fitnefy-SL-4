@@ -1,36 +1,38 @@
 <?php
+session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['password'])) {
+    include("inc/config.php");
+
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Connect to the database
-    $conn = new mysqli('localhost', 'root', '', 'my_database');
-
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    // Query to check if user exists
-    $stmt = $conn->prepare('SELECT * FROM users WHERE username = ?');
-    $stmt->bind_param('s', $username);
+    $stmt = $conn->prepare('SELECT * FROM users WHERE username = ? OR email = ?');
+    $stmt->bind_param('ss', $username, $username);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
-
         // Verify password
         if (password_verify($password, $user['password'])) {
-            session_start();
-            $_SESSION['username'] = $username;
-            echo "Login successful";
+            $_SESSION['username'] = $user['username'];
+            // Redirect to dashboard
+            header("Location: dashboard.php");
+            exit;
         } else {
-            echo "Invalid password";
+            $_SESSION['message'] = "Invalid password.";
+            header("Location: index.php");
+            exit;
         }
     } else {
-        echo "User not found";
+        $_SESSION['message'] = "User not found.";
+        header("Location: index.php");
+        exit;
     }
 
     $stmt->close();
     $conn->close();
+} else {
+    header("Location: index.php");
+    exit;
 }
