@@ -1,10 +1,11 @@
 <?php
-$host = 'localhost';
+$host = 'localhost:3307';
 $db_user = 'root';
 $db_pass = '';
-$db_name = 'final';
+$db_name = 'registry';
 
 $conn = new mysqli($host, $db_user, $db_pass, $db_name);
+
 if ($conn->connect_error) {
     die("Database connection failed: " . $conn->connect_error);
 }
