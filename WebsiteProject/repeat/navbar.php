@@ -10,10 +10,10 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-nav">
         <div class="container-fluid">
             <!-- Brand -->
-            <a class="navbar-brand" href="#">MyApp</a>
+            <a class="navbar-brand" href="dashboard.php">This is a navbar</a>
 
             <!-- Toggle button for mobile view -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -26,7 +26,7 @@
                 <ul class="navbar-nav ms-auto">
                     <!-- Link to Calculator -->
                     <li class="nav-item">
-                        <a class="nav-link" href="calc/Calculator.html">Calculator</a>
+                        <a class="nav-link" href="Calculator.php">Calculator</a>
                     </li>
                     <!-- Link to Personal Page -->
                     <li class="nav-item">
@@ -40,12 +40,6 @@
             </div>
         </div>
     </nav>
-
-    <!-- Placeholder Content -->
-    <div class="container mt-5">
-        <h1>Welcome to MyApp</h1>
-        <p>Select an option from the navbar above to navigate.</p>
-    </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
