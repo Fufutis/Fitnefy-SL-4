@@ -1,36 +1,50 @@
 <?php
+session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['password'])) {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    include("repeat/config.php"); // Adjust path as needed
 
-    // Connect to the database
-    $conn = new mysqli('localhost', 'root', '', 'my_database');
+    // Trim input to avoid leading/trailing spaces
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
 
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    // Query to check if user exists
-    $stmt = $conn->prepare('SELECT * FROM users WHERE username = ?');
-    $stmt->bind_param('s', $username);
+    $stmt = $conn->prepare('SELECT * FROM users WHERE username = ? OR email = ?');
+    $stmt->bind_param('ss', $username, $username);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
-
         // Verify password
         if (password_verify($password, $user['password'])) {
-            session_start();
-            $_SESSION['username'] = $username;
-            echo "Login successful";
+            $_SESSION['username'] = $user['username'];
+
+            // Close resources before redirect
+            $stmt->close();
+            $conn->close();
+
+            // Redirect to dashboard
+            header("Location: dashboard.php");
+            exit;
         } else {
-            echo "Invalid password";
+            $_SESSION['message'] = "Invalid password.";
+            
+            $stmt->close();
+            $conn->close();
+            
+            header("Location: index.php");
+            exit;
         }
     } else {
-        echo "User not found";
+        $_SESSION['message'] = "User not found.";
+        
+        $stmt->close();
+        $conn->close();
+        
+        header("Location: index.php");
+        exit;
     }
-
-    $stmt->close();
-    $conn->close();
+} else {
+    // If accessed without POST credentials, redirect to index.
+    header("Location: index.php");
+    exit;
 }

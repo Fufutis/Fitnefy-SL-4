@@ -1,0 +1,57 @@
+.body{
+    background-color:#042e28;
+    color: #DAF1D3;
+}
+
+.button{
+    background-color: #337a68;
+    border-color: aquamarine;
+}
+
+.button:hover{
+    background-color: #8EB69B;
+
+    box-shadow:0px 0px 20px 5px aquamarine;
+}
+.button:hover:active{
+    background-color: #DAF1D3;
+
+    
+}
+
+/* Custom Button Styles */
+.custom-btn-success {
+    display: inline-block;
+    font-weight: 450;
+    color: rgb(127, 255, 170); /* Custom green color */
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: transparent;
+    border: 1px solid rgb(127, 255, 170); /* Outline color */
+    padding: 0.375rem 0.75rem; /* Spacing inside the button */
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.375rem; /* Rounded corners */
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+        border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+
+.custom-btn-success:hover {
+    color: #fff; /* Text color changes to white */
+    background-color: #239c78; /* Background color becomes success green */
+    border-color: #198766; /* Border remains success green */
+}
+
+.custom-btn-success:focus {
+    color: #fff;
+    background-color: #239c78;
+    border-color: #198766;
+    box-shadow:0px 0px 12px 8px #198766;
+}
+.bg-nav{
+    background-color: #051F20;
+    color: #DAF1D3;
+}
