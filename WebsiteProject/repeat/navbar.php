@@ -30,7 +30,7 @@
                     </li>
                     <!-- Link to Personal Page -->
                     <li class="nav-item">
-                        <a class="nav-link" href="personal.php">Personal Page</a>
+                        <a class="nav-link" href="about.php">About</a>
                     </li>
                     <!-- Logout Option -->
                     <li class="nav-item">
