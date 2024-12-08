@@ -24,22 +24,22 @@
         <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel" data-interval="1500" data-pause="false">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="imgs/150.jpg" class="d-block w-150" alt="First slide">
+                    <img src="imgs/150.jpg" class="d-block" alt="First slide">
                 </div>
                 <div class="carousel-item">
-                    <img src="imgs/bf0.jpg" class="d-block w-150" alt="Second slide">
+                    <img src="imgs/bf0.jpg" class="d-block" alt="Second slide">
                 </div>
                 <div class="carousel-item">
-                    <img src="imgs/d4f.jpg" class="d-block w-150" alt="Third slide">
+                    <img src="imgs/d4f.jpg" class="d-block " alt="Third slide">
                 </div>
                 <div class="carousel-item">
-                    <img src="imgs/f25.jpg" class="d-block w-150" alt="Fourth slide">
+                    <img src="imgs/f25.jpg" class="d-block " alt="Fourth slide">
                 </div>
             </div>
         </div>
         <div class="container px-4">
             <h1>Personal Page</h1>
-            <p>About me</p>
+            <p>Meow meow mewo About meow meow meow meow MEOW meow Meow ME.. meow me</p>
         </div>
     </div>
 </body>
