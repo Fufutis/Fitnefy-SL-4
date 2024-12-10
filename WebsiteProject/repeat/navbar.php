@@ -24,9 +24,12 @@
             <!-- Navbar Links -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <!-- Link to Calculator -->
+                    <!-- Link to Seller -->
                     <li class="nav-item">
-                        <a class="nav-link" href="Calculator.php">Calculator</a>
+                        <a class="nav-link" href="seller.php">Sell</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="seller_store.php">Add</a>
                     </li>
                     <!-- Link to Personal Page -->
                     <li class="nav-item">
