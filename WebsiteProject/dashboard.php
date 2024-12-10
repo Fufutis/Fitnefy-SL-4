@@ -16,6 +16,9 @@ if (!isset($_SESSION['username'])) {
         <a href="Calculator.php" class="btn btn-primary">Go to Calculator</a>
 
         <p>This is a protected page only visible to logged-in users.</p>
+
+        
+
         <a href="logout.php" class="btn btn-danger">Logout</a>
     </div>
 </body>
