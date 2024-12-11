@@ -18,42 +18,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $price = floatval($_POST['price']);
     $product_type = $_POST['product_type'];
 
-    // Handle file upload
+    // Handle file upload and convert to binary data
     if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-        $upload_dir = "uploads/";
-        $photo_name = basename($_FILES['photo']['name']);
-        $target_path = $upload_dir . uniqid() . "_" . $photo_name;
-
-        if (move_uploaded_file($_FILES['photo']['tmp_name'], $target_path)) {
-            $photo = $target_path;
-        } else {
-            $_SESSION['message'] = "Failed to upload photo.";
-            header("Location: add_product.php");
-            exit;
-        }
+        $photo_blob = file_get_contents($_FILES['photo']['tmp_name']); // Convert image to binary
     } else {
-        $_SESSION['message'] = "Photo upload failed. Please try again.";
+        $_SESSION['message'] = "Photo upload failed.";
         header("Location: add_product.php");
         exit;
     }
 
     // Insert product into the database
-    $stmt = $conn->prepare("INSERT INTO products (seller_id, name, description, price, photo, product_type) 
+    $stmt = $conn->prepare("INSERT INTO products (seller_id, name, description, price, photo_blob, product_type) 
                             VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param('issdss', $seller_id, $name, $description, $price, $photo, $product_type);
+    $stmt->bind_param('issdss', $seller_id, $name, $description, $price, $photo_blob, $product_type);
 
+    $stmt->send_long_data(4, $photo_blob); // Send binary data to the 5th parameter
     if ($stmt->execute()) {
         $_SESSION['message'] = "Product added successfully!";
         header("Location: dashboard.php");
         exit;
     } else {
-        $_SESSION['message'] = "Failed to add product. Please try again.";
+        $_SESSION['message'] = "Failed to add product. SQL Error: " . $stmt->error;
         header("Location: add_product.php");
         exit;
     }
 
-    // Close resources
     $stmt->close();
     $conn->close();
 }
-?>

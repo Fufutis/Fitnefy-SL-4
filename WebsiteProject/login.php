@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['p
 
             // Redirect based on role
             if ($user['role'] === 'seller') {
-                header("Location: add_product.php"); // Redirect sellers
+                header("Location: dashboard.php"); // Redirect sellers
             } else {
                 header("Location: dashboard.php"); // Redirect other users
             }
@@ -52,4 +52,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['p
     header("Location: index.php");
     exit;
 }
-?>
