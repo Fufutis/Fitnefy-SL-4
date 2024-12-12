@@ -46,3 +46,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
     $conn->close();
 }
+//Known problem is that when uploaded online no images are allowed to be uploaded for security reasons from infinity free 
+//but the code does work on local or generally any other website
