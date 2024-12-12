@@ -1,4 +1,4 @@
-v<?php
+<?php
 include("repeat/config.php");
 
 if (isset($_GET['id'])) {
