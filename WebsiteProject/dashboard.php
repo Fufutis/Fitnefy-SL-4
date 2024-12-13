@@ -63,42 +63,50 @@ $conn->close();
     <div class="container mt-5">
         <h1 class="mb-4">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
 
-        <!-- Filter and Sorting Options -->
+        <!-- Styled Filter and Sorting Section -->
         <div class="mb-4">
-            <form method="GET" class="d-flex flex-wrap gap-3 align-items-center">
-                <!-- Category Filter -->
-                <div class="d-flex flex-column">
-                    <label for="category" class="form-label mb-1">Category</label>
-                    <select name="category" id="category" class="form-select">
-                        <option value="">All Categories</option>
-                        <option value="e-book" <?php echo $category === 'e-book' ? 'selected' : ''; ?>>E-Book</option>
-                        <option value="software" <?php echo $category === 'software' ? 'selected' : ''; ?>>Software</option>
-                        <option value="template" <?php echo $category === 'template' ? 'selected' : ''; ?>>Template</option>
-                        <option value="digital artwork" <?php echo $category === 'digital artwork' ? 'selected' : ''; ?>>Digital Artwork</option>
-                    </select>
+            <form method="GET" class="d-flex flex-wrap gap-3 align-items-center justify-content-between">
+                <!-- Title -->
+                <div class="p-4 d-flex flex-column">
+                    <h2 class="mb-0">All Products</h2>
                 </div>
 
-                <!-- Sort By -->
-                <div class="d-flex flex-column">
-                    <label for="sort_by" class="form-label mb-1">Sort By</label>
-                    <select name="sort_by" id="sort_by" class="form-select">
-                        <option value="recent" <?php echo $sort_by === 'recent' ? 'selected' : ''; ?>>Recent</option>
-                        <option value="price" <?php echo $sort_by === 'price' ? 'selected' : ''; ?>>Price</option>
-                    </select>
-                </div>
+                <!-- Right-Aligned Dropdowns and Button -->
+                <div class="d-flex gap-3">
+                    <!-- Category Filter -->
+                    <div class="d-flex flex-column">
+                        <label for="category" class="form-label mb-1">Category</label>
+                        <select name="category" id="category" class="form-select">
+                            <option value="">All Categories</option>
+                            <option value="e-book" <?php echo $category === 'e-book' ? 'selected' : ''; ?>>E-Book</option>
+                            <option value="software" <?php echo $category === 'software' ? 'selected' : ''; ?>>Software</option>
+                            <option value="template" <?php echo $category === 'template' ? 'selected' : ''; ?>>Template</option>
+                            <option value="digital artwork" <?php echo $category === 'digital artwork' ? 'selected' : ''; ?>>Digital Artwork</option>
+                        </select>
+                    </div>
 
-                <!-- Sort Order -->
-                <div class="d-flex flex-column">
-                    <label for="sort_order" class="form-label mb-1">Sort Order</label>
-                    <select name="sort_order" id="sort_order" class="form-select">
-                        <option value="desc" <?php echo $sort_order === 'desc' ? 'selected' : ''; ?>>Descending</option>
-                        <option value="asc" <?php echo $sort_order === 'asc' ? 'selected' : ''; ?>>Ascending</option>
-                    </select>
-                </div>
+                    <!-- Sort By -->
+                    <div class="d-flex flex-column">
+                        <label for="sort_by" class="form-label mb-1">Sort By</label>
+                        <select name="sort_by" id="sort_by" class="form-select">
+                            <option value="recent" <?php echo $sort_by === 'recent' ? 'selected' : ''; ?>>Recent</option>
+                            <option value="price" <?php echo $sort_by === 'price' ? 'selected' : ''; ?>>Price</option>
+                        </select>
+                    </div>
 
-                <!-- Submit Button -->
-                <div>
-                    <button type="submit" class="btn btn-primary mt-3">Apply</button>
+                    <!-- Sort Order -->
+                    <div class="d-flex flex-column">
+                        <label for="sort_order" class="form-label mb-1">Sort Order</label>
+                        <select name="sort_order" id="sort_order" class="form-select">
+                            <option value="desc" <?php echo $sort_order === 'desc' ? 'selected' : ''; ?>>Descending</option>
+                            <option value="asc" <?php echo $sort_order === 'asc' ? 'selected' : ''; ?>>Ascending</option>
+                        </select>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary mt-3">Apply</button>
+                    </div>
                 </div>
             </form>
         </div>
