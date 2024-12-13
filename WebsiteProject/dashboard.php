@@ -126,7 +126,9 @@ $conn->close();
                                 <p class="card-text"><?php echo htmlspecialchars($product['description']); ?></p>
                                 <p class="card-text"><strong>Price:</strong> $<?php echo htmlspecialchars($product['price']); ?></p>
                                 <p class="card-text"><strong>Type:</strong> <?php echo htmlspecialchars($product['product_type']); ?></p>
-                                <a href="wishlist.php?product_id=<?php echo $product['id']; ?>" class="btn btn-warning mt-2">Add to Wishlist</a>
+
+                                <!-- Wishlist and Cart Buttons -->
+                                <button class="btn btn-warning mt-2" onclick="addToWishlist(<?php echo $product['id']; ?>)">Add to Wishlist</button>
                                 <a href="cart.php?action=add&product_id=<?php echo $product['id']; ?>" class="btn btn-success mt-2">Add to Cart</a>
                             </div>
                         </div>
@@ -135,6 +137,26 @@ $conn->close();
             </div>
         <?php endif; ?>
     </div>
+
+    <!-- JavaScript for AJAX -->
+    <script>
+        function addToWishlist(productId) {
+            $.ajax({
+                url: 'wishlist.php',
+                type: 'GET',
+                data: {
+                    product_id: productId
+                },
+                dataType: 'json',
+                success: function(response) {
+                    alert(response.message); // Show success or error message
+                },
+                error: function() {
+                    alert('An error occurred while adding to the wishlist.');
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>

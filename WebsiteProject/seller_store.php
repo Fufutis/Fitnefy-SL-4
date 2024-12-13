@@ -77,9 +77,23 @@ $conn->close();
                                 <p class="card-text"><strong>Price:</strong> $<?php echo htmlspecialchars($product['price']); ?></p>
                                 <p class="card-text"><strong>Type:</strong> <?php echo htmlspecialchars($product['product_type']); ?></p>
 
-                                <!-- Wishlist and Cart Buttons -->
-                                <button class="btn btn-warning mt-2" onclick="addToWishlist(<?php echo $product['id']; ?>)">Add to Wishlist</button>
-                                <a href="cart.php?action=add&product_id=<?php echo $product['id']; ?>" class="btn btn-success mt-2">Add to Cart</a>
+                                <!-- Buttons Row -->
+                                <div class="d-flex flex-wrap align-items-center justify-content-between">
+                                    <!-- Wishlist Button -->
+
+                                    <button class="btn btn-warning" onclick="addToWishlist(<?php echo $product['id']; ?>)">Wishlist</button>
+
+                                    <!-- Cart Button -->
+                                    <div class="p-2">
+                                        <a href="cart.php?action=add&product_id=<?php echo $product['id']; ?>" class="btn btn-success">Add to Cart</a>
+                                    </div>
+                                    <!-- Edit Button (Only for Seller's Products) -->
+                                    <?php if ($view_type === 'my_products'): ?>
+                                        <div class="p-2 ms-auto">
+                                            <a href="edit_product.php?id=<?php echo $product['id']; ?>" class="btn btn-primary">Edit</a>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </div>
                     </div>
