@@ -29,7 +29,15 @@
                         <a class="nav-link" href="seller.php">Sell</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="seller_store.php">Add</a>
+                        <a class="nav-link" href="seller_store.php">Products</a>
+                    </li>
+                    <!-- Wishlist -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="wishlist_view.php">Wishlist</a>
+                    </li>
+                    <!-- Cart -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="cart_view.php">Cart</a>
                     </li>
                     <!-- Link to Personal Page -->
                     <li class="nav-item">
