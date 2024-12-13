@@ -19,9 +19,11 @@ $view_type = isset($_GET['view']) && $_GET['view'] === 'my_products' ? 'my_produ
 
 // Fetch products based on the selected view
 if ($view_type === 'my_products') {
+    // Fetch only the seller's products
     $stmt = $conn->prepare("SELECT id, name, description, price, product_type, photo_blob FROM products WHERE seller_id = ?");
     $stmt->bind_param('i', $seller_id);
 } else {
+    // Fetch all products
     $stmt = $conn->prepare("SELECT id, name, description, price, product_type, photo_blob FROM products");
 }
 $stmt->execute();
@@ -75,8 +77,10 @@ $conn->close();
                                 <p class="card-text"><?php echo htmlspecialchars($product['description']); ?></p>
                                 <p class="card-text"><strong>Price:</strong> $<?php echo htmlspecialchars($product['price']); ?></p>
                                 <p class="card-text"><strong>Type:</strong> <?php echo htmlspecialchars($product['product_type']); ?></p>
-                                <!-- Download Link -->
-                                <a href="download_image.php?id=<?php echo $product['id']; ?>" class="btn btn-primary mt-2">Download Image</a>
+
+                                <!-- Wishlist and Cart Buttons -->
+                                <a href="wishlist.php?product_id=<?php echo $product['id']; ?>" class="btn btn-warning mt-2">Add to Wishlist</a>
+                                <a href="cart.php?action=add&product_id=<?php echo $product['id']; ?>" class="btn btn-success mt-2">Add to Cart</a>
                             </div>
                         </div>
                     </div>
