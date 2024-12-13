@@ -36,6 +36,7 @@ while ($row = $result->fetch_assoc()) {
 $stmt->close();
 $conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -69,8 +70,7 @@ $conn->close();
                     <div class="col-md-4 mb-4">
                         <div class="card h-100">
                             <!-- Display Product Image -->
-                            <img src="data:image/jpeg;base64,<?php echo base64_encode($product['photo_blob']); ?>"
-                                class="card-img-top" alt="Product Image">
+                            <img src="data:image/jpeg;base64,<?php echo base64_encode($product['photo_blob']); ?>" class="card-img-top" alt="Product Image">
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo htmlspecialchars($product['name']); ?></h5>
                                 <p class="card-text"><?php echo htmlspecialchars($product['description']); ?></p>
@@ -78,20 +78,16 @@ $conn->close();
                                 <p class="card-text"><strong>Type:</strong> <?php echo htmlspecialchars($product['product_type']); ?></p>
 
                                 <!-- Buttons Row -->
-                                <div class="d-flex flex-wrap align-items-center justify-content-between">
+                                <div class="d-flex justify-content-between align-items-center">
                                     <!-- Wishlist Button -->
-
-                                    <button class="btn btn-warning" onclick="addToWishlist(<?php echo $product['id']; ?>)">Wishlist</button>
+                                    <button class="btn btn-warning me-2" onclick="addToWishlist(<?php echo $product['id']; ?>)">Wishlist</button>
 
                                     <!-- Cart Button -->
-                                    <div class="p-2">
-                                        <a href="cart.php?action=add&product_id=<?php echo $product['id']; ?>" class="btn btn-success">Add to Cart</a>
-                                    </div>
+                                    <a href="cart.php?action=add&product_id=<?php echo $product['id']; ?>" class="btn btn-success me-auto">Add to Cart</a>
+
                                     <!-- Edit Button (Only for Seller's Products) -->
                                     <?php if ($view_type === 'my_products'): ?>
-                                        <div class="p-2 ms-auto">
-                                            <a href="edit_product.php?id=<?php echo $product['id']; ?>" class="btn btn-primary">Edit</a>
-                                        </div>
+                                        <a href="edit_product.php?id=<?php echo $product['id']; ?>" class="btn btn-primary">Edit</a>
                                     <?php endif; ?>
                                 </div>
                             </div>
