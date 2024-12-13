@@ -1,8 +1,6 @@
 <?php
 session_start();
 include("repeat/config.php");
-include("repeat/header.php");
-include("repeat/navbar.php");
 
 // Ensure the user is logged in
 if (!isset($_SESSION['username'])) {
@@ -14,16 +12,9 @@ if (!isset($_SESSION['username'])) {
 // Get seller ID from the session
 $seller_id = $_SESSION['user_id'];
 
-// Determine the view type (all products or my products)
-$view_type = isset($_GET['view']) && $_GET['view'] === 'my_products' ? 'my_products' : 'all_products';
-
-// Fetch products based on the selected view
-if ($view_type === 'my_products') {
-    $stmt = $conn->prepare("SELECT id, name, description, price, product_type, photo_blob FROM products WHERE seller_id = ?");
-    $stmt->bind_param('i', $seller_id);
-} else {
-    $stmt = $conn->prepare("SELECT id, name, description, price, product_type, photo_blob FROM products");
-}
+// Fetch available products for the logged-in seller
+$stmt = $conn->prepare("SELECT id, name, description, price, product_type, photo_blob FROM products WHERE seller_id = ?");
+$stmt->bind_param('i', $seller_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -42,26 +33,16 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products</title>
+    <title>Your Products</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
     <div class="container mt-5">
-        <h1 class="mb-4"><?php echo $view_type === 'my_products' ? 'My Products' : 'All Products'; ?></h1>
-
-        <!-- Switch Buttons -->
-        <div class="mb-4">
-            <a href="?view=all_products" class="btn <?php echo $view_type === 'all_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">All Products</a>
-            <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'seller'): ?>
-                <a href="?view=my_products" class="btn <?php echo $view_type === 'my_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">My Products</a>
-            <?php endif; ?>
-        </div>
+        <h1 class="mb-4">Your Products</h1>
 
         <?php if (empty($products)): ?>
-            <div class="alert alert-info">
-                <?php echo $view_type === 'my_products' ? 'You are not currently selling any products.' : 'No products available at the moment.'; ?>
-            </div>
+            <div class="alert alert-info">You are not currently selling any products.</div>
         <?php else: ?>
             <div class="row">
                 <?php foreach ($products as $product): ?>
@@ -75,8 +56,9 @@ $conn->close();
                                 <p class="card-text"><?php echo htmlspecialchars($product['description']); ?></p>
                                 <p class="card-text"><strong>Price:</strong> $<?php echo htmlspecialchars($product['price']); ?></p>
                                 <p class="card-text"><strong>Type:</strong> <?php echo htmlspecialchars($product['product_type']); ?></p>
-                                <!-- Download Link -->
-                                <a href="download_image.php?id=<?php echo $product['id']; ?>" class="btn btn-primary mt-2">Download Image</a>
+                                <!-- Edit and Delete Buttons -->
+                                <a href="edit_product.php?id=<?php echo $product['id']; ?>" class="btn btn-warning">Edit</a>
+                                <a href="delete_product.php?id=<?php echo $product['id']; ?>" class="btn btn-danger">Delete</a>
                             </div>
                         </div>
                     </div>

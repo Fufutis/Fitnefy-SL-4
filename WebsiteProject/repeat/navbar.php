@@ -29,7 +29,7 @@
                         <a class="nav-link" href="seller.php">Sell</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="seller_store.php">Add</a>
+                        <a class="nav-link" href="seller_store.php">Products</a>
                     </li>
                     <!-- Link to Personal Page -->
                     <li class="nav-item">
