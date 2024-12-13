@@ -83,7 +83,7 @@ $conn->close();
                                     <button class="btn btn-warning me-2" onclick="addToWishlist(<?php echo $product['id']; ?>)">Wishlist</button>
 
                                     <!-- Cart Button -->
-                                    <a href="cart.php?action=add&product_id=<?php echo $product['id']; ?>" class="btn btn-success me-auto">Add to Cart</a>
+                                    <button class="btn btn-success me-auto" onclick="addToCart(<?php echo $product['id']; ?>)">Add to Cart</button>
 
                                     <!-- Edit Button (Only for Seller's Products) -->
                                     <?php if ($view_type === 'my_products'): ?>
@@ -113,6 +113,24 @@ $conn->close();
                 },
                 error: function() {
                     alert('An error occurred while adding to the wishlist.');
+                }
+            });
+        }
+
+        function addToCart(productId) {
+            $.ajax({
+                url: 'cart_action.php',
+                type: 'GET',
+                data: {
+                    action: 'add',
+                    product_id: productId
+                },
+                dataType: 'json',
+                success: function(response) {
+                    alert(response.message); // Show success message
+                },
+                error: function() {
+                    alert('An error occurred while adding to the cart.');
                 }
             });
         }

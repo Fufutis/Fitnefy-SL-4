@@ -1,7 +1,8 @@
 <?php
 session_start();
 include("repeat/config.php");
-
+include("repeat/header.php");
+include("repeat/navbar.php");
 // Ensure the user is logged in
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['message'] = "Please log in to view your wishlist.";
