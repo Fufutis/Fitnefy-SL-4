@@ -19,11 +19,9 @@ $view_type = isset($_GET['view']) && $_GET['view'] === 'my_products' ? 'my_produ
 
 // Fetch products based on the selected view
 if ($view_type === 'my_products') {
-    // Fetch only the seller's products
     $stmt = $conn->prepare("SELECT id, name, description, price, product_type, photo_blob FROM products WHERE seller_id = ?");
     $stmt->bind_param('i', $seller_id);
 } else {
-    // Fetch all products
     $stmt = $conn->prepare("SELECT id, name, description, price, product_type, photo_blob FROM products");
 }
 $stmt->execute();
@@ -46,6 +44,7 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -79,7 +78,7 @@ $conn->close();
                                 <p class="card-text"><strong>Type:</strong> <?php echo htmlspecialchars($product['product_type']); ?></p>
 
                                 <!-- Wishlist and Cart Buttons -->
-                                <a href="wishlist.php?product_id=<?php echo $product['id']; ?>" class="btn btn-warning mt-2">Add to Wishlist</a>
+                                <button class="btn btn-warning mt-2" onclick="addToWishlist(<?php echo $product['id']; ?>)">Add to Wishlist</button>
                                 <a href="cart.php?action=add&product_id=<?php echo $product['id']; ?>" class="btn btn-success mt-2">Add to Cart</a>
                             </div>
                         </div>
@@ -88,6 +87,26 @@ $conn->close();
             </div>
         <?php endif; ?>
     </div>
+
+    <!-- JavaScript for AJAX -->
+    <script>
+        function addToWishlist(productId) {
+            $.ajax({
+                url: 'wishlist.php',
+                type: 'GET',
+                data: {
+                    product_id: productId
+                },
+                dataType: 'json',
+                success: function(response) {
+                    alert(response.message); // Show success or error message
+                },
+                error: function() {
+                    alert('An error occurred while adding to the wishlist.');
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>
