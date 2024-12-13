@@ -31,7 +31,13 @@ if ($action === 'add' && $product_id) {
     $stmt = $conn->prepare("DELETE FROM cart WHERE user_id = ? AND product_id = ? AND quantity <= 0");
     $stmt->bind_param('ii', $user_id, $product_id);
     $stmt->execute();
-    $_SESSION['message'] = "Product removed from cart.";
+    $_SESSION['message'] = "One unit of the product removed from cart.";
+} elseif ($action === 'remove_all' && $product_id) {
+    // Remove all units of a specific product from the cart
+    $stmt = $conn->prepare("DELETE FROM cart WHERE user_id = ? AND product_id = ?");
+    $stmt->bind_param('ii', $user_id, $product_id);
+    $stmt->execute();
+    $_SESSION['message'] = "All units of the product removed from cart.";
 } elseif ($action === 'clear') {
     // Clear entire cart
     $stmt = $conn->prepare("DELETE FROM cart WHERE user_id = ?");

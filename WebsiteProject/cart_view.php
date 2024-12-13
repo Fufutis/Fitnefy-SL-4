@@ -86,7 +86,9 @@ $conn->close();
                             <td>$<?php echo htmlspecialchars(number_format($item['total'], 2)); ?></td>
                             <td>
                                 <a href="cart_action.php?action=remove&product_id=<?php echo $item['product_id']; ?>"
-                                    class="btn btn-danger btn-sm">Remove</a>
+                                    class="btn btn-danger btn-sm">Remove One</a>
+                                <a href="cart_action.php?action=remove_all&product_id=<?php echo $item['product_id']; ?>"
+                                    class="btn btn-warning btn-sm">Remove All</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
