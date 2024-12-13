@@ -78,18 +78,16 @@ $conn->close();
                                 <p class="card-text"><strong>Type:</strong> <?php echo htmlspecialchars($product['product_type']); ?></p>
 
                                 <!-- Buttons Row -->
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <!-- Wishlist Button -->
-                                    <button class="btn btn-warning me-2" onclick="addToWishlist(<?php echo $product['id']; ?>)">Wishlist</button>
-
-                                    <!-- Cart Button -->
-                                    <button class="btn btn-success me-auto" onclick="addToCart(<?php echo $product['id']; ?>)">Add to Cart</button>
-
-                                    <!-- Edit Button (Only for Seller's Products) -->
-                                    <?php if ($view_type === 'my_products'): ?>
-                                        <a href="edit_product.php?id=<?php echo $product['id']; ?>" class="btn btn-primary">Edit</a>
-                                    <?php endif; ?>
-                                </div>
+                                <?php if ($view_type === 'my_products'): ?>
+                                    <div class="d-grid">
+                                        <a href="edit_product.php?id=<?php echo $product['id']; ?>" class="btn btn-primary btn-block">Edit</a>
+                                    </div>
+                                <?php else: ?>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <button class="btn btn-warning me-2" onclick="addToWishlist(<?php echo $product['id']; ?>)">Wishlist</button>
+                                        <button class="btn btn-success me-auto" onclick="addToCart(<?php echo $product['id']; ?>)">Add to Cart</button>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>

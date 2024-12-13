@@ -3,6 +3,7 @@ session_start();
 include("repeat/config.php");
 include("repeat/header.php");
 include("repeat/navbar.php");
+
 // Ensure the user is logged in
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['message'] = "Please log in to view your wishlist.";
@@ -35,6 +36,7 @@ $conn->close();
 <head>
     <title>Your Wishlist</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -47,13 +49,12 @@ $conn->close();
                 <?php foreach ($wishlist_items as $item): ?>
                     <div class="col-md-4 mb-4">
                         <div class="card h-100">
-                            <img src="data:image/jpeg;base64,<?php echo base64_encode($item['photo_blob']); ?>"
-                                class="card-img-top" alt="Product Image">
+                            <img src="data:image/jpeg;base64,<?php echo base64_encode($item['photo_blob']); ?>" class="card-img-top" alt="Product Image">
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo htmlspecialchars($item['name']); ?></h5>
                                 <p class="card-text"><?php echo htmlspecialchars($item['description']); ?></p>
                                 <p class="card-text"><strong>Price:</strong> $<?php echo htmlspecialchars($item['price']); ?></p>
-                                <a href="cart.php?action=add&product_id=<?php echo $item['id']; ?>" class="btn btn-success">Add to Cart</a>
+                                <button class="btn btn-success add-to-cart" data-product-id="<?php echo $item['id']; ?>">Add to Cart</button>
                             </div>
                         </div>
                     </div>
@@ -61,6 +62,30 @@ $conn->close();
             </div>
         <?php endif; ?>
     </div>
+
+    <!-- JavaScript for AJAX -->
+    <script>
+        $(document).ready(function() {
+            $('.add-to-cart').click(function() {
+                const productId = $(this).data('product-id');
+                $.ajax({
+                    url: 'cart_action.php',
+                    type: 'GET',
+                    data: {
+                        action: 'add',
+                        product_id: productId
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        alert(response.message); // Show success message
+                    },
+                    error: function() {
+                        alert('An error occurred while adding to the cart.');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
