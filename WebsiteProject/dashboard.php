@@ -187,15 +187,27 @@ $conn->close();
 
         // Display message function
         function displayMessage(message, type) {
-            const alertBox = `<div class="alert alert-${type}" role="alert">${message}</div>`;
-            document.querySelector('.container').insertAdjacentHTML('afterbegin', alertBox);
+            // Remove any existing fixed alert first
+            const existingAlert = document.querySelector('.fixed-alert');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
 
+            // Create a new alert element
+            const alertBox = `
+            <div class="alert alert-${type} fixed-alert" role="alert" style="position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 1050; width: 90%; max-width: 500px; text-align: center;">
+                ${message}
+            </div>`;
+            document.body.insertAdjacentHTML('beforeend', alertBox);
+
+            // Automatically hide the alert after 3 seconds
             setTimeout(() => {
-                const alert = document.querySelector('.alert');
+                const alert = document.querySelector('.fixed-alert');
                 if (alert) alert.remove();
-            }, 3000); // Automatically hide after 3 seconds
+            }, 3000);
         }
     </script>
+
 
 
 </body>
