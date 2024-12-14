@@ -10,6 +10,9 @@ include("repeat/config.php");
 include("repeat/header.php");
 include("repeat/navbar.php");
 
+// Get the role of the logged-in user
+$role = $_SESSION['role'] ?? 'user';
+
 // Default filters
 $category = isset($_GET['category']) ? $_GET['category'] : '';
 $sort_by = isset($_GET['sort_by']) ? $_GET['sort_by'] : 'recent'; // Default: Recent
@@ -128,8 +131,11 @@ $conn->close();
                                 <p class="card-text"><strong>Type:</strong> <?php echo htmlspecialchars($product['product_type']); ?></p>
 
                                 <!-- Wishlist and Cart Buttons -->
-                                <button class="btn btn-warning mt-2" onclick="addToWishlist(<?php echo $product['id']; ?>)">Add to Wishlist</button>
-                                <a href="cart.php?action=add&product_id=<?php echo $product['id']; ?>" class="btn btn-success mt-2">Add to Cart</a>
+                                <?php if ($role === 'user' || $role === 'both'): ?>
+                                    <button class="btn btn-warning mt-2" onclick="addToWishlist(<?php echo $product['id']; ?>)">Add to Wishlist</button>
+                                    <button class="btn btn-success mt-2" onclick="addToCart(<?php echo $product['id']; ?>)">Add to Cart</button>
+
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -140,6 +146,28 @@ $conn->close();
 
     <!-- JavaScript for AJAX -->
     <script>
+        function addToCart(productId) {
+            $.ajax({
+                url: 'cart_action.php',
+                type: 'GET',
+                data: {
+                    action: 'add',
+                    product_id: productId
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        displayMessage(response.message, 'success'); // Use displayMessage for success
+                    } else {
+                        displayMessage('Error: ' + response.message, 'danger'); // Use displayMessage for errors
+                    }
+                },
+                error: function() {
+                    displayMessage('An unexpected error occurred while adding to the cart.', 'danger');
+                }
+            });
+        }
+
         function addToWishlist(productId) {
             $.ajax({
                 url: 'wishlist.php',
@@ -149,14 +177,39 @@ $conn->close();
                 },
                 dataType: 'json',
                 success: function(response) {
-                    alert(response.message); // Show success or error message
+                    displayMessage(response.message, 'success'); // Use displayMessage for success
                 },
                 error: function() {
-                    alert('An error occurred while adding to the wishlist.');
+                    displayMessage('An error occurred while adding to the wishlist.', 'danger');
                 }
             });
         }
+
+        // Display message function
+        function displayMessage(message, type) {
+            // Remove any existing fixed alert first
+            const existingAlert = document.querySelector('.fixed-alert');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+
+            // Create a new alert element
+            const alertBox = `
+            <div class="alert alert-${type} fixed-alert" role="alert" style="position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 1050; width: 90%; max-width: 500px; text-align: center;">
+                ${message}
+            </div>`;
+            document.body.insertAdjacentHTML('beforeend', alertBox);
+
+            // Automatically hide the alert after 3 seconds
+            setTimeout(() => {
+                const alert = document.querySelector('.fixed-alert');
+                if (alert) alert.remove();
+            }, 3000);
+        }
     </script>
+
+
+
 </body>
 
 </html>

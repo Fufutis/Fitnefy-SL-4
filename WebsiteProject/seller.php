@@ -1,13 +1,11 @@
 <?php
 session_start();
-// Ensure the user is logged in and is a seller
-if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'seller') {
+// Ensure the user is logged in and has seller or both role
+if (!isset($_SESSION['username']) || ($_SESSION['role'] !== 'seller' && $_SESSION['role'] !== 'both')) {
     header("Location: index.php");
     exit;
 }
-?>
 
-<?php
 include("repeat/header.php");
 include("repeat/navbar.php");
 ?>
