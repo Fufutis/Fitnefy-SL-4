@@ -1,73 +1,121 @@
 <?php
 session_start();
-include("config.php");
+include("repeat/config.php");
 
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['order_group_id'])) {
-    header("Location: cart_view.php");
+// Ensure the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    $_SESSION['message'] = "Please log in to view your order details.";
+    header("Location: index.php");
     exit;
 }
 
 $user_id = $_SESSION['user_id'];
+
+// Check if the order group ID exists
+if (!isset($_SESSION['order_group_id'])) {
+    $_SESSION['message'] = "No order found. Please try again.";
+    header("Location: cart_view.php");
+    exit;
+}
+
 $order_group_id = $_SESSION['order_group_id'];
 
-// Fetch order details
-$stmt = $conn->prepare("
-    SELECT 
-        p.name, 
-        o.quantity, 
-        p.price, 
-        (o.quantity * p.price) AS total 
+// Fetch order group details
+$order_group_stmt = $conn->prepare("
+    SELECT og.id AS order_group_id, og.created_at, 
+           SUM(o.total_price) AS total_price
+    FROM order_groups og
+    JOIN orders o ON og.id = o.order_group_id
+    WHERE og.id = ? AND og.user_id = ?
+");
+$order_group_stmt->bind_param('ii', $order_group_id, $user_id);
+$order_group_stmt->execute();
+$order_group_result = $order_group_stmt->get_result();
+
+if ($order_group_result->num_rows === 0) {
+    $_SESSION['message'] = "No order found.";
+    header("Location: cart_view.php");
+    exit;
+}
+
+$order_group = $order_group_result->fetch_assoc();
+$order_group_stmt->close();
+
+// Fetch individual product details from the order
+$order_items_stmt = $conn->prepare("
+    SELECT o.quantity, o.total_price, 
+           p.name, p.price, p.photo_blob
     FROM orders o
     JOIN products p ON o.product_id = p.id
     WHERE o.order_group_id = ?
 ");
-$stmt->bind_param('i', $order_group_id);
-$stmt->execute();
-$result = $stmt->get_result();
+$order_items_stmt->bind_param('i', $order_group_id);
+$order_items_stmt->execute();
+$order_items_result = $order_items_stmt->get_result();
 
 $order_items = [];
-$total_price = 0;
-while ($row = $result->fetch_assoc()) {
-    $total_price += $row['total'];
+while ($row = $order_items_result->fetch_assoc()) {
     $order_items[] = $row;
 }
-$stmt->close();
+
+$order_items_stmt->close();
+$conn->close();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Confirmation</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
     <div class="container mt-5">
-        <h1>Order Confirmation</h1>
-        <p>Thank you for your purchase! Here are your order details:</p>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($order_items as $item): ?>
+        <h1 class="mb-4">Order Confirmation</h1>
+
+        <!-- Order Summary -->
+        <div class="alert alert-success">
+            <strong>Order ID:</strong> <?php echo htmlspecialchars($order_group['order_group_id']); ?><br>
+            <strong>Date:</strong> <?php echo htmlspecialchars($order_group['created_at']); ?><br>
+            <strong>Total Price:</strong> $<?php echo number_format($order_group['total_price'], 2); ?>
+        </div>
+
+        <!-- Ordered Items -->
+        <?php if (empty($order_items)): ?>
+            <div class="alert alert-info">No items found in this order.</div>
+        <?php else: ?>
+            <table class="table table-bordered">
+                <thead>
                     <tr>
-                        <td><?php echo htmlspecialchars($item['name']); ?></td>
-                        <td><?php echo htmlspecialchars($item['quantity']); ?></td>
-                        <td>$<?php echo htmlspecialchars(number_format($item['price'], 2)); ?></td>
-                        <td>$<?php echo htmlspecialchars(number_format($item['total'], 2)); ?></td>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-        <h3>Total Price: $<?php echo number_format($total_price, 2); ?></h3>
-        <a href="dashboard.php" class="btn btn-primary mt-3">Continue Shopping</a>
+                </thead>
+                <tbody>
+                    <?php foreach ($order_items as $item): ?>
+                        <tr>
+                            <td>
+                                <img src="data:image/jpeg;base64,<?php echo base64_encode($item['photo_blob']); ?>"
+                                    alt="Product Image" class="img-thumbnail" style="width: 100px; height: auto;">
+                                <br>
+                                <?php echo htmlspecialchars($item['name']); ?>
+                            </td>
+                            <td>$<?php echo number_format($item['price'], 2); ?></td>
+                            <td><?php echo htmlspecialchars($item['quantity']); ?></td>
+                            <td>$<?php echo number_format($item['total_price'], 2); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+
+        <!-- Back to Dashboard -->
+        <a href="dashboard.php" class="btn btn-primary mt-3">Back to Dashboard</a>
     </div>
 </body>
 
