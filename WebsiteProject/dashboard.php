@@ -133,7 +133,8 @@ $conn->close();
                                 <!-- Wishlist and Cart Buttons -->
                                 <?php if ($role === 'user' || $role === 'both'): ?>
                                     <button class="btn btn-warning mt-2" onclick="addToWishlist(<?php echo $product['id']; ?>)">Add to Wishlist</button>
-                                    <a href="cart_action.php?action=add&product_id=<?php echo $product['id']; ?>" class="btn btn-success mt-2">Add to Cart</a>
+                                    <button class="btn btn-success mt-2" onclick="addToCart(<?php echo $product['id']; ?>)">Add to Cart</button>
+
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -145,6 +146,28 @@ $conn->close();
 
     <!-- JavaScript for AJAX -->
     <script>
+        function addToCart(productId) {
+            $.ajax({
+                url: 'cart_action.php',
+                type: 'GET',
+                data: {
+                    action: 'add',
+                    product_id: productId
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        displayMessage(response.message, 'success'); // Use displayMessage for success
+                    } else {
+                        displayMessage('Error: ' + response.message, 'danger'); // Use displayMessage for errors
+                    }
+                },
+                error: function() {
+                    displayMessage('An unexpected error occurred while adding to the cart.', 'danger');
+                }
+            });
+        }
+
         function addToWishlist(productId) {
             $.ajax({
                 url: 'wishlist.php',
@@ -154,14 +177,27 @@ $conn->close();
                 },
                 dataType: 'json',
                 success: function(response) {
-                    alert(response.message); // Show success or error message
+                    displayMessage(response.message, 'success'); // Use displayMessage for success
                 },
                 error: function() {
-                    alert('An error occurred while adding to the wishlist.');
+                    displayMessage('An error occurred while adding to the wishlist.', 'danger');
                 }
             });
         }
+
+        // Display message function
+        function displayMessage(message, type) {
+            const alertBox = `<div class="alert alert-${type}" role="alert">${message}</div>`;
+            document.querySelector('.container').insertAdjacentHTML('afterbegin', alertBox);
+
+            setTimeout(() => {
+                const alert = document.querySelector('.alert');
+                if (alert) alert.remove();
+            }, 3000); // Automatically hide after 3 seconds
+        }
     </script>
+
+
 </body>
 
 </html>
