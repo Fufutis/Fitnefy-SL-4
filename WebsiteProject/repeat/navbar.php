@@ -43,6 +43,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="about.php">About</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="order_history.php">Order History</a>
+                    </li>
                     <!-- Logout Option -->
                     <li class="nav-item">
                         <a class="nav-link" href="logout.php">Logout</a>

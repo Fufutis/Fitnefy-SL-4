@@ -10,6 +10,9 @@ include("repeat/config.php");
 include("repeat/header.php");
 include("repeat/navbar.php");
 
+// Get the role of the logged-in user
+$role = $_SESSION['role'] ?? 'user';
+
 // Default filters
 $category = isset($_GET['category']) ? $_GET['category'] : '';
 $sort_by = isset($_GET['sort_by']) ? $_GET['sort_by'] : 'recent'; // Default: Recent
@@ -128,8 +131,10 @@ $conn->close();
                                 <p class="card-text"><strong>Type:</strong> <?php echo htmlspecialchars($product['product_type']); ?></p>
 
                                 <!-- Wishlist and Cart Buttons -->
-                                <button class="btn btn-warning mt-2" onclick="addToWishlist(<?php echo $product['id']; ?>)">Add to Wishlist</button>
-                                <a href="cart_action.php?action=add&product_id=<?php echo $product['id']; ?>" class="btn btn-success mt-2">Add to Cart</a>
+                                <?php if ($role === 'user' || $role === 'both'): ?>
+                                    <button class="btn btn-warning mt-2" onclick="addToWishlist(<?php echo $product['id']; ?>)">Add to Wishlist</button>
+                                    <a href="cart_action.php?action=add&product_id=<?php echo $product['id']; ?>" class="btn btn-success mt-2">Add to Cart</a>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>

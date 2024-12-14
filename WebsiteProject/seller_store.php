@@ -96,6 +96,7 @@ $conn->close();
                                 <p class="card-text"><strong>Price:</strong> $<?php echo htmlspecialchars($product['price']); ?></p>
                                 <p class="card-text"><strong>Type:</strong> <?php echo htmlspecialchars($product['product_type']); ?></p>
 
+                                <!-- Buttons based on View Type -->
                                 <?php if ($view_type === 'my_products'): ?>
                                     <!-- My Products: Edit and Delete Buttons -->
                                     <div class="d-grid gap-2">
@@ -105,7 +106,7 @@ $conn->close();
                                             <button type="submit" class="btn btn-danger btn-block" onclick="return confirm('Are you sure you want to delete this product?');">Delete</button>
                                         </form>
                                     </div>
-                                <?php else: ?>
+                                <?php elseif ($role === 'user' || $role === 'both'): ?>
                                     <!-- All Products: Wishlist and Add to Cart -->
                                     <div class="d-flex justify-content-between align-items-center">
                                         <button class="btn btn-warning me-2" onclick="addToWishlist(<?php echo $product['id']; ?>)">Wishlist</button>
