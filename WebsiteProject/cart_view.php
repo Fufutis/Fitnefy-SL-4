@@ -41,6 +41,13 @@ if (!empty($cart_items)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+        function confirmPurchase() {
+            if (confirm("Are you sure you want to place this order?")) {
+                window.location.href = "checkout.php";
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -89,8 +96,7 @@ if (!empty($cart_items)) {
                 <h3>Total Price: $<?php echo number_format($total_price, 2); ?></h3>
                 <div>
                     <a href="cart_action.php?action=clear" class="btn btn-danger">Clear Cart</a>
-                    <!-- Buy Now Button -->
-                    <a href="checkout.php" class="btn btn-success">Buy Now</a>
+                    <button onclick="confirmPurchase()" class="btn btn-success">Buy Now</button>
                 </div>
             </div>
         <?php endif; ?>
