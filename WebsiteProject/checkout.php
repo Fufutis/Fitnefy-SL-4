@@ -1,77 +1,90 @@
 <?php
 session_start();
-include("config.php");
+include("repeat/config.php");
 
+// Ensure the user is logged in
 if (!isset($_SESSION['user_id'])) {
-    $_SESSION['message'] = "Please log in to proceed.";
-    header("Location: login.php");
+    $_SESSION['message'] = "Please log in to complete the checkout process.";
+    header("Location: index.php");
     exit;
 }
 
 $user_id = $_SESSION['user_id'];
 
-// Fetch cart items
-$stmt = $conn->prepare("
-    SELECT 
-        p.name, 
-        c.quantity, 
-        p.price, 
-        (c.quantity * p.price) AS total 
-    FROM cart c
-    JOIN products p ON c.product_id = p.id
-    WHERE c.user_id = ?
-");
-$stmt->bind_param('i', $user_id);
+// Ensure the cart exists
+if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
+    $_SESSION['message'] = "Your cart is empty. Add items to proceed.";
+    header("Location: cart_view.php");
+    exit;
+}
+
+// Fetch product details for the items in the cart
+$cart_items = $_SESSION['cart'];
+$total_price = 0;
+
+$placeholders = implode(',', array_fill(0, count($cart_items), '?'));
+$stmt = $conn->prepare("SELECT id, name, price, seller_id FROM products WHERE id IN ($placeholders)");
+$stmt->bind_param(str_repeat('i', count($cart_items)), ...array_keys($cart_items));
 $stmt->execute();
 $result = $stmt->get_result();
 
-$cart_items = [];
-$total_price = 0;
+// Calculate total price and prepare for order insertion
+$products = [];
 while ($row = $result->fetch_assoc()) {
+    $product_id = $row['id'];
+    $row['quantity'] = $cart_items[$product_id]['quantity'];
+    $row['total'] = $row['quantity'] * $row['price'];
+    $products[] = $row;
     $total_price += $row['total'];
-    $cart_items[] = $row;
 }
 $stmt->close();
-?>
 
-<!DOCTYPE html>
-<html lang="en">
+// Begin the transaction
+$conn->begin_transaction();
 
-<head>
-    <title>Checkout</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+try {
+    // Insert a new order group
+    $order_group_stmt = $conn->prepare("INSERT INTO order_groups (user_id, created_at) VALUES (?, NOW())");
+    $order_group_stmt->bind_param('i', $user_id);
+    if (!$order_group_stmt->execute()) {
+        throw new Exception("Failed to create order group: " . $conn->error);
+    }
+    $order_group_id = $order_group_stmt->insert_id;
+    $order_group_stmt->close();
 
-<body>
-    <div class="container mt-5">
-        <h1>Checkout</h1>
-        <?php if (empty($cart_items)): ?>
-            <div class="alert alert-info">Your cart is empty.</div>
-        <?php else: ?>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($cart_items as $item): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($item['name']); ?></td>
-                            <td><?php echo htmlspecialchars($item['quantity']); ?></td>
-                            <td>$<?php echo htmlspecialchars(number_format($item['price'], 2)); ?></td>
-                            <td>$<?php echo htmlspecialchars(number_format($item['total'], 2)); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-            <h3>Total Price: $<?php echo number_format($total_price, 2); ?></h3>
-            <a href="order_confirmation.php" class="btn btn-success mt-3">Confirm Order</a>
-        <?php endif; ?>
-    </div>
-</body>
+    // Insert individual orders for each product
+    $order_stmt = $conn->prepare("INSERT INTO orders (order_group_id, user_id, product_id, quantity, total_price, seller_id) 
+                                  VALUES (?, ?, ?, ?, ?, ?)");
+    foreach ($products as $product) {
+        $product_id = $product['id'];
+        $quantity = $product['quantity'];
+        $price = $product['price'];
+        $seller_id = $product['seller_id'];
+        $total = $product['total'];
 
-</html>
+        $order_stmt->bind_param('iiiiii', $order_group_id, $user_id, $product_id, $quantity, $total, $seller_id);
+        if (!$order_stmt->execute()) {
+            throw new Exception("Failed to insert order: " . $order_stmt->error);
+        }
+    }
+    $order_stmt->close();
+
+    // Clear the cart after successful checkout
+    unset($_SESSION['cart']);
+
+    // Commit the transaction
+    $conn->commit();
+
+    // Redirect to order success page
+    $_SESSION['order_group_id'] = $order_group_id; // Store order group ID for receipt
+    header("Location: order_success.php");
+    exit;
+} catch (Exception $e) {
+    // Rollback the transaction on error
+    $conn->rollback();
+    $_SESSION['message'] = "Checkout failed: " . $e->getMessage();
+    header("Location: cart_view.php");
+    exit;
+}
+
+$conn->close();
