@@ -7,9 +7,9 @@
 #$db_name = 'registry';
 
 $host = 'sql7.freemysqlhosting.net';
-$db_user = 'sql7750640';
-$db_pass = 'NSbAz1mKKs';
-$db_name = 'sql7750640';
+$db_user = 'sql7751970';
+$db_pass = '6RDwtFyGXs';
+$db_name = 'sql7751970';
 
 $conn = new mysqli($host, $db_user, $db_pass, $db_name);
 

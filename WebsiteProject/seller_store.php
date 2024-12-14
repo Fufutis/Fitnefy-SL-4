@@ -50,6 +50,16 @@ $conn->close();
 
 <body>
     <div class="container mt-5">
+        <!-- Display Success/Error Messages -->
+        <?php if (isset($_SESSION['message'])): ?>
+            <div class="alert alert-info">
+                <?php
+                echo $_SESSION['message'];
+                unset($_SESSION['message']);
+                ?>
+            </div>
+        <?php endif; ?>
+
         <h1 class="mb-4"><?php echo $view_type === 'my_products' ? 'My Products' : 'All Products'; ?></h1>
 
         <!-- Switch Buttons -->
@@ -79,12 +89,21 @@ $conn->close();
 
                                 <!-- Buttons Row -->
                                 <?php if ($view_type === 'my_products'): ?>
-                                    <div class="d-grid">
+                                    <div class="d-grid gap-2">
+                                        <!-- Edit Button -->
                                         <a href="edit_product.php?id=<?php echo $product['id']; ?>" class="btn btn-primary btn-block">Edit</a>
+
+                                        <!-- Delete Button -->
+                                        <form action="delete_product.php" method="POST" class="mt-2">
+                                            <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                                            <button type="submit" class="btn btn-danger btn-block" onclick="return confirm('Are you sure you want to delete this product?');">Delete</button>
+                                        </form>
                                     </div>
                                 <?php else: ?>
                                     <div class="d-flex justify-content-between align-items-center">
+                                        <!-- Wishlist Button -->
                                         <button class="btn btn-warning me-2" onclick="addToWishlist(<?php echo $product['id']; ?>)">Wishlist</button>
+                                        <!-- Add to Cart Button -->
                                         <button class="btn btn-success me-auto" onclick="addToCart(<?php echo $product['id']; ?>)">Add to Cart</button>
                                     </div>
                                 <?php endif; ?>

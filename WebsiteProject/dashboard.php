@@ -129,7 +129,7 @@ $conn->close();
 
                                 <!-- Wishlist and Cart Buttons -->
                                 <button class="btn btn-warning mt-2" onclick="addToWishlist(<?php echo $product['id']; ?>)">Add to Wishlist</button>
-                                <a href="cart.php?action=add&product_id=<?php echo $product['id']; ?>" class="btn btn-success mt-2">Add to Cart</a>
+                                <a href="cart_action.php?action=add&product_id=<?php echo $product['id']; ?>" class="btn btn-success mt-2">Add to Cart</a>
                             </div>
                         </div>
                     </div>
