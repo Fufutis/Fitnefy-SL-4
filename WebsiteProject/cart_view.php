@@ -33,7 +33,6 @@ if (!empty($cart_items)) {
     $conn->close();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -88,7 +87,11 @@ if (!empty($cart_items)) {
 
             <div class="d-flex justify-content-between align-items-center">
                 <h3>Total Price: $<?php echo number_format($total_price, 2); ?></h3>
-                <a href="cart_action.php?action=clear" class="btn btn-danger">Clear Cart</a>
+                <div>
+                    <a href="cart_action.php?action=clear" class="btn btn-danger">Clear Cart</a>
+                    <!-- Buy Now Button -->
+                    <a href="checkout.php" class="btn btn-success">Buy Now</a>
+                </div>
             </div>
         <?php endif; ?>
     </div>
