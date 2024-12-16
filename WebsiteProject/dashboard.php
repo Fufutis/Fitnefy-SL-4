@@ -80,7 +80,6 @@ if ($view_type === 'all_products' && ($role === 'user' || $role === 'both')) {
     $stmt->close();
 }
 
-$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -112,21 +111,46 @@ $conn->close();
 
 <?php if ($role === 'user' || $role === 'both'): ?>
     <!-- User/Both Navigation -->
+    <?php
+    // Fetch categories dynamically from the products table
+    $categories = [];
+    $category_query = "SELECT DISTINCT product_type FROM products";
+    $result = $conn->query($category_query);
+
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $categories[] = $row['product_type'];
+        }
+    }
+    ?>
+
     <form class="d-flex mb-4" method="GET">
         <input type="hidden" name="view" value="all_products">
+        
+        <!-- Dynamic Category Dropdown -->
         <select name="category" class="form-select me-2">
             <option value="">All Categories</option>
-            <option value="Electronics" <?php echo $category === 'Electronics' ? 'selected' : ''; ?>>Electronics</option>
-            <option value="Clothing" <?php echo $category === 'Clothing' ? 'selected' : ''; ?>>Clothing</option>
+            <?php foreach ($categories as $cat): ?>
+                <option value="<?php echo htmlspecialchars($cat); ?>" 
+                    <?php echo $category === $cat ? 'selected' : ''; ?>>
+                    <?php echo htmlspecialchars(ucfirst($cat)); ?>
+                </option>
+            <?php endforeach; ?>
         </select>
+
+        <!-- Sort By Dropdown -->
         <select name="sort_by" class="form-select me-2">
             <option value="recent" <?php echo $sort_by === 'recent' ? 'selected' : ''; ?>>Recent</option>
             <option value="price" <?php echo $sort_by === 'price' ? 'selected' : ''; ?>>Price</option>
         </select>
+
+        <!-- Sort Order Dropdown -->
         <select name="sort_order" class="form-select me-2">
             <option value="desc" <?php echo $sort_order === 'desc' ? 'selected' : ''; ?>>Descending</option>
             <option value="asc" <?php echo $sort_order === 'asc' ? 'selected' : ''; ?>>Ascending</option>
         </select>
+
+        <!-- Filter Button -->
         <button type="submit" class="btn btn-primary">Filter</button>
     </form>
 <?php endif; ?>
