@@ -15,7 +15,9 @@ $role = $_SESSION['role'] ?? 'user';
 $user_id = $_SESSION['user_id'];
 
 // View and filter settings
-$view_type = isset($_GET['view']) && in_array($_GET['view'], ['sold_items', 'my_products', 'all_products']) ? $_GET['view'] : ($role === 'user' ? 'all_products' : 'sold_items');
+$view_type = isset($_GET['view']) && in_array($_GET['view'], ['sold_items', 'my_products', 'all_products']) 
+    ? $_GET['view'] 
+    : ($role === 'user' || $role === 'both' ? 'all_products' : 'sold_items');
 $category = isset($_GET['category']) ? $_GET['category'] : '';
 $sort_by = isset($_GET['sort_by']) ? $_GET['sort_by'] : 'recent'; // Default: Recent
 $sort_order = isset($_GET['sort_order']) ? $_GET['sort_order'] : 'desc'; // Default: Descending
@@ -59,7 +61,7 @@ if ($view_type === 'my_products' && ($role === 'seller' || $role === 'both')) {
     $stmt->close();
 }
 
-if ($view_type === 'all_products' && $role === 'user') {
+if ($view_type === 'all_products' && ($role === 'user' || $role === 'both')) {
     $query = "SELECT id, name, description, price, product_type, photo_blob, upload_timestamp FROM products WHERE 1=1";
     if (!empty($category)) {
         $query .= " AND product_type = ?";
@@ -96,33 +98,38 @@ $conn->close();
     <div class="container mt-5">
         <h1 class="mb-4">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
 
-        <!-- Role-Specific Navigation -->
-          <!-- sller both-->
-        <?php if ($role === 'seller' || $role === 'both'): ?>
-            <div class="mb-4">
-                <a href="?view=sold_items" class="btn <?php echo $view_type === 'sold_items' ? 'btn-primary' : 'btn-outline-primary'; ?>">Sold Items</a>
-                <a href="?view=my_products" class="btn <?php echo $view_type === 'my_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">My Products</a>
-            </div>
-             <!-- User-->
-        <?php elseif ($role === 'user' || $role === 'both'): ?>
-            <form class="d-flex mb-4" method="GET">
-                <input type="hidden" name="view" value="all_products">
-                <select name="category" class="form-select me-2">
-                    <option value="">All Categories</option>
-                    <!-- <option value="Electronics" <?php echo $category === 'Electronics' ? 'selected' : ''; ?>> -->Electronics</option>
-                    <!-- <option value="Clothing" <?php echo $category === 'Clothing' ? 'selected' : ''; ?>> -->Clothing</option>
-                </select>
-                <select name="sort_by" class="form-select me-2">
-                    <option value="recent" <?php echo $sort_by === 'recent' ? 'selected' : ''; ?>>Recent</option>
-                    <option value="price" <?php echo $sort_by === 'price' ? 'selected' : ''; ?>>Price</option>
-                </select>
-                <select name="sort_order" class="form-select me-2">
-                    <option value="desc" <?php echo $sort_order === 'desc' ? 'selected' : ''; ?>>Descending</option>
-                    <option value="asc" <?php echo $sort_order === 'asc' ? 'selected' : ''; ?>>Ascending</option>
-                </select>
-                <button type="submit" class="btn btn-primary">Filter</button>
-            </form>
+      <!-- Role-Specific Navigation -->
+<?php if ($role === 'seller' || $role === 'both'): ?>
+    <!-- Seller/Both Navigation -->
+    <div class="mb-4">
+        <a href="?view=sold_items" class="btn <?php echo $view_type === 'sold_items' ? 'btn-primary' : 'btn-outline-primary'; ?>">Sold Items</a>
+        <a href="?view=my_products" class="btn <?php echo $view_type === 'my_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">My Products</a>
+        <?php if ($role === 'both'): ?>
+            <a href="?view=all_products" class="btn <?php echo $view_type === 'all_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">All Products</a>
         <?php endif; ?>
+    </div>
+<?php endif; ?>
+
+<?php if ($role === 'user' || $role === 'both'): ?>
+    <!-- User/Both Navigation -->
+    <form class="d-flex mb-4" method="GET">
+        <input type="hidden" name="view" value="all_products">
+        <select name="category" class="form-select me-2">
+            <option value="">All Categories</option>
+            <option value="Electronics" <?php echo $category === 'Electronics' ? 'selected' : ''; ?>>Electronics</option>
+            <option value="Clothing" <?php echo $category === 'Clothing' ? 'selected' : ''; ?>>Clothing</option>
+        </select>
+        <select name="sort_by" class="form-select me-2">
+            <option value="recent" <?php echo $sort_by === 'recent' ? 'selected' : ''; ?>>Recent</option>
+            <option value="price" <?php echo $sort_by === 'price' ? 'selected' : ''; ?>>Price</option>
+        </select>
+        <select name="sort_order" class="form-select me-2">
+            <option value="desc" <?php echo $sort_order === 'desc' ? 'selected' : ''; ?>>Descending</option>
+            <option value="asc" <?php echo $sort_order === 'asc' ? 'selected' : ''; ?>>Ascending</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </form>
+<?php endif; ?>
 
         <!-- Display Sold Items -->
         <?php if ($view_type === 'sold_items' && ($role === 'seller' || $role === 'both')): ?>
@@ -176,7 +183,7 @@ $conn->close();
         <?php endif; ?>
 
         <!-- Display All Products -->
-        <?php if ($view_type === 'all_products' && ($role === 'user'|| $role === 'both')): ?>
+        <?php if ($view_type === 'all_products' && ($role === 'user' || $role === 'both')): ?>
             <h2 class="mb-4">All Products</h2>
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 <?php foreach ($products as $product): ?>
@@ -199,26 +206,22 @@ $conn->close();
         <?php endif; ?>
     </div>
 
-    <!-- JavaScript for Wishlist and Cart -->
+    <!-- AJAX Scripts for Wishlist and Cart -->
     <script>
         function addToCart(productId) {
             $.ajax({
                 url: 'cart_action.php',
                 type: 'GET',
-                data: {
-                    action: 'add',
-                    product_id: productId
+                data: { 
+                    action: 'add', 
+                    product_id: productId 
                 },
                 dataType: 'json',
                 success: function(response) {
-                    if (response.success) {
-                        displayMessage(response.message, 'success');
-                    } else {
-                        displayMessage('Error: ' + response.message, 'danger');
-                    }
+                    displayMessage(response.message, 'success');
                 },
-                    error: function() {
-                    displayMessage('An unexpected error occurred while adding to the cart.', 'danger');
+                error: function() {
+                    displayMessage('An error occurred while adding to the cart.', 'danger');
                 }
             });
         }
@@ -227,8 +230,8 @@ $conn->close();
             $.ajax({
                 url: 'wishlist.php',
                 type: 'GET',
-                data: {
-                    product_id: productId
+                data: { 
+                    product_id: productId 
                 },
                 dataType: 'json',
                 success: function(response) {
@@ -250,8 +253,8 @@ $conn->close();
                 const alert = document.querySelector('.fixed-alert');
                 if (alert) alert.remove();
             }, 3000);
-        }    
-        </script>
+        }
+    </script>
 </body>
 
 </html>
