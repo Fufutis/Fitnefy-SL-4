@@ -97,7 +97,7 @@ if ($view_type === 'all_products' && ($role === 'user' || $role === 'both')) {
     <div class="container mt-5">
         <h1 class="mb-4">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
 
-      <!-- Role-Specific Navigation -->
+    <!-- Role-Specific Navigation -->
 <?php if ($role === 'seller' || $role === 'both'): ?>
     <!-- Seller/Both Navigation -->
     <div class="mb-4">

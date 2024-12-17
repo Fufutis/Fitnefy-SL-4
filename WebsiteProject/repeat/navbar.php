@@ -5,7 +5,7 @@ $role = $_SESSION['role'] ?? 'user'; // Default role is 'user'
 function displayUserNavbar()
 {
     ?>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
             <a class="navbar-brand" href="dashboard.php">User Dashboard</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -16,8 +16,6 @@ function displayUserNavbar()
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item"><a class="nav-link" href="seller_store.php">Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="wishlist_view.php">Wishlist</a></li>
-                    
-                    
                     <li class="nav-item"><a class="nav-link" href="order_history.php">Order History</a></li>
                 </ul>
                 <ul class="navbar-nav">
@@ -35,7 +33,7 @@ function displayUserNavbar()
 function displaySellerNavbar()
 {
     ?>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
             <a class="navbar-brand" href="dashboard.php">Seller Dashboard</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-toggle="navbarNav"
@@ -44,9 +42,7 @@ function displaySellerNavbar()
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-
                     <li class="nav-item"><a class="nav-link" href="seller_store.php">My Products</a></li>
-                    
                     <li class="nav-item"><a class="nav-link" href="order_history.php">Order History</a></li>
                 </ul>
                 <ul class="navbar-nav">
@@ -64,7 +60,7 @@ function displaySellerNavbar()
 function displayBothNavbar()
 {
     ?>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
             <a class="navbar-brand" href="dashboard.php">Both Dashboard</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -75,7 +71,6 @@ function displayBothNavbar()
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item"><a class="nav-link" href="seller_store.php">Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="wishlist_view.php">Wishlist</a></li>
-
                     <li class="nav-item"><a class="nav-link" href="order_history.php">Order History</a></li>
                 </ul>
                 <ul class="navbar-nav">
