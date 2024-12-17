@@ -17,17 +17,19 @@ $user_id = $_SESSION['user_id'];
 $query = "
     SELECT 
         og.id AS order_id, 
-        og.total_price, 
         og.created_at AS order_date, 
+        SUM(p.price * o.quantity) AS total_price,
         p.name AS product_name, 
         p.price AS product_price, 
-        oi.quantity 
+        o.quantity
     FROM order_groups og
-    JOIN orders oi ON og.id = oi.order_group_id
-    JOIN products p ON oi.product_id = p.id
+    JOIN orders o ON og.id = o.order_group_id
+    JOIN products p ON o.product_id = p.id
     WHERE og.user_id = ?
+    GROUP BY og.id, og.created_at, p.name, p.price, o.quantity
     ORDER BY og.created_at DESC
 ";
+
 $stmt = $conn->prepare($query);
 $stmt->bind_param('i', $user_id);
 $stmt->execute();
@@ -75,8 +77,8 @@ $conn->close();
             <?php foreach ($order_history as $order_id => $order): ?>
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h5>Order ID: <?php echo $order_id; ?></h5>
-                        <p><strong>Order Date:</strong> <?php echo $order['order_date']; ?></p>
+                        <h5>Order ID: <?php echo htmlspecialchars($order_id); ?></h5>
+                        <p><strong>Order Date:</strong> <?php echo htmlspecialchars($order['order_date']); ?></p>
                         <p><strong>Total Price:</strong> $<?php echo number_format($order['total_price'], 2); ?></p>
                     </div>
                     <div class="card-body">
