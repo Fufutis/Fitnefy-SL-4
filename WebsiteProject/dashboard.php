@@ -109,8 +109,8 @@ if ($view_type === 'all_products' && ($role === 'user' || $role === 'both')) {
     </div>
 <?php endif; ?>
 
-<?php if ($role === 'user' || $role === 'both'): ?>
-    <!-- User/Both Navigation -->
+<?php if ($view_type === 'all_products'): ?>
+    <!-- Sorting and Filtering for All Products -->
     <?php
     // Fetch categories dynamically from the products table
     $categories = [];
@@ -154,6 +154,7 @@ if ($view_type === 'all_products' && ($role === 'user' || $role === 'both')) {
         <button type="submit" class="btn btn-primary">Filter</button>
     </form>
 <?php endif; ?>
+
 
         <!-- Display Sold Items -->
         <?php if ($view_type === 'sold_items' && ($role === 'seller' || $role === 'both')): ?>

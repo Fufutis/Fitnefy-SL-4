@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->send_long_data(4, $photo_blob); // Send binary data to the 5th parameter
     if ($stmt->execute()) {
         $_SESSION['message'] = "Product added successfully!";
-        header("Location: dashboard.php");
+        header("Location: dashboard.php?view=my_products");
         exit;
     } else {
         $_SESSION['message'] = "Failed to add product. SQL Error: " . $stmt->error;
