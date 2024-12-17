@@ -14,12 +14,17 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $role = $_SESSION['role'] ?? 'user';
 
+// Determine the view: 'order_history' or 'sold_history'
+$view = isset($_GET['view']) && in_array($_GET['view'], ['order_history', 'sold_history'])
+    ? $_GET['view']
+    : 'order_history';
+
 // Initialize data arrays
 $order_history = [];
 $sold_history = [];
 
 // Fetch order history for 'user' or 'both'
-if ($role === 'user' || $role === 'both') {
+if (($role === 'user' || $role === 'both') && $view === 'order_history') {
     $query = "
         SELECT 
             og.id AS order_id, 
@@ -60,7 +65,7 @@ if ($role === 'user' || $role === 'both') {
 }
 
 // Fetch sold history for 'seller' or 'both'
-if ($role === 'seller' || $role === 'both') {
+if (($role === 'seller' || $role === 'both') && $view === 'sold_history') {
     $query = "
         SELECT 
             og.id AS order_id, 
@@ -108,14 +113,22 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order History</title>
+    <title>Order & Sold History</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container mt-5">
         <h1 class="mb-4">History</h1>
 
-        <?php if ($role === 'user' || $role === 'both'): ?>
+        <?php if ($role === 'both'): ?>
+            <!-- Switch Buttons for "both" role -->
+            <div class="mb-4">
+                <a href="?view=order_history" class="btn <?php echo $view === 'order_history' ? 'btn-primary' : 'btn-outline-primary'; ?>">Order History</a>
+                <a href="?view=sold_history" class="btn <?php echo $view === 'sold_history' ? 'btn-primary' : 'btn-outline-primary'; ?>">Sold History</a>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($view === 'order_history'): ?>
             <h2 class="mb-4">Your Order History</h2>
             <?php if (empty($order_history)): ?>
                 <div class="alert alert-info">You have no orders yet.</div>
@@ -142,7 +155,7 @@ $conn->close();
             <?php endif; ?>
         <?php endif; ?>
 
-        <?php if ($role === 'seller' || $role === 'both'): ?>
+        <?php if ($view === 'sold_history'): ?>
             <h2 class="mb-4">Your Sold History</h2>
             <?php if (empty($sold_history)): ?>
                 <div class="alert alert-info">No products have been sold yet.</div>
