@@ -54,7 +54,10 @@ $conn->close();
                                 <h5 class="card-title"><?php echo htmlspecialchars($item['name']); ?></h5>
                                 <p class="card-text"><?php echo htmlspecialchars($item['description']); ?></p>
                                 <p class="card-text"><strong>Price:</strong> $<?php echo htmlspecialchars($item['price']); ?></p>
+                                <!-- Add to Cart Button -->
                                 <button class="btn btn-success add-to-cart" data-product-id="<?php echo $item['id']; ?>">Add to Cart</button>
+                                <!-- Remove Button -->
+                                <button class="btn btn-danger remove-from-wishlist" data-product-id="<?php echo $item['id']; ?>">Remove</button>
                             </div>
                         </div>
                     </div>
@@ -66,6 +69,7 @@ $conn->close();
     <!-- JavaScript for AJAX -->
     <script>
         $(document).ready(function() {
+            // Add to Cart functionality
             $('.add-to-cart').click(function() {
                 const productId = $(this).data('product-id');
                 $.ajax({
@@ -81,6 +85,31 @@ $conn->close();
                     },
                     error: function() {
                         alert('An error occurred while adding to the cart.');
+                    }
+                });
+            });
+
+            // Remove from Wishlist functionality
+            $('.remove-from-wishlist').click(function() {
+                const productId = $(this).data('product-id');
+                $.ajax({
+                    url: 'wishlist_action.php',
+                    type: 'POST',
+                    data: {
+                        action: 'remove',
+                        product_id: productId
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            alert(response.message);
+                            location.reload(); // Reload the page to reflect changes
+                        } else {
+                            alert('Error: ' + response.message);
+                        }
+                    },
+                    error: function() {
+                        alert('An error occurred while removing the item from the wishlist.');
                     }
                 });
             });

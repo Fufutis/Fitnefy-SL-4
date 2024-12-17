@@ -1,6 +1,5 @@
-.body{
-    background-color:#042e28;
-    color: #DAF1D3;
+body {
+    padding-top: 50px; /* Adjust this value based on your navbar's height */
 }
 
 .button{
