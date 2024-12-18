@@ -32,3 +32,22 @@ function getAllProducts($conn, $category = '', $sort_by = 'recent', $sort_order 
     $stmt->execute();
     return $stmt->get_result();
 }
+
+function productBelongsToSeller($conn, $product_id, $seller_id)
+{
+    $stmt = $conn->prepare("SELECT id FROM products WHERE id = ? AND seller_id = ?");
+    $stmt->bind_param('ii', $product_id, $seller_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+    return $result->num_rows > 0; // True if the product belongs to the seller
+}
+
+function deleteProduct($conn, $product_id)
+{
+    $stmt = $conn->prepare("DELETE FROM products WHERE id = ?");
+    $stmt->bind_param('i', $product_id);
+    $success = $stmt->execute();
+    $stmt->close();
+    return $success; // Returns true on successful deletion
+}

@@ -1,18 +1,18 @@
 <?php
 session_start();
-include("repeat/config.php");
+include_once __DIR__ . '/../utility/config.php'; // Database connection
 
 // Ensure the user is logged in and is a seller
 if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'seller') {
     $_SESSION['message'] = "You must be a seller to edit products.";
-    header("Location: index.php");
+    header("Location: " . BASE_URL . "/index.php");
     exit;
 }
 
 // Check if a product ID is provided
 if (!isset($_GET['id'])) {
     $_SESSION['message'] = "No product selected for editing.";
-    header("Location: seller_store.php");
+    header("Location: " . BASE_URL . "/views/seller_store.php");
     exit;
 }
 
@@ -27,7 +27,7 @@ $result = $stmt->get_result();
 
 if ($result->num_rows === 0) {
     $_SESSION['message'] = "Product not found or you do not have permission to edit it.";
-    header("Location: seller_store.php");
+    header("Location: " . BASE_URL . "/views/seller_store.php");
     exit;
 }
 
@@ -46,9 +46,10 @@ $stmt->close();
 </head>
 
 <body>
+    <?php include_once __DIR__ . '/partials/navbar.php'; ?>
     <div class="container mt-5">
         <h1 class="mb-4">Edit Product</h1>
-        <form action="update_product.php" method="POST" enctype="multipart/form-data">
+        <form action="<?php echo BASE_URL; ?>/controllers/update_product_controller.php" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
             <div class="mb-3">
                 <label for="name" class="form-label">Product Name</label>
