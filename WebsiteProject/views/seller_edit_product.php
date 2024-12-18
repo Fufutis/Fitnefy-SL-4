@@ -1,8 +1,7 @@
 <?php include_once __DIR__ . '/partials/header.php'; ?>
 <?php include_once __DIR__ . '/partials/navbar.php'; ?>
-
 <div class="container mt-5">
-    <h1 class="mb-4">Edit Product</h1>
+    <h1>Edit Product</h1>
     <form action="<?php echo BASE_URL; ?>/controllers/update_product_controller.php" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
         <div class="mb-3">
@@ -11,7 +10,7 @@
         </div>
         <div class="mb-3">
             <label for="description" class="form-label">Description</label>
-            <textarea name="description" id="description" class="form-control" rows="4" required><?php echo htmlspecialchars($product['description']); ?></textarea>
+            <textarea name="description" id="description" class="form-control" rows="4"><?php echo htmlspecialchars($product['description']); ?></textarea>
         </div>
         <div class="mb-3">
             <label for="price" class="form-label">Price</label>
@@ -19,7 +18,7 @@
         </div>
         <div class="mb-3">
             <label for="product_type" class="form-label">Product Type</label>
-            <select name="product_type" id="product_type" class="form-select" required>
+            <select name="product_type" id="product_type" class="form-select">
                 <option value="e-book" <?php echo $product['product_type'] === 'e-book' ? 'selected' : ''; ?>>E-Book</option>
                 <option value="software" <?php echo $product['product_type'] === 'software' ? 'selected' : ''; ?>>Software</option>
                 <option value="template" <?php echo $product['product_type'] === 'template' ? 'selected' : ''; ?>>Template</option>
@@ -33,5 +32,4 @@
         <button type="submit" class="btn btn-primary">Update Product</button>
     </form>
 </div>
-
 <?php include_once __DIR__ . '/partials/footer.php'; ?>

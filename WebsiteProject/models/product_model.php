@@ -51,3 +51,25 @@ function deleteProduct($conn, $product_id)
     $stmt->close();
     return $success; // Returns true on successful deletion
 }
+function getSoldItemsForSeller($conn, $seller_id)
+{
+    $stmt = $conn->prepare("
+        SELECT 
+            p.name AS product_name,
+            p.price AS product_price,
+            SUM(o.quantity) AS total_quantity_sold,
+            SUM(o.total_price) AS total_revenue,
+            MAX(og.created_at) AS last_sold_date
+        FROM orders o
+        JOIN order_groups og ON o.order_group_id = og.id
+        JOIN products p ON o.product_id = p.id
+        WHERE p.seller_id = ?
+        GROUP BY o.product_id
+        ORDER BY last_sold_date DESC
+    ");
+    $stmt->bind_param('i', $seller_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+    return $result;
+}
