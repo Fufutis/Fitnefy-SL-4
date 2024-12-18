@@ -1,7 +1,7 @@
 <?php
-session_start();
-include("repeat/config.php");
-include("models/cart_model.php"); // Include the model file
+
+include_once __DIR__ . '/../utility/config.php';
+include_once __DIR__ . '/../models/cart_model.php';
 
 // Ensure the cart exists
 if (!isset($_SESSION['cart'])) {

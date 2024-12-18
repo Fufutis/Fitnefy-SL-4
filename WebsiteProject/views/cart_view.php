@@ -1,10 +1,13 @@
 <?php
 session_start();
-include_once __DIR__ . '/../utility/config.php';
-include_once __DIR__ . '/../partials/header.php';
-include_once __DIR__ . '/../partials/navbar.php';
-include_once __DIR__ . '/../controllers/cart_controller.php';
+
+// Include configuration and required files
+include_once __DIR__ . '/../utility/config.php';          // Database connection
+include_once __DIR__ . '/../views/partials/header.php';  // Header file
+include_once __DIR__ . '/../views/partials/navbar.php';  // Navbar file
+include_once __DIR__ . '/../controllers/cart_controller.php'; // Cart controller
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,7 +19,7 @@ include_once __DIR__ . '/../controllers/cart_controller.php';
     <script>
         function confirmPurchase() {
             if (confirm("Are you sure you want to place this order?")) {
-                window.location.href = "checkout.php";
+                window.location.href = "<?php echo BASE_URL; ?>/controllers/checkout.php";
             }
         }
     </script>
@@ -54,9 +57,9 @@ include_once __DIR__ . '/../controllers/cart_controller.php';
                             <td><?php echo htmlspecialchars($item['quantity']); ?></td>
                             <td>$<?php echo htmlspecialchars(number_format($item['total'], 2)); ?></td>
                             <td>
-                                <a href="cart_action.php?action=remove&product_id=<?php echo $item['id']; ?>"
+                                <a href="<?php echo BASE_URL; ?>/controllers/cart_action.php?action=remove&product_id=<?php echo $item['id']; ?>"
                                     class="btn btn-danger btn-sm">Remove One</a>
-                                <a href="cart_action.php?action=remove_all&product_id=<?php echo $item['id']; ?>"
+                                <a href="<?php echo BASE_URL; ?>/controllers/cart_action.php?action=remove_all&product_id=<?php echo $item['id']; ?>"
                                     class="btn btn-warning btn-sm">Remove All</a>
                             </td>
                         </tr>
@@ -67,7 +70,7 @@ include_once __DIR__ . '/../controllers/cart_controller.php';
             <div class="d-flex justify-content-between align-items-center">
                 <h3>Total Price: $<?php echo number_format($total_price, 2); ?></h3>
                 <div>
-                    <a href="cart_action.php?action=clear" class="btn btn-danger">Clear Cart</a>
+                    <a href="<?php echo BASE_URL; ?>/controllers/cart_action.php?action=clear" class="btn btn-danger">Clear Cart</a>
                     <button onclick="confirmPurchase()" class="btn btn-success">Buy Now</button>
                 </div>
             </div>
