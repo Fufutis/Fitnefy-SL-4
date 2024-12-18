@@ -1,11 +1,13 @@
 <?php
 session_start();
+include_once __DIR__ . '/../utility/config.php'; // Ensure DB connection exists
 
 // Ensure the cart exists in the session
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
+// Validate input
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 $product_id = isset($_GET['product_id']) ? intval($_GET['product_id']) : 0;
 

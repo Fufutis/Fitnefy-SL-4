@@ -1,7 +1,9 @@
 <?php
-include("repeat/header.php");
-include("repeat/navbar.php");
-include("controllers/cart_controller.php"); // Include the controller
+session_start();
+include_once __DIR__ . '/../utility/config.php';
+include_once __DIR__ . '/../partials/header.php';
+include_once __DIR__ . '/../partials/navbar.php';
+include_once __DIR__ . '/../controllers/cart_controller.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
