@@ -2,14 +2,14 @@
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['password'])) {
-    include("repeat/config.php"); // Adjust path as needed
+    include("../utility/config.php"); // Database configuration
 
     // Trim input to avoid leading/trailing spaces
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
 
-    // Query the database for the user
-    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ? OR email = ?");
+    // Prepare and execute query
+    $stmt = $conn->prepare("SELECT id, username, password, role FROM users WHERE username = ? OR email = ?");
     $stmt->bind_param('ss', $username, $username);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -29,11 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['p
             $conn->close();
 
             // Redirect based on role
-            if ($user['role'] === 'seller') {
-                header("Location: dashboard.php"); // Redirect sellers
-            } else {
-                header("Location: dashboard.php"); // Redirect other users
-            }
+            $redirectPage = match ($user['role']) {
+                'seller' => '../views/seller_dashboard.php',
+                'both'   => '../views/both_dashboard.php',
+                default  => '../views/user_dashboard.php',
+            };
+
+            header("Location: $redirectPage");
             exit;
         } else {
             $_SESSION['message'] = "Invalid password.";
@@ -45,10 +47,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['p
     // Close resources and redirect to login page on failure
     $stmt->close();
     $conn->close();
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit;
 } else {
     // If accessed without POST credentials, redirect to index.
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit;
 }
