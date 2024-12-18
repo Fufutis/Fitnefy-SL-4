@@ -1,6 +1,7 @@
 <?php
 session_start();
-include_once __DIR__ . '/../utility/config.php'; // Database configuration
+include_once __DIR__ . '/../utility/config.php';
+include_once __DIR__ . '/../models/wishlist_model.php';
 
 header('Content-Type: application/json');
 
@@ -11,36 +12,27 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-$action = $_POST['action'] ?? null;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action) {
-    $product_id = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    $action = $_POST['action'];
+    $product_id = intval($_POST['product_id'] ?? 0);
 
-    if ($action === 'remove' && $product_id) {
-        // Remove from wishlist
-        $stmt = $conn->prepare("DELETE FROM wishlist WHERE user_id = ? AND product_id = ?");
-        $stmt->bind_param('ii', $user_id, $product_id);
-
-        if ($stmt->execute()) {
-            echo json_encode(['success' => true, 'message' => 'Item removed from wishlist.']);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Failed to remove item.']);
-        }
-        $stmt->close();
-    } elseif ($action === 'add' && $product_id) {
-        // Add to wishlist
-        $stmt = $conn->prepare("INSERT INTO wishlist (user_id, product_id) VALUES (?, ?)");
-        $stmt->bind_param('ii', $user_id, $product_id);
-
-        if ($stmt->execute()) {
-            echo json_encode(['success' => true, 'message' => 'Item added to wishlist.']);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Failed to add item to wishlist.']);
-        }
-        $stmt->close();
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Invalid action or product ID.']);
+    if ($product_id === 0) {
+        echo json_encode(['success' => false, 'message' => 'Invalid product ID.']);
+        exit;
     }
+
+    // Handle remove action
+    if ($action === 'remove') {
+        $success = removeWishlistItem($conn, $user_id, $product_id);
+        echo json_encode([
+            'success' => $success,
+            'message' => $success ? 'Item removed from wishlist.' : 'Failed to remove item.'
+        ]);
+        exit;
+    }
+
+    echo json_encode(['success' => false, 'message' => 'Invalid action.']);
 } else {
     echo json_encode(['success' => false, 'message' => 'Invalid request.']);
 }
