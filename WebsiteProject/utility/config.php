@@ -1,4 +1,7 @@
 <?php
+
+define('BASE_URL', 'http://localhost/final-project/WebsiteProject');
+
 // Check if the session is already started
 if (session_status() === PHP_SESSION_NONE) {
     // Set session duration and behavior
@@ -23,8 +26,3 @@ $conn = new mysqli($host, $db_user, $db_pass, $db_name);
 if ($conn->connect_error) {
     die("Database connection failed: " . $conn->connect_error);
 }
-?>
-
-<?php
-define('BASE_URL', 'http://localhost/final-project/WebsiteProject');
-?>
