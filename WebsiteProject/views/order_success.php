@@ -6,6 +6,8 @@ if (!$order_group_id) {
     exit;
 }
 ?>
+<?php include_once __DIR__ . '/../partials/header.php'; ?>
+<?php include_once __DIR__ . '/../partials/navbar.php'; ?>
 
 <!DOCTYPE html>
 <html lang="en">
