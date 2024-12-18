@@ -1,10 +1,15 @@
 <?php
 session_start();
-include("../repeat/config.php");
-include("../models/product_model.php");
 
+// Include configuration and models
+include_once __DIR__ . "/../utility/config.php";
+include_once __DIR__ . "/../models/product_model.php";
+
+// Retrieve session variables
 $role = $_SESSION['role'] ?? 'user';
-$user_id = $_SESSION['user_id'];
+$user_id = $_SESSION['user_id'] ?? 0;
+
+// View and filter settings
 $view_type = $_GET['view'] ?? 'all_products';
 $category = $_GET['category'] ?? '';
 $sort_by = $_GET['sort_by'] ?? 'recent';
@@ -31,9 +36,9 @@ $conn->close();
 
 // Load the correct view
 if ($role === 'user') {
-    include("../views/user_dashboard.php");
+    include_once __DIR__ . "/../views/user_dashboard.php";
 } elseif ($role === 'seller') {
-    include("../views/seller_dashboard.php");
+    include_once __DIR__ . "/../views/seller_dashboard.php";
 } else {
-    include("../views/both_dashboard.php");
+    include_once __DIR__ . "/../views/both_dashboard.php";
 }

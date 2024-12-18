@@ -1,15 +1,18 @@
 <?php
 session_start();
 
+// Include configuration file (database connection and constants)
+include_once __DIR__ . '/../utility/config.php';
+
 // Ensure the user is logged in and has seller or both role
 if (!isset($_SESSION['username']) || ($_SESSION['role'] !== 'seller' && $_SESSION['role'] !== 'both')) {
     $_SESSION['message'] = "You must be a seller to add products.";
-    header("Location: index.php");
+    header("Location: " . BASE_URL . "/views/index.php");
     exit;
 }
 
+// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    include("repeat/config.php");
 
     // Retrieve form inputs
     $seller_id = $_SESSION['user_id'];
