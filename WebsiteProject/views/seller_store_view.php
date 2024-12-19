@@ -1,5 +1,17 @@
-<?php include_once __DIR__ . '/partials/header.php'; ?>
-<?php include_once __DIR__ . '/partials/navbar.php'; ?>
+<?php
+include_once __DIR__ . '/partials/header.php';
+include_once __DIR__ . '/partials/navbar.php';
+
+// Initialize $view_type based on query parameters or default to 'all_products'
+$view_type = isset($_GET['view']) ? $_GET['view'] : 'all_products';
+
+// Initialize $role (if not already passed from the controller)
+$role = $_SESSION['role'] ?? 'user';
+
+// Sanitize $view_type to allow only valid options
+$allowed_views = ['all_products', 'my_products'];
+$view_type = in_array($view_type, $allowed_views) ? $view_type : 'all_products';
+?>
 
 <div class="container mt-5">
     <?php if (isset($_SESSION['message'])): ?>
