@@ -18,8 +18,10 @@ $view_type = in_array($view_type, $allowed_views) ? $view_type : $default_view;
     <?php if ($role === 'both'): ?>
         <!-- Buttons to toggle view dynamically -->
         <div class="mb-4">
-            <button id="btn-bought" class="btn <?php echo $view_type === 'bought' ? 'btn-primary' : 'btn-outline-primary'; ?>">Bought History</button>
+
             <button id="btn-sold" class="btn <?php echo $view_type === 'sold' ? 'btn-primary' : 'btn-outline-primary'; ?>">Sold History</button>
+            <button id="btn-bought" class="btn <?php echo $view_type === 'bought' ? 'btn-primary' : 'btn-outline-primary'; ?>">Bought History</button>
+            
         </div>
     <?php endif; ?>
 

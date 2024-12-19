@@ -1,6 +1,6 @@
 <?php
 
-define('BASE_URL', 'http://localhost/final-project/WebsiteProject');
+define('BASE_URL', 'http://localhost/login/final-project/WebsiteProject');
 
 // Check if the session is already started
 if (session_status() === PHP_SESSION_NONE) {
