@@ -1,7 +1,7 @@
 <?php
 
 // Define the Base URL of the project
-define('BASE_URL', 'http://localhost/login/final-project/WebsiteProject');
+define('BASE_URL', 'http://localhost/final-project/WebsiteProject');
 
 // Start the session if it is not already started
 if (session_status() === PHP_SESSION_NONE) {
