@@ -22,7 +22,7 @@ function getProductsBySeller($conn, $seller_id)
     return $stmt->get_result();
 }
 
-function getAllProducts($conn, $category = '', $sort_by = 'recent', $sort_order = 'desc')
+/*function getAllProducts($conn, $category = '', $sort_by = 'recent', $sort_order = 'desc')
 {
     $query = "SELECT id, name, description, price, product_type, photo_blob, upload_timestamp FROM products WHERE 1=1";
     if (!empty($category)) $query .= " AND product_type = ?";
@@ -32,7 +32,7 @@ function getAllProducts($conn, $category = '', $sort_by = 'recent', $sort_order 
     $stmt->execute();
     return $stmt->get_result();
 }
-
+*/
 function productBelongsToSeller($conn, $product_id, $seller_id)
 {
     $stmt = $conn->prepare("SELECT id FROM products WHERE id = ? AND seller_id = ?");
@@ -72,4 +72,12 @@ function getSoldItemsForSeller($conn, $seller_id)
     $result = $stmt->get_result();
     $stmt->close();
     return $result;
+}
+
+
+function getAllProducts($conn)
+{
+    $stmt = $conn->prepare("SELECT id, name, description, price, product_type, photo_blob FROM products");
+    $stmt->execute();
+    return $stmt->get_result();
 }

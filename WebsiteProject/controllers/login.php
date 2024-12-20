@@ -28,14 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['p
             $stmt->close();
             $conn->close();
 
-            // Redirect based on role
-            $redirectPage = match ($user['role']) {
-                'seller' => '../views/seller_dashboard.php',
-                'both'   => '../views/both_dashboard.php',
-                default  => '../views/user_dashboard.php',
-            };
-
-            header("Location: $redirectPage");
+            // Redirect to dashboard controller
+            header("Location: ../controllers/dashboard_controller.php");
             exit;
         } else {
             $_SESSION['message'] = "Invalid password.";

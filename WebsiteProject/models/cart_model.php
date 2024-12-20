@@ -22,5 +22,10 @@ function fetchCartItems($conn, $cart_items)
         $stmt->close();
     }
 
+    // Debugging
+    var_dump($cart_details); // Debugging fetched cart details
+    var_dump($total_price);  // Debugging total price
+
     return ['cart_details' => $cart_details, 'total_price' => $total_price];
 }
+?>
