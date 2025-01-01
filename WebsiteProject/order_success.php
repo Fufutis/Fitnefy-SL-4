@@ -3,6 +3,7 @@ session_start();
 include("repeat/config.php");
 include("repeat/header.php");
 include("repeat/navbar.php");
+
 // Ensure the user is logged in
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['message'] = "Please log in to view your order details.";
@@ -23,12 +24,14 @@ $order_group_id = $_SESSION['order_group_id'];
 
 // Fetch order group details
 $order_group_stmt = $conn->prepare("
-    SELECT og.id AS order_group_id, og.created_at, 
+    SELECT og.id AS order_group_id, og.order_timestamp, 
            SUM(o.total_price) AS total_price
     FROM order_groups og
     JOIN orders o ON og.id = o.order_group_id
     WHERE og.id = ? AND og.user_id = ?
+    GROUP BY og.id, og.order_timestamp
 ");
+
 $order_group_stmt->bind_param('ii', $order_group_id, $user_id);
 $order_group_stmt->execute();
 $order_group_result = $order_group_stmt->get_result();
@@ -80,7 +83,7 @@ $conn->close();
         <!-- Order Summary -->
         <div class="alert alert-success">
             <strong>Order ID:</strong> <?php echo htmlspecialchars($order_group['order_group_id']); ?><br>
-            <strong>Date:</strong> <?php echo htmlspecialchars($order_group['created_at']); ?><br>
+            <strong>Date:</strong> <?php echo htmlspecialchars($order_group['order_timestamp']); ?><br>
             <strong>Total Price:</strong> $<?php echo number_format($order_group['total_price'], 2); ?>
         </div>
 

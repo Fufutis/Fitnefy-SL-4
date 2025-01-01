@@ -9,24 +9,44 @@ if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
-// Fetch product details from session cart
 $cart_items = $_SESSION['cart'];
 $total_price = 0;
 
+// Create a display-friendly cart
+$display_cart = [];
+
 if (!empty($cart_items)) {
-    // Simulate fetching product details from the database
+    // Prepare SQL placeholders
     $placeholders = implode(',', array_fill(0, count($cart_items), '?'));
+
+    // Fetch product details from the database
     $stmt = $conn->prepare("SELECT id, name, price, photo_blob, description FROM products WHERE id IN ($placeholders)");
+    if ($stmt === false) {
+        error_log("Query preparation failed: " . $conn->error);
+        die("Database query failed.");
+    }
+
     $stmt->bind_param(str_repeat('i', count($cart_items)), ...array_keys($cart_items));
     $stmt->execute();
     $result = $stmt->get_result();
 
     while ($row = $result->fetch_assoc()) {
         $product_id = $row['id'];
-        $row['quantity'] = $cart_items[$product_id]['quantity'];
-        $row['total'] = $row['price'] * $row['quantity'];
-        $cart_items[$product_id] = $row;
-        $total_price += $row['total'];
+        if (isset($cart_items[$product_id])) {
+            $row['quantity'] = $cart_items[$product_id]['quantity'];
+            $row['total'] = $row['price'] * $row['quantity'];
+            $display_cart[$product_id] = $row; // Add to display cart
+            $total_price += $row['total'];
+        } else {
+            error_log("Product ID {$product_id} is missing from the session cart.");
+        }
+    }
+
+    // Log missing products from the database
+    foreach (array_keys($cart_items) as $product_id) {
+        if (!isset($display_cart[$product_id])) {
+            error_log("Product ID {$product_id} is missing from the database.");
+        }
     }
 
     $stmt->close();
@@ -54,7 +74,7 @@ if (!empty($cart_items)) {
     <div class="container mt-5">
         <h1 class="mb-4">Shopping Cart</h1>
 
-        <?php if (empty($cart_items)): ?>
+        <?php if (empty($display_cart)): ?>
             <div class="alert alert-info">Your cart is empty.</div>
         <?php else: ?>
             <table class="table table-bordered">
@@ -69,7 +89,7 @@ if (!empty($cart_items)) {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($cart_items as $item): ?>
+                    <?php foreach ($display_cart as $item): ?>
                         <tr>
                             <td>
                                 <img src="data:image/jpeg;base64,<?php echo base64_encode($item['photo_blob']); ?>"
