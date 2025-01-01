@@ -15,7 +15,7 @@ $user_id = $_SESSION['user_id'];
 $role = $_SESSION['role'] ?? 'user';
 
 // Determine view type for "both" users; sellers only see "sold"
-$view_type = ($role === 'both') 
+$view_type = ($role === 'both')
     ? (isset($_GET['view']) && in_array($_GET['view'], ['bought', 'sold']) ? $_GET['view'] : 'bought')
     : (($role === 'seller') ? 'sold' : 'bought');
 
@@ -26,19 +26,20 @@ $sold_history = [];
 // Fetch bought history (for user and both roles)
 if (($role === 'user' || $role === 'both') && $view_type === 'bought') {
     $query = "
-        SELECT 
-            og.id AS order_id, 
-            og.created_at AS order_date, 
-            SUM(p.price * o.quantity) AS total_price,
-            p.name AS product_name, 
-            p.price AS product_price, 
-            o.quantity
-        FROM order_groups og
-        JOIN orders o ON og.id = o.order_group_id
-        JOIN products p ON o.product_id = p.id
-        WHERE og.user_id = ?
-        GROUP BY og.id, og.created_at, p.name, p.price, o.quantity
-        ORDER BY og.created_at DESC
+      SELECT 
+    og.id AS order_id, 
+    og.order_timestamp AS order_date, 
+    SUM(p.price * o.quantity) AS total_price,
+    p.name AS product_name, 
+    p.price AS product_price, 
+    o.quantity
+FROM order_groups og
+JOIN orders o ON og.id = o.order_group_id
+JOIN products p ON o.product_id = p.id
+WHERE og.user_id = ?
+GROUP BY og.id, og.order_timestamp, p.name, p.price, o.quantity
+ORDER BY og.order_timestamp DESC
+
     ";
 
     $stmt = $conn->prepare($query);
@@ -67,19 +68,20 @@ if (($role === 'user' || $role === 'both') && $view_type === 'bought') {
 // Fetch sold history (for seller and both roles)
 if (($role === 'seller' || $role === 'both') && $view_type === 'sold') {
     $query = "
-        SELECT 
-            o.order_group_id AS order_id, 
-            og.created_at AS order_date, 
-            SUM(o.quantity * p.price) AS total_revenue,
-            p.name AS product_name, 
-            p.price AS product_price, 
-            o.quantity
-        FROM orders o
-        JOIN products p ON o.product_id = p.id
-        JOIN order_groups og ON o.order_group_id = og.id
-        WHERE p.seller_id = ?
-        GROUP BY o.order_group_id, og.created_at, p.name, p.price, o.quantity
-        ORDER BY og.created_at DESC
+       SELECT 
+    o.order_group_id AS order_id, 
+    og.order_timestamp AS order_date, 
+    SUM(o.quantity * p.price) AS total_revenue,
+    p.name AS product_name, 
+    p.price AS product_price, 
+    o.quantity
+FROM orders o
+JOIN products p ON o.product_id = p.id
+JOIN order_groups og ON o.order_group_id = og.id
+WHERE p.seller_id = ?
+GROUP BY o.order_group_id, og.order_timestamp, p.name, p.price, o.quantity
+ORDER BY og.order_timestamp DESC
+
     ";
 
     $stmt = $conn->prepare($query);

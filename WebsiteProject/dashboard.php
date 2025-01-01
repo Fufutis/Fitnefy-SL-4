@@ -15,8 +15,8 @@ $role = $_SESSION['role'] ?? 'user';
 $user_id = $_SESSION['user_id'];
 
 // View and filter settings
-$view_type = isset($_GET['view']) && in_array($_GET['view'], ['sold_items', 'my_products', 'all_products']) 
-    ? $_GET['view'] 
+$view_type = isset($_GET['view']) && in_array($_GET['view'], ['sold_items', 'my_products', 'all_products'])
+    ? $_GET['view']
     : ($role === 'user' || $role === 'both' ? 'all_products' : 'sold_items');
 $category = isset($_GET['category']) ? $_GET['category'] : '';
 $sort_by = isset($_GET['sort_by']) ? $_GET['sort_by'] : 'recent'; // Default: Recent
@@ -29,17 +29,18 @@ $products = [];
 // Fetch data based on view and role
 if ($view_type === 'sold_items' && ($role === 'seller' || $role === 'both')) {
     $stmt = $conn->prepare("
-        SELECT 
-            o.id AS order_id, 
-            p.name AS product_name, 
-            o.quantity, 
-            o.total_price, 
-            og.created_at AS order_date 
-        FROM orders o
-        JOIN products p ON o.product_id = p.id
-        JOIN order_groups og ON o.order_group_id = og.id
-        WHERE p.seller_id = ?
-        ORDER BY og.created_at DESC
+SELECT 
+    o.id AS order_id, 
+    p.name AS product_name, 
+    o.quantity, 
+    o.total_price, 
+    og.order_timestamp AS order_date 
+FROM orders o
+JOIN products p ON o.product_id = p.id
+JOIN order_groups og ON o.order_group_id = og.id
+WHERE p.seller_id = ?
+ORDER BY og.order_timestamp DESC
+
     ");
     $stmt->bind_param('i', $user_id);
     $stmt->execute();
@@ -97,63 +98,63 @@ if ($view_type === 'all_products' && ($role === 'user' || $role === 'both')) {
     <div class="container mt-5">
         <h1 class="mb-4">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
 
-    <!-- Role-Specific Navigation -->
-<?php if ($role === 'seller' || $role === 'both'): ?>
-    <!-- Seller/Both Navigation -->
-    <div class="mb-4">
-        <a href="?view=sold_items" class="btn <?php echo $view_type === 'sold_items' ? 'btn-primary' : 'btn-outline-primary'; ?>">Sold Items</a>
-        <a href="?view=my_products" class="btn <?php echo $view_type === 'my_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">My Products</a>
-        <?php if ($role === 'both'): ?>
-            <a href="?view=all_products" class="btn <?php echo $view_type === 'all_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">All Products</a>
+        <!-- Role-Specific Navigation -->
+        <?php if ($role === 'seller' || $role === 'both'): ?>
+            <!-- Seller/Both Navigation -->
+            <div class="mb-4">
+                <a href="?view=sold_items" class="btn <?php echo $view_type === 'sold_items' ? 'btn-primary' : 'btn-outline-primary'; ?>">Sold Items</a>
+                <a href="?view=my_products" class="btn <?php echo $view_type === 'my_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">My Products</a>
+                <?php if ($role === 'both'): ?>
+                    <a href="?view=all_products" class="btn <?php echo $view_type === 'all_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">All Products</a>
+                <?php endif; ?>
+            </div>
         <?php endif; ?>
-    </div>
-<?php endif; ?>
 
-<?php if ($view_type === 'all_products'): ?>
-    <!-- Sorting and Filtering for All Products -->
-    <?php
-    // Fetch categories dynamically from the products table
-    $categories = [];
-    $category_query = "SELECT DISTINCT product_type FROM products";
-    $result = $conn->query($category_query);
+        <?php if ($view_type === 'all_products'): ?>
+            <!-- Sorting and Filtering for All Products -->
+            <?php
+            // Fetch categories dynamically from the products table
+            $categories = [];
+            $category_query = "SELECT DISTINCT product_type FROM products";
+            $result = $conn->query($category_query);
 
-    if ($result) {
-        while ($row = $result->fetch_assoc()) {
-            $categories[] = $row['product_type'];
-        }
-    }
-    ?>
+            if ($result) {
+                while ($row = $result->fetch_assoc()) {
+                    $categories[] = $row['product_type'];
+                }
+            }
+            ?>
 
-    <form class="d-flex mb-4" method="GET">
-        <input type="hidden" name="view" value="all_products">
-        
-        <!-- Dynamic Category Dropdown -->
-        <select name="category" class="form-select me-2">
-            <option value="">All Categories</option>
-            <?php foreach ($categories as $cat): ?>
-                <option value="<?php echo htmlspecialchars($cat); ?>" 
-                    <?php echo $category === $cat ? 'selected' : ''; ?>>
-                    <?php echo htmlspecialchars(ucfirst($cat)); ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
+            <form class="d-flex mb-4" method="GET">
+                <input type="hidden" name="view" value="all_products">
 
-        <!-- Sort By Dropdown -->
-        <select name="sort_by" class="form-select me-2">
-            <option value="recent" <?php echo $sort_by === 'recent' ? 'selected' : ''; ?>>Recent</option>
-            <option value="price" <?php echo $sort_by === 'price' ? 'selected' : ''; ?>>Price</option>
-        </select>
+                <!-- Dynamic Category Dropdown -->
+                <select name="category" class="form-select me-2">
+                    <option value="">All Categories</option>
+                    <?php foreach ($categories as $cat): ?>
+                        <option value="<?php echo htmlspecialchars($cat); ?>"
+                            <?php echo $category === $cat ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars(ucfirst($cat)); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
 
-        <!-- Sort Order Dropdown -->
-        <select name="sort_order" class="form-select me-2">
-            <option value="desc" <?php echo $sort_order === 'desc' ? 'selected' : ''; ?>>Descending</option>
-            <option value="asc" <?php echo $sort_order === 'asc' ? 'selected' : ''; ?>>Ascending</option>
-        </select>
+                <!-- Sort By Dropdown -->
+                <select name="sort_by" class="form-select me-2">
+                    <option value="recent" <?php echo $sort_by === 'recent' ? 'selected' : ''; ?>>Recent</option>
+                    <option value="price" <?php echo $sort_by === 'price' ? 'selected' : ''; ?>>Price</option>
+                </select>
 
-        <!-- Filter Button -->
-        <button type="submit" class="btn btn-primary">Filter</button>
-    </form>
-<?php endif; ?>
+                <!-- Sort Order Dropdown -->
+                <select name="sort_order" class="form-select me-2">
+                    <option value="desc" <?php echo $sort_order === 'desc' ? 'selected' : ''; ?>>Descending</option>
+                    <option value="asc" <?php echo $sort_order === 'asc' ? 'selected' : ''; ?>>Ascending</option>
+                </select>
+
+                <!-- Filter Button -->
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </form>
+        <?php endif; ?>
 
 
         <!-- Display Sold Items -->
@@ -214,8 +215,8 @@ if ($view_type === 'all_products' && ($role === 'user' || $role === 'both')) {
                 <?php foreach ($products as $product): ?>
                     <div class="col">
                         <div class="card h-100">
-                            <img src="data:image/jpeg;base64,<?php echo base64_encode($product['photo_blob']); ?>" 
-                            class="card-img-top" alt="Product Image">
+                            <img src="data:image/jpeg;base64,<?php echo base64_encode($product['photo_blob']); ?>"
+                                class="card-img-top" alt="Product Image">
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo htmlspecialchars($product['name']); ?></h5>
                                 <p class="card-text"><?php echo htmlspecialchars($product['description']); ?></p>
@@ -237,9 +238,9 @@ if ($view_type === 'all_products' && ($role === 'user' || $role === 'both')) {
             $.ajax({
                 url: 'cart_action.php',
                 type: 'GET',
-                data: { 
-                    action: 'add', 
-                    product_id: productId 
+                data: {
+                    action: 'add',
+                    product_id: productId
                 },
                 dataType: 'json',
                 success: function(response) {
@@ -255,8 +256,8 @@ if ($view_type === 'all_products' && ($role === 'user' || $role === 'both')) {
             $.ajax({
                 url: 'wishlist.php',
                 type: 'GET',
-                data: { 
-                    product_id: productId 
+                data: {
+                    product_id: productId
                 },
                 dataType: 'json',
                 success: function(response) {
