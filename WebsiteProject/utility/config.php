@@ -13,10 +13,10 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Database connection details
-$host = 'sql7.freemysqlhosting.net';
-$db_user = 'sql7751970';
-$db_pass = '6RDwtFyGXs';
-$db_name = 'sql7751970';
+$host = 'localhost';
+$db_user = 'root';
+$db_pass = '';
+$db_name = 'sql7750640';
 
 // Create the database connection
 $conn = new mysqli($host, $db_user, $db_pass, $db_name);
