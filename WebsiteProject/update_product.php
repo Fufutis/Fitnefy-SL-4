@@ -3,7 +3,7 @@ session_start();
 include("repeat/config.php");
 
 // Ensure the user is logged in and is a seller
-if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'seller') {
+if (!isset($_SESSION['username']) || !in_array($_SESSION['role'], ['seller', 'both'])) {
     $_SESSION['message'] = "Unauthorized access.";
     header("Location: index.php");
     exit;

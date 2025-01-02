@@ -2,8 +2,8 @@
 session_start();
 include("repeat/config.php");
 
-// Ensure the user is logged in and is a seller
-if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'seller') {
+// Ensure the user is logged in and has the correct role
+if (!isset($_SESSION['username']) || !in_array($_SESSION['role'], ['seller', 'both'])) {
     $_SESSION['message'] = "You must be a seller to edit products.";
     header("Location: index.php");
     exit;
