@@ -1,8 +1,93 @@
-body {
-    padding-top: 50px; /* Adjust this value based on your navbar's height */
+/****************************************
+ * 1) Body and Global Resets
+ ****************************************/
+ body {
+    margin: 0;             /* Ensure no default margin around body */
+    padding-top: 50px;     /* Adjust if you have a fixed navbar of height ~50px */
+    font-family: sans-serif; /* Optional */
+    background-color: black; /* Fallback background if needed */
 }
 
-.button{
+/****************************************
+ * 2) BACKGROUND TILE STYLES
+ ****************************************/
+.bg-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    z-index: 0; /* Sits behind main content */
+}
+
+.tile {
+    width: 5rem;
+    height: 5rem;
+    transition: 3s;
+    background: radial-gradient(circle, rgba(63, 94, 251, 1) 0%, rgb(0, 0, 0) 100%);
+    opacity: 0.2;
+}
+
+.tile:hover {
+    transition: none;
+    opacity: 0.8;
+    filter: hue-rotate(90deg);
+}
+
+.tile:active {
+    filter: hue-rotate(-90deg);
+}
+
+/****************************************
+ * 3) MAIN CONTENT
+ ****************************************/
+/* If you want the tiles to be hoverable where there's no content,
+   but also let the user interact with the main content, do this:
+ */  
+   .main-content {
+       position: relative;
+       z-index: 1;
+       width: 100%;
+       height: 100%;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       /* background-color: rgba(0, 0, 0, 0.5);  Optional overlay 
+   */}/*
+   (No pointer-events: none, so the user can click inside .main-content)
+*/
+
+/* If you prefer to let hovers pass through .main-content to the tiles,
+   you need pointer-events: none. But that also stops ANY click in .main-content.
+   To fix, re-enable pointer-events for child elements:
+*/
+.main-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Let hover pass through to background. */
+    pointer-events: none;
+}
+
+/* Now re-enable clicks & hovers for *inside* the main-content */
+.main-content * {
+    pointer-events: auto;
+}
+
+/****************************************
+ * 5) BUTTON STYLES
+ ****************************************/
+.button {
     background-color: #337a68;
     border-color: aquamarine;
 }
