@@ -1,52 +1,109 @@
 <?php
 session_start();
+include("repeat/config.php");
 
-// Ensure the cart exists in the session
+// Because this file is *only* returning JSON (for AJAX calls):
+header('Content-Type: application/json');
+
+// Make sure the cart exists
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
-$action = isset($_GET['action']) ? $_GET['action'] : '';
-$product_id = isset($_GET['product_id']) ? intval($_GET['product_id']) : 0;
+// Grab the 'action' from GET or POST
+$action = $_REQUEST['action'] ?? null;
+$productId = $_REQUEST['product_id'] ?? null;
 
-$response = ['success' => false, 'message' => 'Invalid action.'];
+// Default response
+$response = [
+    'success' => false,
+    'message' => 'Invalid action.'
+];
 
-if ($action === 'add' && $product_id) {
-    // Add product to cart or increase quantity if it already exists
-    if (isset($_SESSION['cart'][$product_id])) {
-        $_SESSION['cart'][$product_id]['quantity'] += 1;
-    } else {
-        $_SESSION['cart'][$product_id] = [
-            'product_id' => $product_id,
-            'quantity' => 1,
-        ];
-    }
-    $response = ['success' => true, 'message' => 'Product added to cart.'];
-} elseif ($action === 'remove' && $product_id) {
-    // Decrease product quantity by 1
-    if (isset($_SESSION['cart'][$product_id])) {
-        $_SESSION['cart'][$product_id]['quantity'] -= 1;
-        if ($_SESSION['cart'][$product_id]['quantity'] <= 0) {
-            unset($_SESSION['cart'][$product_id]); // Remove product if quantity is 0
+// Optional: If you need the item price or something else, you might connect to DB or do more logic here
+
+switch ($action) {
+
+        // ---------------------------------------------------------------------
+        // Example: Add item to cart
+        // (You may have your own logic to handle quantity, price, etc.)
+        // ---------------------------------------------------------------------
+    case 'add':
+        if ($productId) {
+            // Let's assume you pass 'quantity' in the request or default to 1
+            $quantity = $_REQUEST['quantity'] ?? 1;
+            // If already in cart, increment quantity
+            if (isset($_SESSION['cart'][$productId])) {
+                $_SESSION['cart'][$productId]['quantity'] += $quantity;
+            } else {
+                // Example of storing some info in the cart session
+                $_SESSION['cart'][$productId] = [
+                    'id' => $productId,
+                    'quantity' => $quantity,
+                    // 'price' => some lookup
+                    // 'name'  => some lookup
+                ];
+            }
+            $response['success'] = true;
+            $response['message'] = "Item (ID: $productId) added to cart.";
+        } else {
+            $response['message'] = "No productId specified for 'add'.";
         }
-        $response = ['success' => true, 'message' => 'One unit of the product removed from cart.'];
-    } else {
-        $response = ['success' => false, 'message' => 'Product not found in cart.'];
-    }
-} elseif ($action === 'remove_all' && $product_id) {
-    // Remove all units of a specific product
-    if (isset($_SESSION['cart'][$product_id])) {
-        unset($_SESSION['cart'][$product_id]);
-        $response = ['success' => true, 'message' => 'All units of the product removed from cart.'];
-    } else {
-        $response = ['success' => false, 'message' => 'Product not found in cart.'];
-    }
-} elseif ($action === 'clear') {
-    // Clear entire cart
-    $_SESSION['cart'] = [];
-    $response = ['success' => true, 'message' => 'Cart cleared.'];
+        break;
+
+        // ---------------------------------------------------------------------
+        // Remove exactly ONE quantity from a product in the cart
+        // ---------------------------------------------------------------------
+    case 'remove':
+        if ($productId && isset($_SESSION['cart'][$productId])) {
+            $_SESSION['cart'][$productId]['quantity']--;
+
+            if ($_SESSION['cart'][$productId]['quantity'] <= 0) {
+                unset($_SESSION['cart'][$productId]);
+            }
+            $response['success'] = true;
+            $response['message'] = 'One item removed successfully.';
+        } else {
+            $response['message'] = 'Item not found in cart or no productId given.';
+        }
+        break;
+
+        // ---------------------------------------------------------------------
+        // Remove ALL quantity of a product
+        // ---------------------------------------------------------------------
+    case 'remove_all':
+        if ($productId && isset($_SESSION['cart'][$productId])) {
+            unset($_SESSION['cart'][$productId]);
+            $response['success'] = true;
+            $response['message'] = 'All quantities of this product removed.';
+        } else {
+            $response['message'] = 'Item not found in cart or no productId given.';
+        }
+        break;
+
+        // ---------------------------------------------------------------------
+        // Clear entire cart
+        // ---------------------------------------------------------------------
+    case 'clear':
+        $_SESSION['cart'] = [];
+        $response['success'] = true;
+        $response['message'] = 'Your cart has been cleared.';
+        break;
+
+        // ---------------------------------------------------------------------
+        // If none of the above cases matched, we keep "Invalid action."
+        // ---------------------------------------------------------------------
+    default:
+        // We do nothing extra here.
+        break;
 }
 
-// Return the response as JSON
+// (Optional) If you need to return updated totals in each response, 
+// you'd compute them here and add to $response. E.g.:
+// $response['new_total']     = calculateNewTotal();
+// $response['updated_total'] = calculateCartTotal(); 
+// etc.
+
+// Output the final JSON
 echo json_encode($response);
 exit;

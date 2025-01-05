@@ -10,4 +10,5 @@
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4[WvTNh0E263XmFcJ1SAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
     <link rel="stylesheet" href="style2.css?v=<?php echo time(); ?>"> <!-- Added time query to force reload -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
