@@ -223,24 +223,7 @@ if (!empty($cart_items)) {
                 success: function(response) {
                     if (response.success) {
                         displayMessage(response.message, 'success');
-
-                        // Update the quantity and total in the table
-                        const row = $('#cart-item-' + productId);
-                        row.find('.quantity').text(response.new_quantity);
-                        row.find('.total').text('$' + response.new_total.toFixed(2));
-
-                        // Update the overall total price
-                        $('#total-price').text('$' + response.updated_total.toFixed(2));
-
-                        // If quantity is 0, remove the row
-                        if (response.new_quantity === 0) {
-                            row.remove();
-
-                            // If cart is empty, show the empty cart message
-                            if ($('tbody tr').length === 0) {
-                                $('.cart-table').replaceWith('<div class="alert alert-info">Your cart is empty.</div>');
-                            }
-                        }
+                        location.reload(); // Reload the page to update the cart
                     } else {
                         displayMessage(response.message, 'danger');
                     }
@@ -264,18 +247,9 @@ if (!empty($cart_items)) {
                 success: function(response) {
                     if (response.success) {
                         displayMessage(response.message, 'success');
-
-                        // Remove the entire row
-                        $('#cart-item-' + productId).remove();
-
-                        // Update the overall total price
-                        $('#total-price').text('$' + response.updated_total.toFixed(2));
-
-                        // If cart is empty, show the empty cart message
-                        if ($('tbody tr').length === 0) {
-                            $('.cart-table').replaceWith('<div class="alert alert-info">Your cart is empty.</div>');
-                        }
+                        location.reload(); // Reload the page to update the cart
                     } else {
+                        location.reload(); // Reload the page to update the cart
                         displayMessage(response.message, 'danger');
                     }
                 },
