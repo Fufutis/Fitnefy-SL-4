@@ -46,14 +46,10 @@
 /****************************************
  * 3) MAIN CONTENT
  ****************************************/
-/* If you want the tiles to be hoverable where there's no content,
-   but also let the user interact with the main content, do this:
- */  
-
-
-/* If you prefer to let hovers pass through .main-content to the tiles,
-   you need pointer-events: none. But that also stops ANY click in .main-content.
-   To fix, re-enable pointer-events for child elements:
+/* 
+   pointer-events: none => hover passes through
+   so tiles can be hovered even under this container.
+   Then .main-content * re-enables pointer events for form elements.
 */
 .main-content {
     position: relative;
@@ -63,18 +59,37 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
-    /* Let hover pass through to background. */
-    pointer-events: none;
+    pointer-events: none; /* pass hover through to background tiles */
 }
 
-/* Now re-enable clicks & hovers for *inside* the main-content */
 .main-content * {
-    pointer-events: auto;
+    pointer-events: auto; /* allow normal interaction with forms/buttons */
 }
+
+/* Hide the registration form column */
+.main-content .row .col-md-6:nth-child(2) {
+    display: none;
+}
+
+/* Make the login form column take full width */
+/* Uncomment one of the following based on desired width */
+
+/* Option 1: Full Width */
+.main-content .row .col-md-6:nth-child(1) {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+/* Option 2: Two-Thirds Width */
+/*
+.main-content .row .col-md-6:nth-child(1) {
+    flex: 0 0 66.666667%;
+    max-width: 66.666667%;
+}
+*/
 
 /****************************************
- * 5) BUTTON STYLES
+ * 4) BUTTON STYLES
  ****************************************/
 .button {
     background-color: #337a68;
@@ -83,16 +98,16 @@
 
 .button:hover{
     background-color: #8EB69B;
-
-    box-shadow:0px 0px 20px 5px aquamarine;
+    box-shadow: 0px 0px 20px 5px aquamarine;
 }
+
 .button:hover:active{
     background-color: #DAF1D3;
-
-    
 }
 
-/* Custom Button Styles */
+/****************************************
+ * 5) CUSTOM BUTTON STYLES
+ ****************************************/
 .custom-btn-success {
     display: inline-block;
     font-weight: 450;
@@ -107,10 +122,11 @@
     font-size: 1rem;
     line-height: 1.5;
     border-radius: 0.375rem; /* Rounded corners */
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-        border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    transition: color 0.15s ease-in-out, 
+                background-color 0.15s ease-in-out,
+                border-color 0.15s ease-in-out, 
+                box-shadow 0.15s ease-in-out;
 }
-
 
 .custom-btn-success:hover {
     color: #fff; /* Text color changes to white */
@@ -122,12 +138,13 @@
     color: #fff;
     background-color: #239c78;
     border-color: #198766;
-    box-shadow:0px 0px 12px 8px #198766;
+    box-shadow: 0px 0px 12px 8px #198766;
 }
-.bg-nav{
+
+/****************************************
+ * 6) NAVBAR BACKGROUND
+ ****************************************/
+.bg-nav {
     background-color: #051F20;
     color: #DAF1D3;
 }
-.row .col-md-6:nth-of-type(2) {
-    display: none; 
-  }
