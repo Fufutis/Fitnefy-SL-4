@@ -45,7 +45,7 @@ switch ($action) {
                 ];
             }
             $response['success'] = true;
-            $response['message'] = "Item (ID: $productId) added to cart.";
+            $response['message'] = "Item added to cart.";
         } else {
             $response['message'] = "No productId specified for 'add'.";
         }
@@ -58,9 +58,30 @@ switch ($action) {
         if ($productId && isset($_SESSION['cart'][$productId])) {
             $_SESSION['cart'][$productId]['quantity']--;
 
+            // If quantity dropped to zero or below, remove the product entirely
             if ($_SESSION['cart'][$productId]['quantity'] <= 0) {
                 unset($_SESSION['cart'][$productId]);
+                // If we removed it entirely, the item has no quantity or total
+                $response['new_quantity'] = 0;
+                $response['new_total']    = 0;
+            } else {
+                // If it still exists, compute new item quantity/total
+                $price = $_SESSION['cart'][$productId]['price'] ?? 0;
+                $newQty = $_SESSION['cart'][$productId]['quantity'];
+
+                $response['new_quantity'] = $newQty;
+                $response['new_total']    = $price * $newQty;
             }
+
+            // Recompute the entire cart total
+            $cartTotal = 0;
+            foreach ($_SESSION['cart'] as $pid => $itemData) {
+                $price = $itemData['price'] ?? 0;
+                $qty   = $itemData['quantity'] ?? 0;
+                $cartTotal += $price * $qty;
+            }
+            $response['updated_total'] = $cartTotal;
+
             $response['success'] = true;
             $response['message'] = 'One item removed successfully.';
         } else {
@@ -68,12 +89,21 @@ switch ($action) {
         }
         break;
 
-        // ---------------------------------------------------------------------
-        // Remove ALL quantity of a product
-        // ---------------------------------------------------------------------
     case 'remove_all':
         if ($productId && isset($_SESSION['cart'][$productId])) {
             unset($_SESSION['cart'][$productId]);
+
+            // Now recompute the entire cart total
+            $cartTotal = 0;
+            foreach ($_SESSION['cart'] as $pid => $itemData) {
+                $price = $itemData['price'] ?? 0;
+                $qty   = $itemData['quantity'] ?? 0;
+                $cartTotal += $price * $qty;
+            }
+            $response['updated_total'] = $cartTotal;
+
+            // If you want the front-end to remove the row completely, 
+            // there's no need for new_quantity or new_total
             $response['success'] = true;
             $response['message'] = 'All quantities of this product removed.';
         } else {
@@ -85,24 +115,17 @@ switch ($action) {
         // Clear entire cart
         // ---------------------------------------------------------------------
     case 'clear':
+        // Clear the cart and reset total
         $_SESSION['cart'] = [];
+        $response['updated_total'] = 0; // Cart is now empty
         $response['success'] = true;
         $response['message'] = 'Your cart has been cleared.';
         break;
 
-        // ---------------------------------------------------------------------
-        // If none of the above cases matched, we keep "Invalid action."
-        // ---------------------------------------------------------------------
     default:
-        // We do nothing extra here.
+        // Default "invalid action" response
         break;
 }
-
-// (Optional) If you need to return updated totals in each response, 
-// you'd compute them here and add to $response. E.g.:
-// $response['new_total']     = calculateNewTotal();
-// $response['updated_total'] = calculateCartTotal(); 
-// etc.
 
 // Output the final JSON
 echo json_encode($response);

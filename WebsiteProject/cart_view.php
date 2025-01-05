@@ -196,17 +196,26 @@ if (!empty($cart_items)) {
                 dataType: 'json',
                 success: function(response) {
                     if (response.success) {
-                        alert(response.message);
-                        // Update the UI to reflect empty cart
+                        displayMessage(response.message, 'success');
+
+                        // Remove all rows from the table
+                        $('tbody').empty();
+
+                        // Show the empty cart message
+                        $('.cart-table').replaceWith('<div class="alert alert-info">Your cart is empty.</div>');
+
+                        // Reset total price
+                        $('#total-price').text('$0.00');
                     } else {
-                        alert("Error: " + response.message);
+                        displayMessage(response.message, 'danger');
                     }
                 },
                 error: function() {
-                    alert("AJAX call failed. Could not clear cart.");
+                    displayMessage('An error occurred while clearing the cart.', 'danger');
                 }
             });
         }
+
         // Function to remove one quantity of a product
         function removeOne(productId) {
             $.ajax({
