@@ -76,9 +76,6 @@ if (!empty($cart_items)) {
 }
 ?>
 
-<!DOCTYPE html>
-<html>
-
 <head>
     <meta charset="UTF-8">
     <title>Shopping Cart</title>

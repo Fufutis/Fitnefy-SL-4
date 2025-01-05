@@ -34,13 +34,13 @@ body {
     width: 1.6rem;
     height: 1.6rem;
     transition: 3s;
-    background: radial-gradient(circle,#a7530e 0%, rgb(0, 0, 0) 100%);
+    background: radial-gradient(circle,#a7530e 0%, rgb(0, 0, 0) 80%);
     opacity: 0.2;
 }
 
 .tile:hover {
     transition: none;
-    opacity: 0.8;
+    opacity: 1;
     filter: hue-rotate(120deg);
 }
 

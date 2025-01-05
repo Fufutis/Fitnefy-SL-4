@@ -66,7 +66,19 @@ switch ($action) {
                 $response['new_total']    = 0;
             } else {
                 // If it still exists, compute new item quantity/total
-                $price = $_SESSION['cart'][$productId]['price'] ?? 0;
+                // Fetch price from the database
+                $stmt = $conn->prepare("SELECT price FROM products WHERE id = ?");
+                $stmt->bind_param('i', $productId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                if ($row = $result->fetch_assoc()) {
+                    $price = $row['price'];
+                    $_SESSION['cart'][$productId]['price'] = $price; // Cache it back in session
+                } else {
+                    $price = 0;
+                }
+                $stmt->close();
+
                 $newQty = $_SESSION['cart'][$productId]['quantity'];
 
                 $response['new_quantity'] = $newQty;
