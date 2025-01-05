@@ -48,7 +48,7 @@ include("dashboard_model.php");
                     <input type="hidden" name="view" value="all_products">
 
                     <!-- Dynamic Category Dropdown -->
-                    <select name="category" class="form-select me-2">
+                    <select name="category" class="form-select me-2 custom-select">
                         <option value="">All Categories</option>
                         <?php foreach ($categories as $cat): ?>
                             <option value="<?php echo htmlspecialchars($cat); ?>"
@@ -59,19 +59,19 @@ include("dashboard_model.php");
                     </select>
 
                     <!-- Sort By Dropdown -->
-                    <select name="sort_by" class="form-select me-2">
+                    <select name="sort_by" class="form-select me-2 custom-select">
                         <option value="recent" <?php echo $sort_by === 'recent' ? 'selected' : ''; ?>>Recent</option>
                         <option value="price" <?php echo $sort_by === 'price' ? 'selected' : ''; ?>>Price</option>
                     </select>
 
                     <!-- Sort Order Dropdown -->
-                    <select name="sort_order" class="form-select me-2">
+                    <select name="sort_order" class="form-select me-2 custom-select">
                         <option value="desc" <?php echo $sort_order === 'desc' ? 'selected' : ''; ?>>Descending</option>
                         <option value="asc" <?php echo $sort_order === 'asc' ? 'selected' : ''; ?>>Ascending</option>
                     </select>
 
                     <!-- Filter Button -->
-                    <button type="submit" class="btn btn-primary">Filter</button>
+                    <button type="submit" class="btn btn-design">Filter</button>
                 </form>
             <?php endif; ?>
 
@@ -113,7 +113,7 @@ include("dashboard_model.php");
                 <div class="row row-cols-1 row-cols-md-3 g-4">
                     <?php foreach ($products as $product): ?>
                         <div class="col">
-                            <div class="card h-100">
+                            <div class="card h-100  bg-item">
                                 <div class="image-container">
                                     <img src="data:image/jpeg;base64,<?php echo base64_encode($product['photo_blob']); ?>" alt="Product Image">
                                 </div>
@@ -135,7 +135,7 @@ include("dashboard_model.php");
                 <div class="row row-cols-1 row-cols-md-3 g-4">
                     <?php foreach ($products as $product): ?>
                         <div class="col">
-                            <div class="card h-100">
+                            <div class="card h-100 bg-item">
                                 <div class="image-container">
                                     <img src="data:image/jpeg;base64,<?php echo base64_encode($product['photo_blob']); ?>" alt="Product Image">
                                 </div>
@@ -144,8 +144,8 @@ include("dashboard_model.php");
                                     <p class="card-text"><?php echo htmlspecialchars($product['description']); ?></p>
                                     <p class="card-text"><strong>Price:</strong> $<?php echo htmlspecialchars(number_format($product['price'], 2)); ?></p>
                                     <p class="card-text"><strong>Type:</strong> <?php echo htmlspecialchars($product['product_type']); ?></p>
-                                    <button class="btn btn-warning mt-2" onclick="addToWishlist(<?php echo $product['id']; ?>)">Add to Wishlist</button>
-                                    <button class="btn btn-success mt-2" onclick="addToCart(<?php echo $product['id']; ?>)">Add to Cart</button>
+                                    <button class="btn btn-design btn-wish mt-2" onclick="addToWishlist(<?php echo $product['id']; ?>)">Add to Wishlist</button>
+                                    <button class="btn btn-design mt-2" onclick="addToCart(<?php echo $product['id']; ?>)">Add to Cart</button>
                                 </div>
                             </div>
                         </div>

@@ -1,3 +1,7 @@
+:root {
+    --primary-light: #dbfbf6;
+    --secondary-dark: #02231e;
+}
 /****************************************
  * 1) Body and Global Resets
  ****************************************/
@@ -109,38 +113,64 @@
 /****************************************
  * 5) CUSTOM BUTTON STYLES
  ****************************************/
-.custom-btn-success {
-    display: inline-block;
-    font-weight: 450;
-    color: rgb(127, 255, 170); /* Custom green color */
-    text-align: center;
-    text-decoration: none;
-    vertical-align: middle;
-    cursor: pointer;
-    background-color: transparent;
-    border: 1px solid rgb(127, 255, 170); /* Outline color */
-    padding: 0.375rem 0.75rem; /* Spacing inside the button */
+
+/* Custom Filter Button Styles */
+.btn-design {
+    background-color: #02231e; /* Desired Background Color */
+    color: #dbfbf6;            /* Desired Text Color */
+    border-color: #02231e;     /* Matching Border Color */
+    /* Optional: Adjust Padding and Font Size */
+    padding: 0.5rem 1rem;
     font-size: 1rem;
-    line-height: 1.5;
-    border-radius: 0.375rem; /* Rounded corners */
-    transition: color 0.15s ease-in-out, 
-                background-color 0.15s ease-in-out,
-                border-color 0.15s ease-in-out, 
-                box-shadow 0.15s ease-in-out;
+    /* Optional: Add a Box Shadow */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Transition for Smooth Hover Effect */
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
-.custom-btn-success:hover {
-    color: #fff; /* Text color changes to white */
-    background-color: #239c78; /* Background color becomes success green */
-    border-color: #198766; /* Border remains success green */
+/* Hover State */
+.btn-design:hover {
+    background-color: #034d4e; /* Slightly Lighter Shade */
+    border-color: #034d4e;
+    color: #ffffff;            /* Optional: Change Text Color on Hover */
 }
 
-.custom-btn-success:focus {
-    color: #fff;
-    background-color: #239c78;
-    border-color: #198766;
-    box-shadow: 0px 0px 12px 8px #198766;
+/* Active State */
+.btn-design:active {
+    background-color: #021c16; /* Darker Shade */
+    border-color: #021c16;
+    color: #ffffff;
 }
+
+/* Focus State (Accessibility) */
+.btn-design:focus {
+    box-shadow: 0 0 0 0.2rem rgba(219, 251, 246, 0.5); /* Light Teal Glow */
+}
+.btn-wish{
+    background-color: #dbfbf6; /* Desired Background Color */
+    color: #02231e;
+}
+/* Custom Select Styles */
+.custom-select {
+    background-color: #02231e; /* Dark Teal Background */
+    color: #dbfbf6;            /* Light Teal Text */
+    border: 1px solid #02231e; /* Optional: Matching Border */
+    border-radius: 0.25rem;    /* Optional: Rounded Corners */
+    padding: 0.375rem 1.75rem 0.375rem 0.75rem; /* Adjust Padding */
+    appearance: none;          /* Remove Default Arrow for Custom Styling */
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23dbfbf6" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem;
+    cursor: pointer;            /* Changes Cursor to Pointer on Hover */
+}
+
+/* Focus State for Accessibility */
+.custom-select:focus {
+    border-color: #dbfbf6;
+    outline: none; /* Remove default outline */
+}
+
 
 /****************************************
  * 6) NAVBAR BACKGROUND
@@ -166,7 +196,7 @@
  .image-container {
     position: relative;
     width: 100%;
-    padding-top: 100%; /* 1:1 Aspect Ratio */
+    padding-top: 40%;
     overflow: hidden;
     border-top-left-radius: calc(0.25rem - 1px);
     border-top-right-radius: calc(0.25rem - 1px);
@@ -181,14 +211,25 @@
     height: 100%;
     object-fit: contain;
 }
-
+.bg-item{
+    background-color: #02231e;
+    color: #dbfbf6;
+    border-radius: 5px;
+    
+    transition: box-shadow 0.3s ease-out;
+ }
+ .bg-item:hover{
+    transition: 0.2s;
+    box-shadow: 0px 0px 10px 2px rgb(4, 252, 169);
+    border-color: #000000;
+    background-color: #031213;
+ }
 /****************************************
- * 7) LOGIN FORM
+ * 7)  BACKGROUNDS
  ****************************************/
  .background{
-    background-color: #051F20;
-    color: #DAF1D3;
+    background-color: #dbfbf6;
+    color: #02231e;
     border-radius: 10px;
     padding: 40px;
-    box-shadow: 0px 0px 20px 5px aquamarine;
  }
