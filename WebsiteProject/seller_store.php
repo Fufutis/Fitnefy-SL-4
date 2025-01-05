@@ -50,77 +50,115 @@ $conn->close();
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 
 <body>
-    <div class="container mt-5">
-        <!-- Display Success/Error Messages -->
-        <?php if (isset($_SESSION['message'])): ?>
-            <div class="alert alert-info">
-                <?php
-                echo $_SESSION['message'];
-                unset($_SESSION['message']);
-                ?>
-            </div>
-        <?php endif; ?>
+    <!-- Tiled Background -->
+    <div class="bg-container">
+        <?php for ($i = 0; $i < 3000; $i++): ?>
+            <div class="tile"></div>
+        <?php endfor; ?>
+    </div>
+    <div class="main-content">
+        <div class="container mt-5 background">
+            <!-- Display Success/Error Messages -->
+            <?php if (isset($_SESSION['message'])): ?>
+                <div class="alert alert-info">
+                    <?php
+                    echo $_SESSION['message'];
+                    unset($_SESSION['message']);
+                    ?>
+                </div>
+            <?php endif; ?>
 
-        <h1 class="mb-4"><?php echo $view_type === 'my_products' ? 'My Products' : 'All Products'; ?></h1>
+            <h1 class="mb-4"><?php echo $view_type === 'my_products' ? 'My Products' : 'All Products'; ?></h1>
 
-        <!-- Toggle Buttons for Both Role -->
-        <?php if ($role === 'both'): ?>
-            <div class="mb-4">
-                <a href="?view=all_products" class="btn <?php echo $view_type === 'all_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">All Products</a>
-                <a href="?view=my_products" class="btn <?php echo $view_type === 'my_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">My Products</a>
-            </div>
-        <?php endif; ?>
+            <!-- Toggle Buttons for Both Role -->
+            <?php if ($role === 'both'): ?>
+                <div class="mb-4">
+                    <a href="?view=all_products"
+                        class="btn btn-design <?php echo $view_type === 'all_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">
+                        All Products
+                    </a>
+                    <a href="?view=my_products"
+                        class="btn btn-design <?php echo $view_type === 'my_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">
+                        My Products
+                    </a>
+                </div>
+            <?php endif; ?>
 
-        <?php if (empty($products)): ?>
-            <div class="alert alert-info">
-                <?php echo $view_type === 'my_products' ? 'You are not currently selling any products.' : 'No products available at the moment.'; ?>
-            </div>
-        <?php else: ?>
-            <div class="row row-cols-1 row-cols-md-3 g-4">
-                <?php foreach ($products as $product): ?>
-                    <div class="col">
-                        <div class="card h-100">
-                            <!-- Display Product Image -->
-                            <img src="data:image/jpeg;base64,<?php echo base64_encode($product['photo_blob']); ?>" class="card-img-top" alt="Product Image">
-                            <div class="card-body">
-                                <h5 class="card-title"><?php echo htmlspecialchars($product['name']); ?></h5>
-                                <p class="card-text"><?php echo htmlspecialchars($product['description']); ?></p>
-                                <p class="card-text"><strong>Price:</strong> $<?php echo htmlspecialchars($product['price']); ?></p>
-                                <p class="card-text"><strong>Type:</strong> <?php echo htmlspecialchars($product['product_type']); ?></p>
+            <?php if (empty($products)): ?>
+                <div class="alert alert-info">
+                    <?php echo $view_type === 'my_products'
+                        ? 'You are not currently selling any products.'
+                        : 'No products available at the moment.';
+                    ?>
+                </div>
+            <?php else: ?>
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <?php foreach ($products as $product): ?>
+                        <div class="col">
+                            <div class="card h-100 bg-item">
+                                <!-- Product Image -->
+                                <div class="image-container">
+                                    <img src="data:image/jpeg;base64,<?php echo base64_encode($product['photo_blob']); ?>"
+                                        class="card-img-top"
+                                        alt="Product Image" />
+                                </div>
 
-                                <!-- Buttons based on View Type -->
-                                <?php if ($view_type === 'my_products'): ?>
-                                    <!-- My Products: Edit and Delete Buttons -->
-                                    <div class="d-grid gap-2">
-                                        <a href="edit_product.php?id=<?php echo $product['id']; ?>" class="btn btn-primary btn-block">Edit</a>
-                                        <form action="delete_product.php" method="POST" class="mt-2">
-                                            <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                                            <button type="submit" class="btn btn-danger btn-block" onclick="return confirm('Are you sure you want to delete this product?');">Delete</button>
-                                        </form>
-                                    </div>
-                                <?php elseif ($role === 'user' || $role === 'both'): ?>
-                                    <!-- All Products: Wishlist and Add to Cart -->
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <button class="btn btn-warning me-2" onclick="addToWishlist(<?php echo $product['id']; ?>)">Wishlist</button>
-                                        <button class="btn btn-success" onclick="addToCart(<?php echo $product['id']; ?>)">Add to Cart</button>
-                                    </div>
-                                <?php endif; ?>
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo htmlspecialchars($product['name']); ?></h5>
+                                    <p class="card-text"><?php echo htmlspecialchars($product['description']); ?></p>
+                                    <p class="card-text">
+                                        <strong>Price:</strong> $
+                                        <?php echo htmlspecialchars($product['price']); ?>
+                                    </p>
+                                    <p class="card-text">
+                                        <strong>Type:</strong>
+                                        <?php echo htmlspecialchars($product['product_type']); ?>
+                                    </p>
+
+                                    <!-- If this is MY Products (Seller), show edit/delete -->
+                                    <?php if ($view_type === 'my_products'): ?>
+                                        <div class="d-grid gap-2">
+                                            <a href="edit_product.php?id=<?php echo $product['id']; ?>"
+                                                class="btn btn-design">
+                                                Edit
+                                            </a>
+                                            <form action="delete_product.php" method="POST" class="mt-2">
+                                                <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                                                <button type="submit"
+                                                    class="btn btn-danger btn-block"
+                                                    onclick="return confirm('Are you sure you want to delete this product?');">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        </div>
+                                    <?php elseif ($role === 'user' || $role === 'both'): ?>
+                                        <!-- If user or both => Show wishlist / add to cart -->
+                                        <div class="d-flex  align-items-center">
+                                            <button class="btn btn-design btn-in-cards me-2"
+                                                onclick="addToWishlist(<?php echo $product['id']; ?>)">
+                                                Wishlist
+                                            </button>
+                                            <button class="btn btn-design btn-in-cards"
+                                                onclick="addToCart(<?php echo $product['id']; ?>)">
+                                                Add to Cart
+                                            </button>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
     </div>
-
     <!-- JavaScript for AJAX -->
     <script>
         function addToWishlist(productId) {

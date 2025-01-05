@@ -1,6 +1,6 @@
 :root {
-    --primary-light: #dbfbf6;
-    --secondary-dark: #02231e;
+    --primary-light: #02231e;
+    --secondary-dark: #dbfbf6;
 }
 /****************************************
  * 1) Body and Global Resets
@@ -126,7 +126,7 @@ body {
     /* Optional: Add a Box Shadow */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     /* Transition for Smooth Hover Effect */
-    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 /* Hover State */
@@ -188,7 +188,10 @@ body {
     background-color: var(--primary-light); /* Desired Background Color */
     color: var(--secondary-dark);
 }
-
+.btn-in-cards:hover {
+    background-color: var(--secondary-dark);
+    color: var(--primary-light);
+}
 /* Custom Select Styles */
 .custom-select {
     background-color: var(--secondary-dark); /* Dark Teal Background */
@@ -253,7 +256,7 @@ body {
     color: var(--primary-light);
     border-radius: 5px;
     
-    transition: box-shadow 0.3s ease-out;
+    transition:  0.3s ease-out;
 }
 
 .bg-item:hover {
@@ -261,6 +264,7 @@ body {
     box-shadow: 0px 0px 10px 2px rgb(4, 252, 169);
     border-color: #000000;
     background-color: #031213;
+    color: var(--secondary-dark);
 }
 
 /****************************************
