@@ -131,12 +131,12 @@ if (!empty($cart_items)) {
                                 <td class="total">$<?php echo htmlspecialchars(number_format($item['total'], 2)); ?></td>
                                 <td>
                                     <button onclick="removeOne(<?php echo $item['id']; ?>)"
-                                        class="btn btn-design btn-sm mb-1">
+                                        class="btn btn-design btn-sm mb-1 sheet">
                                         Remove One
                                     </button>
                                     <br>
                                     <button onclick="removeAll(<?php echo $item['id']; ?>)"
-                                        class="btn btn-design btn-sm">
+                                        class="btn btn-design btn-sm sheet">
                                         Remove All
                                     </button>
                                 </td>
