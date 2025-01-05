@@ -154,7 +154,7 @@ include("dashboard_model.php");
             <?php endif; ?>
         </div>
     </div>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- AJAX Scripts for Wishlist and Cart -->
     <script>
         function addToCart(productId) {
