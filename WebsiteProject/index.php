@@ -14,14 +14,14 @@
     <div class="bg-container">
         <?php
         // Generate 600 tiles dynamically
-        for ($i = 0; $i < 600; $i++) {
+        for ($i = 0; $i < 3000; $i++) {
             echo '<div class="tile"></div>';
         }
         ?>
     </div>
 
     <!-- Main Content -->
-    <div class="container mt-5 main-content">
+    <div class="container mt-5 main-content login">
         <div class="row">
             <?php
             // Determine which form to show: login or register

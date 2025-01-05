@@ -26,17 +26,17 @@
 }
 
 .tile {
-    width: 5rem;
-    height: 5rem;
+    width: 1.6rem;
+    height: 1.6rem;
     transition: 3s;
-    background: radial-gradient(circle, rgba(63, 94, 251, 1) 0%, rgb(0, 0, 0) 100%);
+    background: radial-gradient(circle,#a7530e 0%, rgb(0, 0, 0) 100%);
     opacity: 0.2;
 }
 
 .tile:hover {
     transition: none;
     opacity: 0.8;
-    filter: hue-rotate(90deg);
+    filter: hue-rotate(120deg);
 }
 
 .tile:active {
@@ -60,6 +60,7 @@
     align-items: center;
     justify-content: center;
     pointer-events: none; /* pass hover through to background tiles */
+    color: #DAF1D3;
 }
 
 .main-content * {
@@ -148,3 +149,14 @@
     background-color: #051F20;
     color: #DAF1D3;
 }
+/****************************************
+ * 7) LOGIN FORM
+ ****************************************/
+ .login{
+    background-color: #051F20;
+    color: #DAF1D3;
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 0px 0px 20px 5px aquamarine;
+    width: 30%;
+ }
