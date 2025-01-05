@@ -5,7 +5,7 @@
 /****************************************
  * 1) Body and Global Resets
  ****************************************/
- body {
+body {
     margin: 0;             /* Ensure no default margin around body */
     padding-top: 50px;     /* Adjust if you have a fixed navbar of height ~50px */
     font-family: sans-serif; /* Optional */
@@ -116,9 +116,9 @@
 
 /* Custom Filter Button Styles */
 .btn-design {
-    background-color: #02231e; /* Desired Background Color */
-    color: #dbfbf6;            /* Desired Text Color */
-    border-color: #02231e;     /* Matching Border Color */
+    background-color: var(--secondary-dark); /* Desired Background Color */
+    color: var(--primary-light);            /* Desired Text Color */
+    border-color: var(--secondary-dark);     /* Matching Border Color */
     /* Optional: Adjust Padding and Font Size */
     padding: 0.5rem 1rem;
     font-size: 1rem;
@@ -146,15 +146,17 @@
 .btn-design:focus {
     box-shadow: 0 0 0 0.2rem rgba(219, 251, 246, 0.5); /* Light Teal Glow */
 }
-.btn-wish{
-    background-color: #dbfbf6; /* Desired Background Color */
-    color: #02231e;
+
+.btn-wish {
+    background-color: var(--primary-light); /* Desired Background Color */
+    color: var(--secondary-dark);
 }
+
 /* Custom Select Styles */
 .custom-select {
-    background-color: #02231e; /* Dark Teal Background */
-    color: #dbfbf6;            /* Light Teal Text */
-    border: 1px solid #02231e; /* Optional: Matching Border */
+    background-color: var(--secondary-dark); /* Dark Teal Background */
+    color: var(--primary-light);            /* Light Teal Text */
+    border: 1px solid var(--secondary-dark); /* Optional: Matching Border */
     border-radius: 0.25rem;    /* Optional: Rounded Corners */
     padding: 0.375rem 1.75rem 0.375rem 0.75rem; /* Adjust Padding */
     appearance: none;          /* Remove Default Arrow for Custom Styling */
@@ -167,10 +169,9 @@
 
 /* Focus State for Accessibility */
 .custom-select:focus {
-    border-color: #dbfbf6;
+    border-color: var(--primary-light);
     outline: none; /* Remove default outline */
 }
-
 
 /****************************************
  * 6) NAVBAR BACKGROUND
@@ -189,11 +190,11 @@
     padding: 40px;
     box-shadow: 0px 0px 20px 5px aquamarine;
     width: 30%;
- }
+}
 /****************************************
- * 7) IMAGE STYLES
+ * 8) IMAGE STYLES
  ****************************************/
- .image-container {
+.image-container {
     position: relative;
     width: 100%;
     padding-top: 40%;
@@ -211,25 +212,28 @@
     height: 100%;
     object-fit: contain;
 }
-.bg-item{
-    background-color: #02231e;
-    color: #dbfbf6;
+
+.bg-item {
+    background-color: var(--secondary-dark);
+    color: var(--primary-light);
     border-radius: 5px;
     
     transition: box-shadow 0.3s ease-out;
- }
- .bg-item:hover{
+}
+
+.bg-item:hover {
     transition: 0.2s;
     box-shadow: 0px 0px 10px 2px rgb(4, 252, 169);
     border-color: #000000;
     background-color: #031213;
- }
+}
+
 /****************************************
- * 7)  BACKGROUNDS
+ * 9) BACKGROUNDS
  ****************************************/
- .background{
-    background-color: #dbfbf6;
-    color: #02231e;
+.background {
+    background-color: var(--primary-light);
+    color: var(--secondary-dark);
     border-radius: 10px;
     padding: 40px;
- }
+}
