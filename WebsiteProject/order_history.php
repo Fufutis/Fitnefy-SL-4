@@ -26,20 +26,20 @@ $sold_history = [];
 // Fetch bought history (for user and both roles)
 if (($role === 'user' || $role === 'both') && $view_type === 'bought') {
     $query = "
-      SELECT 
-    og.id AS order_id, 
-    og.order_timestamp AS order_date, 
-    SUM(p.price * o.quantity) AS total_price,
-    p.name AS product_name, 
-    p.price AS product_price, 
-    o.quantity
-FROM order_groups og
-JOIN orders o ON og.id = o.order_group_id
-JOIN products p ON o.product_id = p.id
-WHERE og.user_id = ?
-GROUP BY og.id, og.order_timestamp, p.name, p.price, o.quantity
-ORDER BY og.order_timestamp DESC
-
+        SELECT 
+            og.id AS order_id, 
+            og.order_timestamp AS order_date, 
+            SUM(p.price * o.quantity) AS total_price,
+            p.id AS product_id,           /* FETCH product_id for image download */
+            p.name AS product_name, 
+            p.price AS product_price, 
+            o.quantity
+        FROM order_groups og
+        JOIN orders o ON og.id = o.order_group_id
+        JOIN products p ON o.product_id = p.id
+        WHERE og.user_id = ?
+        GROUP BY og.id, og.order_timestamp, p.id, p.name, p.price, o.quantity
+        ORDER BY og.order_timestamp DESC
     ";
 
     $stmt = $conn->prepare($query);
@@ -57,6 +57,7 @@ ORDER BY og.order_timestamp DESC
             ];
         }
         $order_history[$order_id]['products'][] = [
+            'id' => $row['product_id'],       // STORE product_id
             'name' => $row['product_name'],
             'price' => $row['product_price'],
             'quantity' => $row['quantity'],
@@ -68,19 +69,20 @@ ORDER BY og.order_timestamp DESC
 // Fetch sold history (for seller and both roles)
 if (($role === 'seller' || $role === 'both') && $view_type === 'sold') {
     $query = "
-       SELECT 
-    o.order_group_id AS order_id, 
-    og.order_timestamp AS order_date, 
-    SUM(o.quantity * p.price) AS total_revenue,
-    p.name AS product_name, 
-    p.price AS product_price, 
-    o.quantity
-FROM orders o
-JOIN products p ON o.product_id = p.id
-JOIN order_groups og ON o.order_group_id = og.id
-WHERE p.seller_id = ?
-GROUP BY o.order_group_id, og.order_timestamp, p.name, p.price, o.quantity
-ORDER BY og.order_timestamp DESC
+        SELECT 
+            o.order_group_id AS order_id, 
+            og.order_timestamp AS order_date, 
+            SUM(o.quantity * p.price) AS total_revenue,
+            p.id AS product_id,            /* FETCH product_id for image download */
+            p.name AS product_name, 
+            p.price AS product_price, 
+            o.quantity
+        FROM orders o
+        JOIN products p ON o.product_id = p.id
+        JOIN order_groups og ON o.order_group_id = og.id
+        WHERE p.seller_id = ?
+        GROUP BY o.order_group_id, og.order_timestamp, p.id, p.name, p.price, o.quantity
+        ORDER BY og.order_timestamp DESC
 
     ";
 
@@ -99,6 +101,7 @@ ORDER BY og.order_timestamp DESC
             ];
         }
         $sold_history[$order_id]['products'][] = [
+            'id' => $row['product_id'],      // STORE product_id
             'name' => $row['product_name'],
             'price' => $row['product_price'],
             'quantity' => $row['quantity'],
@@ -110,88 +113,115 @@ ORDER BY og.order_timestamp DESC
 $conn->close();
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order History</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
-    <div class="container mt-5">
-        <h1 class="mb-4">Order History</h1>
+    <div class="bg-container">
+        <?php
 
-        <!-- Toggle Buttons: Only for "both" role -->
-        <?php if ($role === 'both'): ?>
-            <div class="mb-4">
-                <a href="?view=bought" class="btn <?php echo $view_type === 'bought' ? 'btn-primary' : 'btn-outline-primary'; ?>">Bought History</a>
-                <a href="?view=sold" class="btn <?php echo $view_type === 'sold' ? 'btn-primary' : 'btn-outline-primary'; ?>">Sold History</a>
-            </div>
-        <?php endif; ?>
-
-        <!-- Bought History -->
-        <?php if ($view_type === 'bought' && ($role === 'user' || $role === 'both')): ?>
-            <?php if (empty($order_history)): ?>
-                <div class="alert alert-info">You have no orders yet.</div>
-            <?php else: ?>
-                <?php foreach ($order_history as $order_id => $order): ?>
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h5>Order ID: <?php echo htmlspecialchars($order_id); ?></h5>
-                            <p><strong>Order Date:</strong> <?php echo htmlspecialchars($order['order_date']); ?></p>
-                            <p><strong>Total Price:</strong> $<?php echo number_format($order['total_price'], 2); ?></p>
-                        </div>
-                        <div class="card-body">
-                            <h6>Products:</h6>
-                            <ul class="list-group">
-                                <?php foreach ($order['products'] as $product): ?>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span>
-                                            <?php echo htmlspecialchars($product['name']); ?> (<?php echo $product['quantity']; ?> x $<?php echo number_format($product['price'], 2); ?>)
-                                        </span>
-                                        <span>$<?php echo number_format($product['quantity'] * $product['price'], 2); ?></span>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        <?php endif; ?>
-
-        <!-- Sold History -->
-        <?php if ($view_type === 'sold' && ($role === 'seller' || $role === 'both')): ?>
-            <?php if (empty($sold_history)): ?>
-                <div class="alert alert-info">No items have been sold yet.</div>
-            <?php else: ?>
-                <?php foreach ($sold_history as $order_id => $order): ?>
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h5>Order ID: <?php echo htmlspecialchars($order_id); ?></h5>
-                            <p><strong>Order Date:</strong> <?php echo htmlspecialchars($order['order_date']); ?></p>
-                            <p><strong>Total Revenue:</strong> $<?php echo number_format($order['total_revenue'], 2); ?></p>
-                        </div>
-                        <div class="card-body">
-                            <h6>Products Sold:</h6>
-                            <ul class="list-group">
-                                <?php foreach ($order['products'] as $product): ?>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span>
-                                            <?php echo htmlspecialchars($product['name']); ?> (<?php echo $product['quantity']; ?> x $<?php echo number_format($product['price'], 2); ?>)
-                                        </span>
-                                        <span>$<?php echo number_format($product['quantity'] * $product['price'], 2); ?></span>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        <?php endif; ?>
+        for ($i = 0; $i < 3000; $i++) {
+            echo '<div class="tile"></div>';
+        }
+        ?>
     </div>
+    <main class="main-content">
+        <div class="container mt-5 background">
+            <h1 class="mb-4">Order History</h1>
+
+            <!-- Toggle Buttons: Only for "both" role -->
+            <?php if ($role === 'both'): ?>
+                <div class="mb-4">
+                    <a href="?view=bought" class="btn btn-design <?php echo $view_type === 'bought' ? 'btn-primary' : 'btn-outline-primary'; ?>">Bought History</a>
+
+                    <a href="?view=sold" class="btn btn-design <?php echo $view_type === 'sold' ? 'btn-primary' : 'btn-outline-primary'; ?>">Sold History</a>
+
+                </div>
+            <?php endif; ?>
+
+            <!-- BOUGHT HISTORY (for user or both) -->
+            <?php if ($view_type === 'bought' && ($role === 'user' || $role === 'both')): ?>
+                <?php if (empty($order_history)): ?>
+                    <div class="alert alert-info">You have no orders yet.</div>
+                <?php else: ?>
+                    <?php foreach ($order_history as $order_id => $order): ?>
+                        <div class="card mb-4">
+                            <div class="card-header sheet2">
+                                <h5>Order ID: <?php echo htmlspecialchars($order_id); ?></h5>
+                                <p><strong>Order Date:</strong> <?php echo htmlspecialchars($order['order_date']); ?></p>
+                                <p><strong>Total Price:</strong> $<?php echo number_format($order['total_price'], 2); ?></p>
+                            </div>
+                            <div class="card-body sheet2">
+                                <h6>Products:</h6>
+                                <ul class="list-group">
+                                    <?php foreach ($order['products'] as $product): ?>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center sheet2">
+                                            <div>
+                                                <!-- Display product name, quantity, price -->
+                                                <?php echo htmlspecialchars($product['name']); ?>
+                                                (<?php echo $product['quantity']; ?> x $<?php echo number_format($product['price'], 2); ?>)
+
+                                                <!-- Download Image Link -->
+                                                <a href="download_image.php?id=<?php echo $product['id']; ?>"
+                                                    class="btn btn-sm btn-secondary ms-2 sheet">
+                                                    Download Image
+                                                </a>
+                                            </div>
+                                            <span>
+                                                $<?php echo number_format($product['quantity'] * $product['price'], 2); ?>
+                                            </span>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            <?php endif; ?>
+
+            <!-- SOLD HISTORY (for seller or both) -->
+            <?php if ($view_type === 'sold' && ($role === 'seller' || $role === 'both')): ?>
+                <?php if (empty($sold_history)): ?>
+                    <div class="alert alert-info">No items have been sold yet.</div>
+                <?php else: ?>
+                    <?php foreach ($sold_history as $order_id => $order): ?>
+                        <div class="card mb-4">
+                            <div class="card-header sheet2">
+                                <h5>Order ID: <?php echo htmlspecialchars($order_id); ?></h5>
+                                <p><strong>Order Date:</strong> <?php echo htmlspecialchars($order['order_date']); ?></p>
+                                <p><strong>Total Revenue:</strong> $<?php echo number_format($order['total_revenue'], 2); ?></p>
+                            </div>
+                            <div class="card-body sheet2">
+                                <h6>Products Sold:</h6>
+                                <ul class="list-group">
+                                    <?php foreach ($order['products'] as $product): ?>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center sheet2">
+                                            <div>
+                                                <!-- Display product name, quantity, price -->
+                                                <?php echo htmlspecialchars($product['name']); ?>
+                                                (<?php echo $product['quantity']; ?> x $<?php echo number_format($product['price'], 2); ?>)
+
+                                                <!-- Download Image Link -->
+                                                <a href="download_image.php?id=<?php echo $product['id']; ?>"
+                                                    class="btn btn-sm btn-secondary ms-2 sheet">
+                                                    Download Image
+                                                </a>
+                                            </div>
+                                            <span>
+                                                $<?php echo number_format($product['quantity'] * $product['price'], 2); ?>
+                                            </span>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            <?php endif; ?>
+        </div>
 </body>
 
 </html>

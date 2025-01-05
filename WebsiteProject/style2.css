@@ -98,6 +98,11 @@ body {
    
    color:  var(--secondary-dark) ;
 }
+.sheet2{
+    background-color: var(--secondary-dark) ;
+   
+   color:  var(--primary-light)  ;
+}
 
 /****************************************
  * 4) BUTTON STYLES
