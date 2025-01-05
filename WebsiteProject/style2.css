@@ -93,6 +93,11 @@ body {
     max-width: 66.666667%;
 }
 */
+.sheet{
+    background-color: var(--primary-light)  ;
+   
+   color:  var(--secondary-dark) ;
+}
 
 /****************************************
  * 4) BUTTON STYLES

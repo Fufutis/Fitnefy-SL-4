@@ -24,7 +24,7 @@ include("dashboard_model.php");
                     <a href="?view=sold_items" class="btn btn-design <?php echo $view_type === 'sold_items' ? 'btn-primary' : 'btn-outline-primary'; ?>">Sold Items</a>
                     <a href="?view=my_products" class="btn btn-design <?php echo $view_type === 'my_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">My Products</a>
                     <?php if ($role === 'both'): ?>
-                        <a href="?view=all_products" class="btn <?php echo $view_type === 'all_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">All Products</a>
+                        <a href="?view=all_products" class="btn btn-design <?php echo $view_type === 'all_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">All Products</a>
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
@@ -82,7 +82,7 @@ include("dashboard_model.php");
                 <?php if (empty($sold_items)): ?>
                     <div class="alert alert-info">No items have been sold yet.</div>
                 <?php else: ?>
-                    <table class="table table-bordered">
+                    <table class="table table-bordered sheet">
                         <thead>
                             <tr>
                                 <th>Order ID</th>
