@@ -58,9 +58,7 @@ if (!empty($cart_items)) {
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script>
         function confirmPurchase() {
             if (confirm("Are you sure you want to place this order?")) {
@@ -71,56 +69,72 @@ if (!empty($cart_items)) {
 </head>
 
 <body>
-    <div class="container mt-5">
-        <h1 class="mb-4">Shopping Cart</h1>
-
-        <?php if (empty($display_cart)): ?>
-            <div class="alert alert-info">Your cart is empty.</div>
-        <?php else: ?>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Description</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($display_cart as $item): ?>
-                        <tr>
-                            <td>
-                                <img src="data:image/jpeg;base64,<?php echo base64_encode($item['photo_blob']); ?>"
-                                    alt="Product Image" class="img-thumbnail" style="width: 100px; height: auto;">
-                                <br>
-                                <?php echo htmlspecialchars($item['name']); ?>
-                            </td>
-                            <td><?php echo htmlspecialchars($item['description']); ?></td>
-                            <td>$<?php echo htmlspecialchars($item['price']); ?></td>
-                            <td><?php echo htmlspecialchars($item['quantity']); ?></td>
-                            <td>$<?php echo htmlspecialchars(number_format($item['total'], 2)); ?></td>
-                            <td>
-                                <a href="cart_action.php?action=remove&product_id=<?php echo $item['id']; ?>"
-                                    class="btn btn-danger btn-sm">Remove One</a>
-                                <a href="cart_action.php?action=remove_all&product_id=<?php echo $item['id']; ?>"
-                                    class="btn btn-warning btn-sm">Remove All</a>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-
-            <div class="d-flex justify-content-between align-items-center">
-                <h3>Total Price: $<?php echo number_format($total_price, 2); ?></h3>
-                <div>
-                    <a href="cart_action.php?action=clear" class="btn btn-danger">Clear Cart</a>
-                    <button onclick="confirmPurchase()" class="btn btn-success">Buy Now</button>
-                </div>
-            </div>
-        <?php endif; ?>
+    <!-- Tiled Background -->
+    <div class="bg-container">
+        <?php for ($i = 0; $i < 3000; $i++): ?>
+            <div class="tile"></div>
+        <?php endfor; ?>
     </div>
+    <div class="main-content">
+        <div class="container mt-5 background">
+            <h1 class="mb-4">Shopping Cart</h1>
+
+            <?php if (empty($display_cart)): ?>
+                <div class="alert alert-info">Your cart is empty.</div>
+            <?php else: ?>
+                <table class="table table-bordered sheet2">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($display_cart as $item): ?>
+                            <tr>
+                                <td>
+                                    <img src="data:image/jpeg;base64,<?php echo base64_encode($item['photo_blob']); ?>"
+                                        alt="Product Image"
+                                        class="img-thumbnail"
+                                        style="width: 100px; height: auto;">
+                                    <br>
+                                    <?php echo htmlspecialchars($item['name']); ?>
+                                </td>
+                                <td><?php echo htmlspecialchars($item['description']); ?></td>
+                                <td>$<?php echo htmlspecialchars($item['price']); ?></td>
+                                <td><?php echo htmlspecialchars($item['quantity']); ?></td>
+                                <td>$<?php echo htmlspecialchars(number_format($item['total'], 2)); ?></td>
+                                <td>
+                                    <!-- Use your custom .btn-design or .btn-in-cards for styling -->
+                                    <a href="cart_action.php?action=remove&product_id=<?php echo $item['id']; ?>"
+                                        class="btn sheet btn-design   mb-1 ">
+                                        Remove One
+                                    </a>
+                                    <br>
+                                    <a href="cart_action.php?action=remove_all&product_id=<?php echo $item['id']; ?>"
+                                        class="btn sheet btn-design ">
+                                        Remove All
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3>Total Price: $<?php echo number_format($total_price, 2); ?></h3>
+                    <div>
+                        <!-- Link your classes or keep it as is -->
+                        <a href="cart_action.php?action=clear" class="btn btn-design me-2">Clear Cart</a>
+                        <button onclick="confirmPurchase()" class="btn btn-design">Buy Now</button>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
 </body>
 
 </html>

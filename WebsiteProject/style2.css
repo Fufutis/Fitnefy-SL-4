@@ -93,16 +93,6 @@ body {
     max-width: 66.666667%;
 }
 */
-.sheet{
-    background-color: var(--primary-light)  ;
-   
-   color:  var(--secondary-dark) ;
-}
-.sheet2{
-    background-color: var(--secondary-dark) ;
-   
-   color:  var(--primary-light)  ;
-}
 
 /****************************************
  * 4) BUTTON STYLES
@@ -285,4 +275,14 @@ body {
     color: var(--secondary-dark);
     border-radius: 10px;
     padding: 40px;
+}
+.sheet{
+    background-color: var(--primary-light)  ;
+   
+   color:  var(--secondary-dark) ;
+}
+.sheet2{
+    background-color: var(--secondary-dark) ;
+   
+   color:  var(--primary-light)  ;
 }
