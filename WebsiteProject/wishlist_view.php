@@ -65,17 +65,13 @@ $conn->close();
                                 <p class="card-text"><?php echo htmlspecialchars($item['description']); ?></p>
                                 <p class="card-text"><strong>Price:</strong> $<?php echo htmlspecialchars($item['price']); ?></p>
                                 <!-- Add to Cart Button -->
-                                <!-- Replaced "btn-success" with your custom .btn-design class -->
-                                <button
-                                    class="btn btn-in-cards add-to-cart"
-                                    data-product-id="<?php echo $item['id']; ?>">
+                                <button class="btn btn-in-cards"
+                                    onclick="addToCart(<?php echo $item['id']; ?>)">
                                     Add to Cart
                                 </button>
-                                <!-- Remove Button -->
-                                <!-- Replaced "btn-danger" with your custom .btn-wish class -->
-                                <button
-                                    class="btn remove-from-wishlist btn-in-cards"
-                                    data-product-id="<?php echo $item['id']; ?>">
+                                <!-- Remove from Wishlist Button -->
+                                <button class="btn btn-in-cards"
+                                    onclick="removeFromWishlist(<?php echo $item['id']; ?>)">
                                     Remove
                                 </button>
                             </div>
@@ -88,52 +84,76 @@ $conn->close();
 
     <!-- JavaScript for AJAX -->
     <script>
-        $(document).ready(function() {
-            // Add to Cart functionality
-            $('.add-to-cart').click(function() {
-                const productId = $(this).data('product-id');
-                $.ajax({
-                    url: 'cart_action.php',
-                    type: 'GET',
-                    data: {
-                        action: 'add',
-                        product_id: productId
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        alert(response.message); // Show success message
-                    },
-                    error: function() {
-                        alert('An error occurred while adding to the cart.');
-                    }
-                });
-            });
+        // ========================
+        // 1) DISPLAY MESSAGE
+        // ========================
+        function displayMessage(message, type) {
+            const alertBox = `
+                <div class="alert alert-${type} fixed-alert" role="alert"
+                     style="position: fixed; top: 10px; left: 50%; transform: translateX(-50%);
+                            z-index: 1050; width: 90%; max-width: 500px; text-align: center;">
+                    ${message}
+                </div>`;
+            document.body.insertAdjacentHTML('beforeend', alertBox);
 
-            // Remove from Wishlist functionality
-            $('.remove-from-wishlist').click(function() {
-                const productId = $(this).data('product-id');
-                $.ajax({
-                    url: 'wishlist_action.php',
-                    type: 'POST',
-                    data: {
-                        action: 'remove',
-                        product_id: productId
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.success) {
-                            alert(response.message);
-                            location.reload(); // Reload the page to reflect changes
-                        } else {
-                            alert('Error: ' + response.message);
-                        }
-                    },
-                    error: function() {
-                        alert('An error occurred while removing the item from the wishlist.');
-                    }
-                });
+            // Remove the alert after 3s
+            setTimeout(() => {
+                const alert = document.querySelector('.fixed-alert');
+                if (alert) alert.remove();
+            }, 3000);
+        }
+
+        // ========================
+        // 2) ADD TO CART
+        // ========================
+        function addToCart(productId) {
+            // We do an AJAX GET request to 'cart_action.php'
+            $.ajax({
+                url: 'cart_action.php',
+                type: 'GET',
+                data: {
+                    action: 'add',
+                    product_id: productId
+                },
+                dataType: 'json',
+                success: function(response) {
+                    // Show success or error message from the response
+                    displayMessage(response.message, 'success');
+                },
+                error: function() {
+                    // On error, show a danger alert
+                    displayMessage('An error occurred while adding to the cart.', 'danger');
+                }
             });
-        });
+        }
+
+        // ========================
+        // 3) REMOVE FROM WISHLIST
+        // ========================
+        function removeFromWishlist(productId) {
+            // We do an AJAX POST request to 'wishlist_action.php'
+            $.ajax({
+                url: 'wishlist_action.php',
+                type: 'POST',
+                data: {
+                    action: 'remove',
+                    product_id: productId
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        displayMessage(response.message, 'success');
+                        // Reload the page to reflect changes
+                        location.reload();
+                    } else {
+                        displayMessage('Error: ' + response.message, 'danger');
+                    }
+                },
+                error: function() {
+                    displayMessage('An error occurred while removing the item from the wishlist.', 'danger');
+                }
+            });
+        }
     </script>
 </body>
 
