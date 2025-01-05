@@ -49,18 +49,7 @@
 /* If you want the tiles to be hoverable where there's no content,
    but also let the user interact with the main content, do this:
  */  
-   .main-content {
-       position: relative;
-       z-index: 1;
-       width: 100%;
-       height: 100%;
-       display: flex;
-       align-items: center;
-       justify-content: center;
-       /* background-color: rgba(0, 0, 0, 0.5);  Optional overlay 
-   */}/*
-   (No pointer-events: none, so the user can click inside .main-content)
-*/
+
 
 /* If you prefer to let hovers pass through .main-content to the tiles,
    you need pointer-events: none. But that also stops ANY click in .main-content.
@@ -74,7 +63,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
+    flex-direction: column;
     /* Let hover pass through to background. */
     pointer-events: none;
 }
@@ -139,3 +128,6 @@
     background-color: #051F20;
     color: #DAF1D3;
 }
+.row .col-md-6:nth-of-type(2) {
+    display: none; 
+  }
