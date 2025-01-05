@@ -108,9 +108,7 @@ switch ($action) {
             // Now recompute the entire cart total
             $cartTotal = 0;
             foreach ($_SESSION['cart'] as $pid => $itemData) {
-                $price = $itemData['price'] ?? 0;
-                $qty   = $itemData['quantity'] ?? 0;
-                $cartTotal += $price * $qty;
+                $cartTotal += $itemData['price'] * $itemData['quantity'];
             }
             $response['updated_total'] = $cartTotal;
 

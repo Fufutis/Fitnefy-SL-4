@@ -137,13 +137,13 @@ $conn->close();
                                     <?php if ($view_type === 'my_products'): ?>
                                         <div class="d-grid gap-2">
                                             <a href="edit_product.php?id=<?php echo $product['id']; ?>"
-                                                class="btn btn-design">
+                                                class="btn btn-in-cards">
                                                 Edit
                                             </a>
                                             <form action="delete_product.php" method="POST" class="mt-2">
                                                 <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
                                                 <button type="submit"
-                                                    class="btn btn-danger btn-block"
+                                                    class="btn btn-in-cards btn-block"
                                                     onclick="return confirm('Are you sure you want to delete this product?');">
                                                     Delete
                                                 </button>
