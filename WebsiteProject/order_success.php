@@ -71,55 +71,63 @@ $conn->close();
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Confirmation</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 
 <body>
-    <div class="container mt-5">
-        <h1 class="mb-4">Order Confirmation</h1>
+    <div class="bg-container">
+        <?php for ($i = 0; $i < 3000; $i++): ?>
+            <div class="tile"></div>
+        <?php endfor; ?>
+    </div>
+    <div class="main-content">
+        <div class="container mt-5">
 
-        <!-- Order Summary -->
-        <div class="alert alert-success">
-            <strong>Order ID:</strong> <?php echo htmlspecialchars($order_group['order_group_id']); ?><br>
-            <strong>Date:</strong> <?php echo htmlspecialchars($order_group['order_timestamp']); ?><br>
-            <strong>Total Price:</strong> $<?php echo number_format($order_group['total_price'], 2); ?>
-        </div>
+            <h1>Order Confirmation</h1>
 
-        <!-- Ordered Items -->
-        <?php if (empty($order_items)): ?>
-            <div class="alert alert-info">No items found in this order.</div>
-        <?php else: ?>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($order_items as $item): ?>
+            <!-- Order Summary -->
+            <div class="alert alert-success">
+                <strong>Order ID:</strong> <?php echo htmlspecialchars($order_group['order_group_id']); ?><br>
+                <strong>Date:</strong> <?php echo htmlspecialchars($order_group['order_timestamp']); ?><br>
+                <strong>Total Price:</strong> $<?php echo number_format($order_group['total_price'], 2); ?>
+            </div>
+
+            <!-- Ordered Items -->
+            <?php if (empty($order_items)): ?>
+                <div class="alert alert-info">No items found in this order.</div>
+            <?php else: ?>
+                <table class="table table-bordered">
+                    <thead class="sheet">
                         <tr>
-                            <td>
-                                <img src="data:image/jpeg;base64,<?php echo base64_encode($item['photo_blob']); ?>"
-                                    alt="Product Image" class="img-thumbnail" style="width: 100px; height: auto;">
-                                <br>
-                                <?php echo htmlspecialchars($item['name']); ?>
-                            </td>
-                            <td>$<?php echo number_format($item['price'], 2); ?></td>
-                            <td><?php echo htmlspecialchars($item['quantity']); ?></td>
-                            <td>$<?php echo number_format($item['total_price'], 2); ?></td>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
                         </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        <?php endif; ?>
+                    </thead>
+                    <tbody class="sheet2">>
+                        <?php foreach ($order_items as $item): ?>
+                            <tr>
+                                <td>
+                                    <img src="data:image/jpeg;base64,<?php echo base64_encode($item['photo_blob']); ?>"
+                                        alt="Product Image" class="img-thumbnail " style="width: 100px; height: auto;">
+                                    <br><?php echo htmlspecialchars($item['name']); ?>
+                                </td>
+                                <td class="sheet">$<?php echo number_format($item['price'], 2); ?></td>
+                                <td><?php echo htmlspecialchars($item['quantity']); ?></td>
+                                <td>$<?php echo number_format($item['total_price'], 2); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php endif; ?>
 
-        <!-- Back to Dashboard -->
-        <a href="dashboard.php" class="btn btn-primary mt-3">Back to Dashboard</a>
+            <!-- Back to Dashboard -->
+            <div class="d-flex justify-content-center mt-4">
+                <a href="dashboard.php" class="btn btn-back px-4 py-2">Back to Dashboard</a>
+            </div>
+        </div>
     </div>
 </body>
 
