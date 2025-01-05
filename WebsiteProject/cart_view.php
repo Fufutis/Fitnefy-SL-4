@@ -172,16 +172,13 @@ if (!empty($cart_items)) {
         // Function to display alert messages
         function displayMessage(message, type) {
             const alertBox = `
-                <div class="alert alert-${type} fixed-alert" role="alert">
+                <div class="alert alert-${type} fixed-alert" role="alert" style="position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 1050; width: 90%; max-width: 500px; text-align: center;">
                     ${message}
                 </div>`;
-            $('body').append(alertBox);
-
-            // Automatically remove the alert after 3 seconds
+            document.body.insertAdjacentHTML('beforeend', alertBox);
             setTimeout(() => {
-                $('.fixed-alert').fadeOut(500, function() {
-                    $(this).remove();
-                });
+                const alert = document.querySelector('.fixed-alert');
+                if (alert) alert.remove();
             }, 3000);
         }
 
