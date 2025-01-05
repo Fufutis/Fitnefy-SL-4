@@ -34,30 +34,50 @@ $conn->close();
 <html lang="en">
 
 <head>
-    <title>Your Wishlist</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
-<body>
+<body class="main-content">
+    <!-- Tiled Background -->
+    <div class="bg-container">
+        <?php
+        // Generate 3000 tiles dynamically
+        for ($i = 0; $i < 3000; $i++) {
+            echo '<div class="tile"></div>';
+        }
+        ?>
+    </div>
+
     <div class="container mt-5">
-        <h1>Your Wishlist</h1>
+        <h1 class="z">Your Wishlist</h1>
         <?php if (empty($wishlist_items)): ?>
             <div class="alert alert-info">Your wishlist is empty.</div>
         <?php else: ?>
-            <div class="row">
+            <div class="row row-cols-1 row-cols-md-3 g-4">
                 <?php foreach ($wishlist_items as $item): ?>
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100">
-                            <img src="data:image/jpeg;base64,<?php echo base64_encode($item['photo_blob']); ?>" class="card-img-top" alt="Product Image">
+                    <div class="col">
+                        <div class="card h-100 bg-item">
+                            <div class="image-container">
+                                <img src="data:image/jpeg;base64,<?php echo base64_encode($item['photo_blob']); ?>" alt="Product Image">
+                            </div>
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo htmlspecialchars($item['name']); ?></h5>
                                 <p class="card-text"><?php echo htmlspecialchars($item['description']); ?></p>
                                 <p class="card-text"><strong>Price:</strong> $<?php echo htmlspecialchars($item['price']); ?></p>
                                 <!-- Add to Cart Button -->
-                                <button class="btn btn-success add-to-cart" data-product-id="<?php echo $item['id']; ?>">Add to Cart</button>
+                                <!-- Replaced "btn-success" with your custom .btn-design class -->
+                                <button
+                                    class="btn btn-in-cards add-to-cart"
+                                    data-product-id="<?php echo $item['id']; ?>">
+                                    Add to Cart
+                                </button>
                                 <!-- Remove Button -->
-                                <button class="btn btn-danger remove-from-wishlist" data-product-id="<?php echo $item['id']; ?>">Remove</button>
+                                <!-- Replaced "btn-danger" with your custom .btn-wish class -->
+                                <button
+                                    class="btn remove-from-wishlist btn-in-cards"
+                                    data-product-id="<?php echo $item['id']; ?>">
+                                    Remove
+                                </button>
                             </div>
                         </div>
                     </div>
