@@ -116,7 +116,7 @@ $conn->close();
 
 
 <head>
-    <title>Order History</title>
+    <title>Orders</title>
 </head>
 
 <body>
@@ -130,7 +130,7 @@ $conn->close();
     </div>
     <main class="main-content">
         <div class="container mt-5 background">
-            <h1 class="mb-4">Order History</h1>
+            <h1 class="mb-4">Orders Sold</h1>
 
             <!-- Toggle Buttons: Only for "both" role -->
             <?php if ($role === 'both'): ?>
