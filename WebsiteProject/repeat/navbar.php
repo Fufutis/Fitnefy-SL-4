@@ -19,7 +19,7 @@ function displayUserNavbar()
                     <li class="nav-item"><a class="nav-link" href="order_history.php">Order History</a></li>
                 </ul>
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="btn btn-light" href="cart_view.php">Cart</a></li>
+                    <li class="nav-item"><a class="btn bg-item" href="cart_view.php">Cart</a></li>
                     <li class="nav-item"><a class="btn  "></a></li>
                     <li class="nav-item"><a class="btn btn-danger" href="logout.php">Logout</a></li>
                 </ul>
@@ -46,7 +46,7 @@ function displaySellerNavbar()
                     <li class="nav-item"><a class="nav-link" href="order_history.php">Order History</a></li>
                 </ul>
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="btn btn-light" href="seller.php">Sell</a></li>
+                    <li class="nav-item"><a class="btn bg-item" href="seller.php">Sell</a></li>
                     <li class="nav-item"><a class="btn  "></a></li>
                     <li class="nav-item"><a class="btn btn-danger" href="logout.php">Logout</a></li>
                 </ul>
