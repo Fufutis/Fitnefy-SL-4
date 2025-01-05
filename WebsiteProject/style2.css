@@ -143,11 +143,47 @@ body {
 }
 
 /* Focus State (Accessibility) */
+/* Focus State (Accessibility) */
 .btn-design:focus {
-    box-shadow: 0 0 0 0.2rem rgba(219, 251, 246, 0.5); /* Light Teal Glow */
+    box-shadow: 0 0 0 0.2rem rgba(219, 251, 246, 0.5);
+    outline: none;
 }
 
-.btn-wish {
+/* Solid/selected design (primary version) */
+.btn-design {
+    background-color: var(--secondary-dark); /* e.g., #02231e */
+    color: var(--primary-light);             /* e.g., #dbfbf6 */
+    border-color: var(--secondary-dark);
+    border: 2px solid var(--secondary-dark); 
+    /* ... other custom styles like padding, font-size, etc. ... */
+}
+
+/* Transparent (unselected) version using outline classes */
+.btn-design.btn-outline-primary {
+    background-color: transparent;
+    color: var(--secondary-dark);
+    /* Use a thicker border for visibility */
+    border: 2px solid var(--secondary-dark); 
+    box-shadow: none;
+}
+
+/* Hover state for transparent version */
+.btn-design.btn-outline-primary:hover {
+    background-color: var(--primary-light);
+    color: var(--secondary-dark);
+    border-color: var(--secondary-dark);
+    border: 2px solid var(--secondary-dark); 
+}
+
+
+/* Active state for transparent version */
+.btn-design.btn-outline-primary:active {
+    background-color: #b7eeee; /* Slight variation of your light teal */
+    color: var(--secondary-dark);
+    border-color: var(--secondary-dark);
+    border: 2px solid var(--secondary-dark); 
+}
+.btn-in-cards {
     background-color: var(--primary-light); /* Desired Background Color */
     color: var(--secondary-dark);
 }

@@ -21,8 +21,8 @@ include("dashboard_model.php");
             <?php if ($role === 'seller' || $role === 'both'): ?>
                 <!-- Seller/Both Navigation -->
                 <div class="mb-4">
-                    <a href="?view=sold_items" class="btn <?php echo $view_type === 'sold_items' ? 'btn-primary' : 'btn-outline-primary'; ?>">Sold Items</a>
-                    <a href="?view=my_products" class="btn <?php echo $view_type === 'my_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">My Products</a>
+                    <a href="?view=sold_items" class="btn btn-design <?php echo $view_type === 'sold_items' ? 'btn-primary' : 'btn-outline-primary'; ?>">Sold Items</a>
+                    <a href="?view=my_products" class="btn btn-design <?php echo $view_type === 'my_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">My Products</a>
                     <?php if ($role === 'both'): ?>
                         <a href="?view=all_products" class="btn <?php echo $view_type === 'all_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">All Products</a>
                     <?php endif; ?>
@@ -144,8 +144,8 @@ include("dashboard_model.php");
                                     <p class="card-text"><?php echo htmlspecialchars($product['description']); ?></p>
                                     <p class="card-text"><strong>Price:</strong> $<?php echo htmlspecialchars(number_format($product['price'], 2)); ?></p>
                                     <p class="card-text"><strong>Type:</strong> <?php echo htmlspecialchars($product['product_type']); ?></p>
-                                    <button class="btn btn-design btn-wish mt-2" onclick="addToWishlist(<?php echo $product['id']; ?>)">Add to Wishlist</button>
-                                    <button class="btn btn-design mt-2" onclick="addToCart(<?php echo $product['id']; ?>)">Add to Cart</button>
+                                    <button class="btn btn-design btn-in-cards mt-2" onclick="addToWishlist(<?php echo $product['id']; ?>)">Add to Wishlist</button>
+                                    <button class="btn btn-design btn-in-cards mt-2" onclick="addToCart(<?php echo $product['id']; ?>)">Add to Cart</button>
                                 </div>
                             </div>
                         </div>
