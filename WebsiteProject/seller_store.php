@@ -53,7 +53,18 @@ $conn->close();
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <style>
+        .fixed-alert {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1050;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
@@ -159,7 +170,7 @@ $conn->close();
             <?php endif; ?>
         </div>
     </div>
-    <!-- JavaScript for AJAX -->
+
     <script>
         function addToWishlist(productId) {
             $.ajax({
@@ -170,10 +181,10 @@ $conn->close();
                 },
                 dataType: 'json',
                 success: function(response) {
-                    alert(response.message); // Show success or error message
+                    displayMessage(response.message, response.success ? 'success' : 'danger');
                 },
                 error: function() {
-                    alert('An error occurred while adding to the wishlist.');
+                    displayMessage('An error occurred while adding to the wishlist.', 'danger');
                 }
             });
         }
@@ -188,12 +199,24 @@ $conn->close();
                 },
                 dataType: 'json',
                 success: function(response) {
-                    alert(response.message); // Show success message
+                    displayMessage(response.message, response.success ? 'success' : 'danger');
                 },
                 error: function() {
-                    alert('An error occurred while adding to the cart.');
+                    displayMessage('An error occurred while adding to the cart.', 'danger');
                 }
             });
+        }
+
+        function displayMessage(message, type) {
+            const alertBox = `
+                <div class="alert alert-${type} fixed-alert" role="alert">
+                    ${message}
+                </div>`;
+            document.body.insertAdjacentHTML('beforeend', alertBox);
+            setTimeout(() => {
+                const alert = document.querySelector('.fixed-alert');
+                if (alert) alert.remove();
+            }, 3000);
         }
     </script>
 </body>
