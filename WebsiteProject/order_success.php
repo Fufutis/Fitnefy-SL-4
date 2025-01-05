@@ -106,15 +106,15 @@ $conn->close();
                             <th>Total</th>
                         </tr>
                     </thead>
-                    <tbody class="sheet2">>
+                    <tbody class="sheet2">
                         <?php foreach ($order_items as $item): ?>
                             <tr>
                                 <td>
                                     <img src="data:image/jpeg;base64,<?php echo base64_encode($item['photo_blob']); ?>"
                                         alt="Product Image" class="img-thumbnail " style="width: 100px; height: auto;">
-                                    <br><?php echo htmlspecialchars($item['name']); ?>
+                                    <br>
                                 </td>
-                                <td class="sheet">$<?php echo number_format($item['price'], 2); ?></td>
+                                <td>$<?php echo number_format($item['price'], 2); ?></td>
                                 <td><?php echo htmlspecialchars($item['quantity']); ?></td>
                                 <td>$<?php echo number_format($item['total_price'], 2); ?></td>
                             </tr>
@@ -123,10 +123,7 @@ $conn->close();
                 </table>
             <?php endif; ?>
 
-            <!-- Back to Dashboard -->
-            <div class="d-flex justify-content-center mt-4">
-                <a href="dashboard.php" class="btn btn-back px-4 py-2">Back to Dashboard</a>
-            </div>
+
         </div>
     </div>
 </body>
