@@ -53,7 +53,7 @@ include("repeat/navbar.php");
                         <option value="digital artwork">Digital Artwork</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-success">Add Product</button>
+                <button type="submit" class="btn bg-item">Add Product</button>
             </form>
         </div>
 </body>

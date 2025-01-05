@@ -226,10 +226,12 @@ if (!empty($cart_items)) {
                         location.reload(); // Reload the page to update the cart
                     } else {
                         displayMessage(response.message, 'danger');
+                        location.reload(); // Reload the page to update the cart
                     }
                 },
                 error: function() {
                     displayMessage('An error occurred while removing the item.', 'danger');
+                    location.reload(); // Reload the page to update the cart
                 }
             });
         }
@@ -255,6 +257,7 @@ if (!empty($cart_items)) {
                 },
                 error: function() {
                     displayMessage('An error occurred while removing the item.', 'danger');
+                    location.reload(); // Reload the page to update the cart
                 }
             });
         }
