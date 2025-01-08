@@ -82,7 +82,7 @@ $conn->close();
         <?php endfor; ?>
     </div>
     <div class="main-content">
-        <div class="container mt-5">
+        <div class="container mt-5 background">
 
             <h1>Order Confirmation</h1>
 

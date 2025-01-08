@@ -20,6 +20,36 @@ if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
+// Validate cart items against the database
+if (!empty($_SESSION['cart'])) {
+    $product_ids = array_keys($_SESSION['cart']);
+    $placeholders = implode(',', array_fill(0, count($product_ids), '?'));
+
+    $stmt = $conn->prepare("SELECT id FROM products WHERE id IN ($placeholders)");
+    if ($stmt === false) {
+        error_log("Query preparation failed: " . $conn->error);
+        die("Database query failed.");
+    }
+
+    $stmt->bind_param(str_repeat('i', count($product_ids)), ...$product_ids);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $existing_ids = [];
+    while ($row = $result->fetch_assoc()) {
+        $existing_ids[] = $row['id'];
+    }
+
+    $stmt->close();
+
+    // Remove items from the session cart that no longer exist in the database
+    foreach ($product_ids as $product_id) {
+        if (!in_array($product_id, $existing_ids)) {
+            unset($_SESSION['cart'][$product_id]);
+        }
+    }
+}
+
 $cart_items = $_SESSION['cart'];
 $total_price = 0;
 
@@ -169,9 +199,9 @@ if (!empty($cart_items)) {
         // Function to display alert messages
         function displayMessage(message, type) {
             const alertBox = `
-                <div class="alert alert-${type} fixed-alert" role="alert" style="position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 1050; width: 90%; max-width: 500px; text-align: center;">
-                    ${message}
-                </div>`;
+                    <div class="alert alert-${type} fixed-alert" role="alert" style="position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 1050; width: 90%; max-width: 500px; text-align: center;">
+                        ${message}
+                    </div>`;
             document.body.insertAdjacentHTML('beforeend', alertBox);
             setTimeout(() => {
                 const alert = document.querySelector('.fixed-alert');
