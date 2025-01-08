@@ -28,6 +28,7 @@ body {
     align-items: center;
     overflow: hidden;
     z-index: 0; /* Sits behind main content */
+    filter: blur(5px);
 }
 
 .tile {
@@ -41,11 +42,11 @@ body {
 .tile:hover {
     transition: none;
     opacity: 1;
-    filter: hue-rotate(120deg);
+    filter: hue-rotate(150deg);
 }
 
 .tile:active {
-    filter: hue-rotate(-90deg);
+    filter: hue-rotate(1530deg);
 }
 
 /****************************************
@@ -414,6 +415,7 @@ body {
     color: var(--secondary-dark);
     border-radius: 10px;
     padding: 40px;
+    
 }
 .sheet{
     background-color: var(--primary-light)  ;
