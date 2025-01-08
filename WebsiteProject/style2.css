@@ -216,6 +216,145 @@ body {
     background-color: #051F20;
     color: #DAF1D3;
 }
+/* ---------- Navbar Container ---------- */
+.custom-navbar {
+    width: 70%;
+    margin-left: 15%;           /* This centers the navbar horizontally */
+    background-color: var(--primary-light); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+    z-index: 9999;
+    border-radius: 20px;
+    margin-top: 5px;
+  }
+  
+  
+  .custom-fixed-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+  
+  .custom-dark {
+    color: #fff;
+  }
+  
+  /* ---------- Inner Container ---------- */
+  .custom-container {
+    width: 90%;
+    max-width: 1200px; /* Adjust max width as needed */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+  }
+  
+  /* ---------- Branding ---------- */
+  .custom-navbar-brand {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--secondary-dark)
+  }
+  
+  /* ---------- Toggler (Hamburger) ---------- */
+  .custom-navbar-toggler {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: none; /* Hide by default (we'll show on mobile if you add media queries) */
+  }
+  
+  .custom-navbar-toggler-icon {
+    width: 25px;
+    height: 2px;
+    background-color: #fff;
+    display: block;
+    position: relative;
+  }
+  
+  /* ---------- Navbar Links Container ---------- */
+  .custom-navbar-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    height: 100%;
+    color: var(--primary-light);
+  }
+  
+  .custom-navbar-links a {
+    color: var(--primary-light);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .custom-navbar-links a:hover {
+    background-color: #495057; /* Slightly lighter on hover */
+  }
+  
+  /* ---------- Nav ul/li ---------- */
+  .custom-nav {
+    list-style: none;
+    display: flex;
+    gap: 1rem; /* Space between items */
+  }
+  
+  .custom-left {
+    margin-right: auto; 
+  }
+  
+  .custom-right {
+    margin-left: auto;
+  }
+  
+  /* ---------- Nav Items & Links ---------- */
+  .custom-nav-item {
+    display: inline-block;
+  }
+  
+  .custom-nav-link {
+    background-color: #021c16;
+    color: #fff;
+    padding: 0.5rem 0.75rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .custom-nav-link:hover {
+    background-color: #495057; /* Slightly lighter on hover */
+  }
+  #home-logo{
+    width: 40px;
+  }
+  /* ---------- Buttons ---------- */
+  .custom-btn {
+    background-color: var(--primary-light); /* Default "secondary" style */
+    color: #fff;
+    border: none;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  
+  .custom-bg-item {
+    background-color:  var(--secondary-dark); /* "Primary" style */
+    color: var(--primary-light); 
+    border-radius: 10px;
+    margin-top: 10px;
+  }
+  
+  .custom-danger {
+    background-color: #dc3545; /* "Danger" style */
+    border-radius: 10px;
+  }
+  
+  .custom-danger:hover {
+    background-color: #bb2d3b;
+    color: var(--secondary-dark);
+  }
 /****************************************
  * 7) LOGIN FORM
  ****************************************/
