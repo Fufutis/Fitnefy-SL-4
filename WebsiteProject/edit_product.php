@@ -84,7 +84,7 @@ $stmt->close();
                     <label for="photo" class="form-label">Product Image (Optional)</label>
                     <input type="file" name="photo" id="photo" class="form-control">
                 </div>
-                <button type="submit" class="btn bg-item">Update Product</button>
+                <button type="submit" class="btn btn btn-design btn-in-cards">Update Product</button>
             </form>
         </div>
 </body>
