@@ -22,7 +22,6 @@ include("dashboard_model.php");
                 <!-- Seller/Both Navigation -->
                 <div class="mb-4">
                     <a href="?view=sold_items" class="btn btn-design <?php echo $view_type === 'sold_items' ? 'btn-primary' : 'btn-outline-primary'; ?>">Sold Items</a>
-                    <a href="?view=my_products" class="btn btn-design <?php echo $view_type === 'my_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">My Products</a>
                     <?php if ($role === 'both'): ?>
                         <a href="?view=all_products" class="btn btn-design <?php echo $view_type === 'all_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">All Products</a>
                     <?php endif; ?>
@@ -107,27 +106,6 @@ include("dashboard_model.php");
                 <?php endif; ?>
             <?php endif; ?>
 
-            <!-- Display My Products -->
-            <?php if ($view_type === 'my_products' && ($role === 'seller' || $role === 'both')): ?>
-                <h2 class="mb-4">My Products</h2>
-                <div class="row row-cols-1 row-cols-md-3 g-4">
-                    <?php foreach ($products as $product): ?>
-                        <div class="col">
-                            <div class="card h-100  bg-item">
-                                <div class="image-container">
-                                    <img src="data:image/jpeg;base64,<?php echo base64_encode($product['photo_blob']); ?>" alt="Product Image">
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title"><?php echo htmlspecialchars($product['name']); ?></h5>
-                                    <p class="card-text"><?php echo htmlspecialchars($product['description']); ?></p>
-                                    <p class="card-text"><strong>Price:</strong> $<?php echo htmlspecialchars($product['price']); ?></p>
-                                    <p class="card-text"><strong>Type:</strong> <?php echo htmlspecialchars($product['product_type']); ?></p>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
 
             <!-- Display All Products -->
             <?php if ($view_type === 'all_products' && ($role === 'user' || $role === 'both')): ?>

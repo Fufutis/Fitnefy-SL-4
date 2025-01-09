@@ -1,6 +1,8 @@
 :root {
-    --primary-light: #02231e;
-    --secondary-dark: #dbfbf6;
+    --primary-light: #c6b7be;
+    --secondary-dark: #0f0f1b;
+    --beige: #565a75;
+    --white:#fafbf6;
 }
 /****************************************
  * 1) Body and Global Resets
@@ -28,25 +30,27 @@ body {
     align-items: center;
     overflow: hidden;
     z-index: 0; /* Sits behind main content */
-    filter: blur(5px);
+    filter: blur(40px);
 }
 
 .tile {
     width: 1.6rem;
     height: 1.6rem;
     transition: 3s;
-    background: radial-gradient(circle,#a7530e 0%, rgb(0, 0, 0) 80%);
-    opacity: 0.2;
+    background: radial-gradient(circle,#0f0f1b 0%, rgb(0, 0, 0) 80%);
+    opacity: 0.5;
 }
 
 .tile:hover {
     transition: none;
     opacity: 1;
-    filter: hue-rotate(150deg);
+
+    filter: brightness(10000);
 }
 
 .tile:active {
     filter: hue-rotate(1530deg);
+    filter: brightness(10000);
 }
 
 /****************************************
@@ -117,10 +121,29 @@ body {
  ****************************************/
 
 /* Custom Filter Button Styles */
+
+
+/* Hover State */
+.btn-design:hover {
+    background-color: var(--primary-light); /* Slightly Lighter Shade */
+    color: var(--secondary-dark);            /* Optional: Change Text Color on Hover */
+}
+
+/* Active State */
+.btn-design:active {
+    background-color: var(--primary-light); /* Darker Shade */
+    border-color: var(--primary-light);
+    color: var(--white);
+}
+
+
+/* Solid/selected design (primary version) */
 .btn-design {
-    background-color: var(--secondary-dark); /* Desired Background Color */
-    color: var(--primary-light);            /* Desired Text Color */
-    border-color: var(--secondary-dark);     /* Matching Border Color */
+    background-color: var(--primary-light); /* e.g., #02231e */
+    color: var(--secondary-dark);             /* e.g., #dbfbf6 */
+    border-color: var(--secondary-dark);
+    border: 2px solid var(--secondary-dark); 
+
     /* Optional: Adjust Padding and Font Size */
     padding: 0.5rem 1rem;
     font-size: 1rem;
@@ -130,40 +153,10 @@ body {
     transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
-/* Hover State */
-.btn-design:hover {
-    background-color: #034d4e; /* Slightly Lighter Shade */
-    border-color: #034d4e;
-    color: #ffffff;            /* Optional: Change Text Color on Hover */
-}
-
-/* Active State */
-.btn-design:active {
-    background-color: #021c16; /* Darker Shade */
-    border-color: #021c16;
-    color: #ffffff;
-}
-
-/* Focus State (Accessibility) */
-/* Focus State (Accessibility) */
-.btn-design:focus {
-    box-shadow: 0 0 0 0.2rem rgba(219, 251, 246, 0.5);
-    outline: none;
-}
-
-/* Solid/selected design (primary version) */
-.btn-design {
-    background-color: var(--secondary-dark); /* e.g., #02231e */
-    color: var(--primary-light);             /* e.g., #dbfbf6 */
-    border-color: var(--secondary-dark);
-    border: 2px solid var(--secondary-dark); 
-    /* ... other custom styles like padding, font-size, etc. ... */
-}
-
 /* Transparent (unselected) version using outline classes */
 .btn-design.btn-outline-primary {
     background-color: transparent;
-    color: var(--secondary-dark);
+    color: var(--beige);
     /* Use a thicker border for visibility */
     border: 2px solid var(--secondary-dark); 
     box-shadow: none;
@@ -180,10 +173,10 @@ body {
 
 /* Active state for transparent version */
 .btn-design.btn-outline-primary:active {
-    background-color: #b7eeee; /* Slight variation of your light teal */
-    color: var(--secondary-dark);
-    border-color: var(--secondary-dark);
-    border: 2px solid var(--secondary-dark); 
+    background-color: var(--primary-light); /* Slight variation of your light teal */
+    color: var(--white);
+
+    border: 2px solid var(--primary-light); 
 }
 .btn-in-cards {
     background-color: var(--primary-light); /* Desired Background Color */
@@ -195,8 +188,8 @@ body {
 }
 /* Custom Select Styles */
 .custom-select {
-    background-color: var(--secondary-dark); /* Dark Teal Background */
-    color: var(--primary-light);            /* Light Teal Text */
+    background-color: var(--primary-light); /* Dark Teal Background */
+    color: var(--secondary-dark);            /* Light Teal Text */
     border: 1px solid var(--secondary-dark); /* Optional: Matching Border */
     border-radius: 0.25rem;    /* Optional: Rounded Corners */
     padding: 0.375rem 1.75rem 0.375rem 0.75rem; /* Adjust Padding */
@@ -213,15 +206,12 @@ body {
 /****************************************
  * 6) NAVBAR BACKGROUND
  ****************************************/
-.bg-nav {
-    background-color: #051F20;
-    color: #DAF1D3;
-}
+
 /* ---------- Navbar Container ---------- */
 .custom-navbar {
-    width: 70%;
-    margin-left: 15%;           /* This centers the navbar horizontally */
-    background-color: var(--primary-light); 
+    width: 65%;
+    margin-left: 17.5%;           /* This centers the navbar horizontally */
+    background-color: var(--primary-light); /* Background Color */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -229,6 +219,7 @@ body {
     z-index: 9999;
     border-radius: 20px;
     margin-top: 5px;
+    color: var(--white);
   }
   
   
@@ -239,12 +230,12 @@ body {
   }
   
   .custom-dark {
-    color: #fff;
+    color: var(--secondary-dark);
   }
   
   /* ---------- Inner Container ---------- */
   .custom-container {
-    width: 90%;
+    width: 95%;
     max-width: 1200px; /* Adjust max width as needed */
     display: flex;
     align-items: center;
@@ -278,13 +269,22 @@ body {
   /* ---------- Navbar Links Container ---------- */
   .custom-navbar-links {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: space-between; /* Distribute space between left and right */
+    align-items: stretch; /* Allow child <ul> to stretch vertically */
+    width: 100%; /* Ensure it takes the full width */
     margin-top: 12px;
-    height: 100%;
     color: var(--primary-light);
   }
-  
+
+.custom-nav.custom-left {
+    display: flex;
+    gap: 1rem;
+}
+
+.custom-nav.custom-right {
+    display: flex;
+    gap: 1rem;
+}
   .custom-navbar-links a {
     color: var(--primary-light);
     text-decoration: none;
@@ -293,7 +293,8 @@ body {
   }
   
   .custom-navbar-links a:hover {
-    background-color: #495057; /* Slightly lighter on hover */
+    background-color: var(--primary-light); /* Slightly lighter on hover */
+    color: var(--secondary-dark);
   }
   
   /* ---------- Nav ul/li ---------- */
@@ -301,30 +302,31 @@ body {
     list-style: none;
     display: flex;
     gap: 1rem; /* Space between items */
+    align-items: stretch; /* Stretch child <a> to fill height */
+
   }
   
-  .custom-left {
-    margin-right: auto; 
-  }
-  
-  .custom-right {
-    margin-left: auto;
-  }
+
   
   /* ---------- Nav Items & Links ---------- */
   .custom-nav-item {
     display: inline-block;
+    align-items: stretch; /* Stretch child <a> to fill height */
   }
   
   .custom-nav-link {
-    background-color: #021c16;
-    color: #fff;
+    background-color: var(--secondary-dark);
+  
+    color: var(--primary-light);
     padding: 0.5rem 0.75rem;
     transition: background-color 0.3s ease;
+    height: 200px;
+    align-items: stretch; /* Stretch child <a> to fill height */
   }
   
   .custom-nav-link:hover {
-    background-color: #495057; /* Slightly lighter on hover */
+    background-color: var(--primary-light); /* Slightly lighter on hover */
+    color: var(--secondary-dark);
   }
   #home-logo{
     width: 40px;
@@ -392,8 +394,8 @@ body {
 }
 
 .bg-item {
-    background-color: var(--secondary-dark);
-    color: var(--primary-light);
+    background-color: var(--beige);
+    color: var(--secondary-dark);
     border-radius: 5px;
     
     transition:  0.3s ease-out;
@@ -411,19 +413,46 @@ body {
  * 9) BACKGROUNDS
  ****************************************/
 .background {
-    background-color: var(--primary-light);
-    color: var(--secondary-dark);
+    background-color: var(--secondary-dark);
+    color: var(--primary-light);
     border-radius: 10px;
     padding: 40px;
-    
+
 }
+
 .sheet{
     background-color: var(--primary-light)  ;
-   
-   color:  var(--secondary-dark) ;
+    color:  var(--secondary-dark) ;
 }
 .sheet2{
     background-color: var(--secondary-dark) ;
-   
-   color:  var(--primary-light)  ;
+    color:  var(--primary-light)  ;
 }
+.unblur {
+
+    z-index: 9999;
+}
+/****************************************
+10) SCROLLWHEEL
+****************************************/
+::-webkit-scrollbar {
+    width: 4px;
+    color: var(--beige);             /* Main SCROLLBAR */
+    z-index: 9999;
+    
+  }
+  
+  ::-webkit-scrollbar-track {
+   margin-block: 15px;
+  }                                 /* FULL SIZED SCROLLBAR */
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--white) ;
+    border-radius: 50px;                
+    opacity: 0.1;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--beige);
+
+  }
