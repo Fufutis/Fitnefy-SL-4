@@ -118,10 +118,11 @@ include("dashboard_model.php");
                                     <img src="data:image/jpeg;base64,<?php echo base64_encode($product['photo_blob']); ?>" alt="Product Image">
                                 </div>
                                 <div class="card-body">
-                                    <h5 class="card-title"><?php echo htmlspecialchars($product['name']); ?></h5>
+                                    <h5 class="card-title bold"><?php echo htmlspecialchars($product['name']); ?></h5>
                                     <p class="card-text"><?php echo htmlspecialchars($product['description']); ?></p>
                                     <p class="card-text"><strong>Price:</strong> $<?php echo htmlspecialchars(number_format($product['price'], 2)); ?></p>
                                     <p class="card-text"><strong>Type:</strong> <?php echo htmlspecialchars($product['product_type']); ?></p>
+                                    <p class="card-text"><strong>Seller:</strong> <?php echo htmlspecialchars($product['seller_username']); ?></p>
                                     <button class="btn btn-design btn-in-cards mt-2" onclick="addToWishlist(<?php echo $product['id']; ?>)">Add to Wishlist</button>
                                     <button class="btn btn-design btn-in-cards mt-2" onclick="addToCart(<?php echo $product['id']; ?>)">Add to Cart</button>
                                 </div>
@@ -130,6 +131,7 @@ include("dashboard_model.php");
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
+
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

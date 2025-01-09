@@ -53,18 +53,7 @@ $conn->close();
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        .fixed-alert {
-            position: fixed;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1050;
-            width: 90%;
-            max-width: 500px;
-            text-align: center;
-        }
-    </style>
+
 </head>
 
 <body>
@@ -122,7 +111,7 @@ $conn->close();
                                 </div>
 
                                 <div class="card-body">
-                                    <h5 class="card-title"><?php echo htmlspecialchars($product['name']); ?></h5>
+                                    <h5 class="card-title bold"><?php echo htmlspecialchars($product['name']); ?></h5>
                                     <p class="card-text"><?php echo htmlspecialchars($product['description']); ?></p>
                                     <p class="card-text">
                                         <strong>Price:</strong> $
@@ -135,20 +124,19 @@ $conn->close();
 
                                     <!-- If this is MY Products (Seller), show edit/delete -->
                                     <?php if ($view_type === 'my_products'): ?>
-                                        <div class="d-grid gap-2">
+                                        <div class="d-flex">
                                             <a href="edit_product.php?id=<?php echo $product['id']; ?>"
-                                                class="btn btn-in-cards">
+                                                class="btn btn-design btn-in-cards me-2">
                                                 Edit
                                             </a>
-                                            <form action="delete_product.php" method="POST" class="mt-2">
+                                            <form action="delete_product.php" method="POST">
                                                 <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                                                <button type="submit"
-                                                    class="btn btn-in-cards btn-block"
-                                                    onclick="return confirm('Are you sure you want to delete this product?');">
+                                                <button type="submit" class="btn btn-design btn-in-cards" onclick="return confirm('Are you sure you want to delete this product?');">
                                                     Delete
                                                 </button>
                                             </form>
                                         </div>
+
                                     <?php elseif ($role === 'user' || $role === 'both'): ?>
                                         <!-- If user or both => Show wishlist / add to cart -->
                                         <div class="d-flex  align-items-center">

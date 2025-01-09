@@ -22,7 +22,7 @@ function displayUserNavbar()
                 <ul class="custom-nav custom-right">
                     <li class="custom-nav-item"><a class="custom-btn custom-bg-item" href="cart_view.php">Cart</a></li>
 
-                    <li class="custom-nav-item"><a class="custom-btn custom-danger" href="logout.php">Logout</a></li>
+                    <li class="custom-nav-item"><a class="custom-btn custom-danger" href="logout.php"></a></li>
                 </ul>
             </div>
         </div>
@@ -47,7 +47,7 @@ function displaySellerNavbar()
                 </ul>
                 <ul class="custom-nav custom-right">
                     <li class="custom-nav-item"><a class="custom-btn custom-bg-item" href="seller.php">Sell</a></li>
-                    <li class="custom-nav-item"><a class="custom-btn custom-danger" href="logout.php">Logout</a></li>
+                    <li class="custom-nav-item"><a class="custom-btn custom-danger" href="logout.php"></a></li>
                 </ul>
             </div>
         </div>
@@ -76,7 +76,7 @@ function displayBothNavbar()
 
                     <li class="custom-nav-item"><a class="custom-btn custom-bg-item" href="seller.php">Sell</a></li>
 
-                    <li class="custom-nav-item"><a class="custom-btn custom-danger" href="logout.php">Logout</a></li>
+                    <li class="custom-nav-item"><a class="custom-btn custom-danger" href="logout.php"></a></li>
                 </ul>
             </div>
         </div>

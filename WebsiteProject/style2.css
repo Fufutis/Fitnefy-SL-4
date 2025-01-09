@@ -339,6 +339,7 @@ body {
     padding: 0.5rem 0.75rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
+
   }
   
   
@@ -350,7 +351,9 @@ body {
   }
   
   .custom-danger {
-    background-color: #dc3545; /* "Danger" style */
+    background-image: url("imgs/logout.png");
+    background-size: 30px;
+    background-repeat: no-repeat;
     border-radius: 10px;
   }
   
@@ -362,11 +365,11 @@ body {
  * 7) LOGIN FORM
  ****************************************/
  .login{
-    background-color: #051F20;
-    color: #DAF1D3;
+    background-color: var(--secondary-dark);
+    color: var(--white);
     border-radius: 10px;
     padding: 40px;
-    box-shadow: 0px 0px 20px 5px aquamarine;
+    box-shadow: 0px 0px 20px 5px var(--beige);
     width: 30%;
 }
 /****************************************
@@ -397,16 +400,18 @@ body {
     background-color: var(--beige);
     color: var(--secondary-dark);
     border-radius: 5px;
-    
+    border: var(--primary-light) 4px inset;
     transition:  0.3s ease-out;
 }
 
 .bg-item:hover {
     transition: 0.2s;
-    box-shadow: 0px 0px 10px 2px rgb(4, 252, 169);
-    border-color: #000000;
-    background-color: #031213;
+    box-shadow: 0px 0px 10px 2px var(--beige);
+    border-color: var(--secondary-dark);
+    background-color: var(--beige);
+    filter: contrast(1.15);
     color: var(--secondary-dark);
+    transform: scale(1.08); 
 }
 
 /****************************************
@@ -423,6 +428,7 @@ body {
 .sheet{
     background-color: var(--primary-light)  ;
     color:  var(--secondary-dark) ;
+    border-color: var(--secondary-dark);
 }
 .sheet2{
     background-color: var(--secondary-dark) ;
@@ -431,6 +437,25 @@ body {
 .unblur {
 
     z-index: 9999;
+}
+
+.bold{
+  font-weight: bold;
+}
+.fixed-alert {
+  position: fixed;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1050;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  z-index: 9999;
+  background-color: var(--primary-light);
+  color: var(--secondary-dark);
+  border: var(--secondary-dark) 2px solid;
+  transition: ease-in 1s;
 }
 /****************************************
 10) SCROLLWHEEL
