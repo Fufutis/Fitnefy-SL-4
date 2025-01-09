@@ -47,41 +47,41 @@ $conn->close();
         }
         ?>
     </div>
-
-    <div class="container mt-5">
-        <h1 class="z">Your Wishlist</h1>
-        <?php if (empty($wishlist_items)): ?>
-            <div class="alert alert-info">Your wishlist is empty.</div>
-        <?php else: ?>
-            <div class="row row-cols-1 row-cols-md-3 g-4">
-                <?php foreach ($wishlist_items as $item): ?>
-                    <div class="col">
-                        <div class="card h-100 bg-item">
-                            <div class="image-container">
-                                <img src="data:image/jpeg;base64,<?php echo base64_encode($item['photo_blob']); ?>" alt="Product Image">
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title"><?php echo htmlspecialchars($item['name']); ?></h5>
-                                <p class="card-text"><?php echo htmlspecialchars($item['description']); ?></p>
-                                <p class="card-text"><strong>Price:</strong> $<?php echo htmlspecialchars($item['price']); ?></p>
-                                <!-- Add to Cart Button -->
-                                <button class="btn btn-in-cards"
-                                    onclick="addToCart(<?php echo $item['id']; ?>)">
-                                    Add to Cart
-                                </button>
-                                <!-- Remove from Wishlist Button -->
-                                <button class="btn btn-in-cards"
-                                    onclick="removeFromWishlist(<?php echo $item['id']; ?>)">
-                                    Remove
-                                </button>
+    <div class="main-content">
+        <div class="container mt-5 background">
+            <h1 class="z">Your Wishlist</h1>
+            <?php if (empty($wishlist_items)): ?>
+                <div class="alert alert-info">Your wishlist is empty.</div>
+            <?php else: ?>
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <?php foreach ($wishlist_items as $item): ?>
+                        <div class="col">
+                            <div class="card h-100 bg-item">
+                                <div class="image-container">
+                                    <img src="data:image/jpeg;base64,<?php echo base64_encode($item['photo_blob']); ?>" alt="Product Image">
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo htmlspecialchars($item['name']); ?></h5>
+                                    <p class="card-text"><?php echo htmlspecialchars($item['description']); ?></p>
+                                    <p class="card-text"><strong>Price:</strong> $<?php echo htmlspecialchars($item['price']); ?></p>
+                                    <!-- Add to Cart Button -->
+                                    <button class="btn btn-in-cards"
+                                        onclick="addToCart(<?php echo $item['id']; ?>)">
+                                        Add to Cart
+                                    </button>
+                                    <!-- Remove from Wishlist Button -->
+                                    <button class="btn btn-in-cards"
+                                        onclick="removeFromWishlist(<?php echo $item['id']; ?>)">
+                                        Remove
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
     </div>
-
     <!-- JavaScript for AJAX -->
     <script>
         // ========================

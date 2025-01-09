@@ -154,11 +154,21 @@ if (!empty($cart_items)) {
                                 <td><?php echo htmlspecialchars($item['description']); ?></td>
                                 <td>$<?php echo htmlspecialchars($item['price']); ?></td>
 
-                                <!-- ADD a .quantity class so we can update it with jQuery -->
-                                <td class="quantity"><?php echo htmlspecialchars($item['quantity']); ?></td>
+                                <!-- Quantity Input -->
+                                <td>
+                                    <input
+                                        type="number"
+                                        class=" quantity-input"
+                                        style="width: 60px"
+                                        data-product-id="<?php echo $item['id']; ?>"
+                                        value="<?php echo htmlspecialchars($item['quantity']); ?>"
+                                        min="1">
+                                </td>
 
-                                <!-- ADD a .total class so we can update it with jQuery -->
-                                <td class="total">$<?php echo htmlspecialchars(number_format($item['total'], 2)); ?></td>
+                                <!-- Total Price -->
+                                <td class="item-total">
+                                    $<?php echo htmlspecialchars(number_format($item['total'], 2)); ?>
+                                </td>
                                 <td>
                                     <button onclick="removeOne(<?php echo $item['id']; ?>)"
                                         class="btn btn-design btn-sm mb-1 sheet">
@@ -184,7 +194,7 @@ if (!empty($cart_items)) {
                         </span>
                     </h3>
                     <div>
-                        <button onclick="clearCart()(<?php echo $item['id']; ?>)" class="btn btn-design">Clear Cart</button>
+                        <button onclick="clearCart()" class="btn btn-design">Clear Cart</button>
                         <button onclick="confirmPurchase()" class="btn btn-design">Buy Now</button>
                     </div>
                 </div>
@@ -196,6 +206,42 @@ if (!empty($cart_items)) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
+        // Update total price when quantity changes
+        $(document).on('input', '.quantity-input', function() {
+            const productId = $(this).data('product-id');
+            const quantity = parseInt($(this).val());
+            if (quantity < 1) {
+                $(this).val(1); // Prevent invalid quantity
+                return;
+            }
+
+            // Send AJAX request to update quantity
+            $.ajax({
+                url: 'cart_action.php',
+                type: 'POST',
+                data: {
+                    action: 'update_quantity',
+                    product_id: productId,
+                    quantity: quantity
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        // Update item total price
+                        $(`#cart-item-${productId} .item-total`).text(`$${response.item_total.toFixed(2)}`);
+
+                        // Update total price
+                        $('#total-price').text(`$${response.total_price.toFixed(2)}`);
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function() {
+                    alert('An error occurred while updating the quantity.');
+                }
+            });
+        });
+
         // Function to display alert messages
         function displayMessage(message, type) {
             const alertBox = `

@@ -209,8 +209,8 @@ body {
 
 /* ---------- Navbar Container ---------- */
 .custom-navbar {
-    width: 65%;
-    margin-left: 17.5%;           /* This centers the navbar horizontally */
+    width: 55%;
+    margin-left: 22.5%;           /* This centers the navbar horizontally */
     background-color: var(--primary-light); /* Background Color */
     display: flex;
     justify-content: center;
@@ -316,7 +316,7 @@ body {
   
   .custom-nav-link {
     background-color: var(--secondary-dark);
-  
+    border-radius:10px;
     color: var(--primary-light);
     padding: 0.5rem 0.75rem;
     transition: background-color 0.3s ease;
@@ -327,9 +327,11 @@ body {
   .custom-nav-link:hover {
     background-color: var(--primary-light); /* Slightly lighter on hover */
     color: var(--secondary-dark);
+    font-weight: bold;
   }
   #home-logo{
     width: 40px;
+    filter: hue-rotate(100deg);
   }
   /* ---------- Buttons ---------- */
   .custom-btn {
@@ -456,6 +458,16 @@ body {
   color: var(--secondary-dark);
   border: var(--secondary-dark) 2px solid;
   transition: ease-in 1s;
+}
+input.quantity-input{
+  background-color: var(--secondary-dark);
+  color: var(--primary-light);
+}
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
 }
 /****************************************
 10) SCROLLWHEEL
