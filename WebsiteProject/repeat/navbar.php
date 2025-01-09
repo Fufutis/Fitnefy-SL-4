@@ -7,8 +7,8 @@ function displayUserNavbar()
 ?>
     <nav class="custom-navbar custom-fixed-top custom-dark">
         <div class="custom-container">
-            <a class="custom-navbar-brand" href="dashboard.php"><img id="home-logo" src="imgs/house.png" alt="Logo"></img></a>
-            <!-- Hamburger button (optional) -->
+            <a class="custom-navbar-brand" href="dashboard.php"><img id="home-logo" src="imgs/house.png" alt="Logo"></a>
+            <!-- Hamburger button -->
             <button class="custom-navbar-toggler" type="button">
                 <!-- Icon or lines for your hamburger menu -->
                 <span class="custom-navbar-toggler-icon"></span>
@@ -93,3 +93,13 @@ if ($role === 'user') {
     displayBothNavbar();
 }
 ?>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const toggler = document.querySelector(".custom-navbar-toggler");
+        const navbarLinks = document.querySelector(".custom-navbar-links");
+
+        toggler.addEventListener("click", () => {
+            navbarLinks.classList.toggle("active");
+        });
+    });
+</script>

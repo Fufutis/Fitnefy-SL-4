@@ -67,7 +67,7 @@ $conn->close();
         <div class="container mt-5 background">
             <!-- Display Success/Error Messages -->
             <?php if (isset($_SESSION['message'])): ?>
-                <div class="alert alert-info">
+                <div class="alert sheet">
                     <?php
                     echo $_SESSION['message'];
                     unset($_SESSION['message']);
@@ -92,7 +92,7 @@ $conn->close();
             <?php endif; ?>
 
             <?php if (empty($products)): ?>
-                <div class="alert alert-info">
+                <div class="alert sheet">
                     <?php echo $view_type === 'my_products'
                         ? 'You are not currently selling any products.'
                         : 'No products available at the moment.';
@@ -197,7 +197,7 @@ $conn->close();
 
         function displayMessage(message, type) {
             const alertBox = `
-                <div class="alert alert-${type} fixed-alert" role="alert">
+                <div class="alert sheet alert-${type} fixed-alert" style="opacity: 0.9; font-weight: bold" role="alert">
                     ${message}
                 </div>`;
             document.body.insertAdjacentHTML('beforeend', alertBox);

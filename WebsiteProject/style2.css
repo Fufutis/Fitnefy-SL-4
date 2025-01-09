@@ -218,10 +218,10 @@ body {
     font-family: sans-serif;
     z-index: 9999;
     border-radius: 20px;
-    margin-top: 5px;
-    color: var(--white);
+    margin-top: 15px;
+    color: var(--primary-light);
   }
-  
+
   
   .custom-fixed-top {
     position: fixed;
@@ -259,9 +259,7 @@ body {
   }
   
   .custom-navbar-toggler-icon {
-    width: 25px;
-    height: 2px;
-    background-color: #fff;
+
     display: block;
     position: relative;
   }
@@ -272,7 +270,7 @@ body {
     justify-content: space-between; /* Distribute space between left and right */
     align-items: stretch; /* Allow child <ul> to stretch vertically */
     width: 100%; /* Ensure it takes the full width */
-    margin-top: 12px;
+    margin-top: 14px;
     color: var(--primary-light);
   }
 
@@ -424,7 +422,6 @@ body {
     color: var(--primary-light);
     border-radius: 10px;
     padding: 40px;
-
 }
 
 .sheet{
@@ -469,6 +466,138 @@ input[type=number]::-webkit-inner-spin-button {
 input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
 }
+
+/* Dropdown Menu Styles */
+.dropdown-menu {
+  display: none; /* Hide the dropdown by default */
+  position: absolute;
+  top: 100%; /* Position it below the button */
+  left: 0;
+  width: 100%; /* Full-width */
+  background-color: var(--secondary-dark); /* Background color */
+  color: var(--primary-light); /* Text color */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional shadow */
+  z-index: 9999; /* Make sure it's above other elements */
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.dropdown-menu a {
+  display: block; /* Make each link take the full width */
+  color: var(--primary-light);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-menu a:hover {
+  background-color: var(--primary-light);
+  color: var(--secondary-dark);
+  border-radius: 5px;
+}
+
+/* Show the dropdown when the screen width is less than 1280px */
+@media (max-width: 1280px) {
+  .dropdown-menu {
+      display: block; /* Show the dropdown */
+  }
+
+  .custom-navbar-links {
+      display: none; /* Hide the default navbar links */
+  }
+  
+}
+
+@media (max-width: 1280px) {
+  .custom-navbar .custom-navbar-links {
+      display: none; /* Hide links by default */
+      flex-direction: column; /* Stack links vertically */
+      background-color: var(--secondary-dark); /* Dropdown background color */
+      position: absolute; /* Position the dropdown */
+      top: 80%; /* Below the navbar */
+      left: 0;
+      right: 0;
+      z-index: 10;
+      padding: 1rem;
+      border-radius: 10px;
+      z-index: 1;
+      height: auto;
+  }
+ 
+  .custom-navbar .custom-navbar-links.active {
+      display: flex; /* Show links when active */
+  }
+
+  .custom-navbar-toggler {
+      display: block; /* Show the hamburger menu button */
+      background: none;
+      border: none;
+      cursor: pointer;
+  }
+
+  .custom-navbar-toggler-icon {
+ 
+      background-image: url("imgs/web.png");
+      background-size: 30px;
+      background-repeat: no-repeat;
+      width: 30px;
+      height:30px;
+      background-size: stretch;
+
+  }
+}
+@media (max-width: 780px) {
+  /* Make the navbar full-width */
+  .custom-navbar {
+    width: 100%;
+    margin: 0; /* Remove any margins */
+    border-radius: 0; /* Remove border-radius for full-width appearance */
+    left: 0;
+    right: 0;
+  }
+
+  /* Ensure navbar links container takes the full width */
+  .custom-navbar .custom-navbar-links {
+    width: 100%;
+    position: absolute;
+    top: 100%; /* Place links below the navbar */
+    left: 0;
+    right: 0;
+    z-index: 10;
+    padding: 1rem;
+    background-color: var(--secondary-dark); /* Same background as the navbar */
+    border-radius: 0; /* Remove rounded edges for a consistent look */
+    height: auto; /* Expand height dynamically */
+    margin-left: 0; /* Ensure no unwanted offset */
+    font-size: smaller;
+  }
+
+  /* Ensure hamburger icon is visible */
+  .custom-navbar-toggler {
+    display: block; /* Show the hamburger menu button */
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  /* Hamburger icon styling */
+  .custom-navbar-toggler-icon {
+    background-image: url("imgs/web.png"); /* Update with your icon */
+    background-size: 30px;
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+    background-size: stretch;
+  }
+
+  /* Active state for dropdown */
+  .custom-navbar .custom-navbar-links.active {
+    display: flex; /* Show the dropdown */
+    flex-direction: column; /* Stack items vertically */
+  }
+  ;
+}
+
 /****************************************
 10) SCROLLWHEEL
 ****************************************/

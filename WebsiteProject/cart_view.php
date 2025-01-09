@@ -125,7 +125,7 @@ if (!empty($cart_items)) {
             <h1 class="mb-4">Shopping Cart</h1>
 
             <?php if (empty($display_cart)): ?>
-                <div class="alert alert-info">Your cart is empty.</div>
+                <div class="alert sheet bold">Your cart is empty.</div>
             <?php else: ?>
                 <!-- ADD a .cart-table class here so we can target it in JS -->
                 <table class="table table-bordered sheet2 cart-table">
@@ -245,7 +245,7 @@ if (!empty($cart_items)) {
         // Function to display alert messages
         function displayMessage(message, type) {
             const alertBox = `
-                    <div class="alert alert-${type} fixed-alert" role="alert" style="position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 1050; width: 90%; max-width: 500px; text-align: center;">
+                    <div class="alert fixed-alert" role="alert" ">
                         ${message}
                     </div>`;
             document.body.insertAdjacentHTML('beforeend', alertBox);
@@ -272,7 +272,7 @@ if (!empty($cart_items)) {
                         $('tbody').empty();
 
                         // Show the empty cart message
-                        $('.cart-table').replaceWith('<div class="alert alert-info">Your cart is empty.</div>');
+                        $('.cart-table').replaceWith('<div class="alert sheet">Your cart is empty.</div>');
 
                         // Reset total price
                         $('#total-price').text('$0.00');
