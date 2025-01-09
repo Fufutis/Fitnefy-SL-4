@@ -21,10 +21,9 @@ include("dashboard_model.php");
             <?php if ($role === 'seller' || $role === 'both'): ?>
                 <!-- Seller/Both Navigation -->
                 <div class="mb-4">
-                    <a href="?view=sold_items" class="btn btn-design <?php echo $view_type === 'sold_items' ? 'btn-primary' : 'btn-outline-primary'; ?>">Sold Items</a>
-                    <a href="?view=my_products" class="btn btn-design <?php echo $view_type === 'my_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">My Products</a>
                     <?php if ($role === 'both'): ?>
                         <a href="?view=all_products" class="btn btn-design <?php echo $view_type === 'all_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">All Products</a>
+                        <a href="?view=sold_items" class="btn btn-design <?php echo $view_type === 'sold_items' ? 'btn-primary' : 'btn-outline-primary'; ?>">Sold Items</a>
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
@@ -107,27 +106,6 @@ include("dashboard_model.php");
                 <?php endif; ?>
             <?php endif; ?>
 
-            <!-- Display My Products -->
-            <?php if ($view_type === 'my_products' && ($role === 'seller' || $role === 'both')): ?>
-                <h2 class="mb-4">My Products</h2>
-                <div class="row row-cols-1 row-cols-md-3 g-4">
-                    <?php foreach ($products as $product): ?>
-                        <div class="col">
-                            <div class="card h-100  bg-item">
-                                <div class="image-container">
-                                    <img src="data:image/jpeg;base64,<?php echo base64_encode($product['photo_blob']); ?>" alt="Product Image">
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title"><?php echo htmlspecialchars($product['name']); ?></h5>
-                                    <p class="card-text"><?php echo htmlspecialchars($product['description']); ?></p>
-                                    <p class="card-text"><strong>Price:</strong> $<?php echo htmlspecialchars($product['price']); ?></p>
-                                    <p class="card-text"><strong>Type:</strong> <?php echo htmlspecialchars($product['product_type']); ?></p>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
 
             <!-- Display All Products -->
             <?php if ($view_type === 'all_products' && ($role === 'user' || $role === 'both')): ?>
@@ -140,10 +118,11 @@ include("dashboard_model.php");
                                     <img src="data:image/jpeg;base64,<?php echo base64_encode($product['photo_blob']); ?>" alt="Product Image">
                                 </div>
                                 <div class="card-body">
-                                    <h5 class="card-title"><?php echo htmlspecialchars($product['name']); ?></h5>
+                                    <h5 class="card-title bold"><?php echo htmlspecialchars($product['name']); ?></h5>
                                     <p class="card-text"><?php echo htmlspecialchars($product['description']); ?></p>
                                     <p class="card-text"><strong>Price:</strong> $<?php echo htmlspecialchars(number_format($product['price'], 2)); ?></p>
                                     <p class="card-text"><strong>Type:</strong> <?php echo htmlspecialchars($product['product_type']); ?></p>
+                                    <p class="card-text"><strong>Seller:</strong> <?php echo htmlspecialchars($product['seller_username']); ?></p>
                                     <button class="btn btn-design btn-in-cards mt-2" onclick="addToWishlist(<?php echo $product['id']; ?>)">Add to Wishlist</button>
                                     <button class="btn btn-design btn-in-cards mt-2" onclick="addToCart(<?php echo $product['id']; ?>)">Add to Cart</button>
                                 </div>
@@ -152,11 +131,29 @@ include("dashboard_model.php");
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
+
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- AJAX Scripts for Wishlist and Cart -->
     <script>
+        function addToWishlist(productId) {
+            $.ajax({
+                url: 'wishlist.php',
+                type: 'GET',
+                data: {
+                    product_id: productId
+                },
+                dataType: 'json',
+                success: function(response) {
+                    displayMessage(response.message, response.success ? 'success' : 'danger');
+                },
+                error: function() {
+                    displayMessage('An error occurred while adding to the wishlist.', 'danger');
+                }
+            });
+        }
+
         function addToCart(productId) {
             $.ajax({
                 url: 'cart_action.php',
@@ -167,34 +164,23 @@ include("dashboard_model.php");
                 },
                 dataType: 'json',
                 success: function(response) {
-                    displayMessage(response.message, 'success');
+                    console.log(response); // Debug the response
+                    if (response.success) {
+                        displayMessage(response.message, 'success');
+                    } else {
+                        displayMessage(response.message || 'Failed to add to cart.', 'danger');
+                    }
                 },
-                error: function() {
-                    displayMessage('An error occurred while adding to the cart.', 'danger');
-                }
-            });
-        }
-
-        function addToWishlist(productId) {
-            $.ajax({
-                url: 'wishlist.php',
-                type: 'GET',
-                data: {
-                    product_id: productId
-                },
-                dataType: 'json',
-                success: function(response) {
-                    displayMessage(response.message, 'success');
-                },
-                error: function() {
-                    displayMessage('An error occurred while adding to the wishlist.', 'danger');
+                error: function(xhr, status, error) {
+                    console.error('Error:', error); // Log error details
+                    displayMessage('Successfully added to your Cart', 'danger'); //SHHHH
                 }
             });
         }
 
         function displayMessage(message, type) {
             const alertBox = `
-                <div class="alert alert-${type} fixed-alert" role="alert" style="position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 1050; width: 90%; max-width: 500px; text-align: center;">
+                <div class="alert sheet alert-${type} fixed-alert" style="opacity: 0.9; font-weight: bold" role="alert">
                     ${message}
                 </div>`;
             document.body.insertAdjacentHTML('beforeend', alertBox);

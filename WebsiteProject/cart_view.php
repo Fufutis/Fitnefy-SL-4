@@ -125,7 +125,7 @@ if (!empty($cart_items)) {
             <h1 class="mb-4">Shopping Cart</h1>
 
             <?php if (empty($display_cart)): ?>
-                <div class="alert alert-info">Your cart is empty.</div>
+                <div class="alert sheet bold">Your cart is empty.</div>
             <?php else: ?>
                 <!-- ADD a .cart-table class here so we can target it in JS -->
                 <table class="table table-bordered sheet2 cart-table">
@@ -145,8 +145,8 @@ if (!empty($cart_items)) {
                             <tr id="cart-item-<?php echo $item['id']; ?>">
                                 <td>
                                     <img src="data:image/jpeg;base64,<?php echo base64_encode($item['photo_blob']); ?>"
-                                        alt="Product Image"
-                                        class="img-thumbnail"
+                                        alt="Product Image "
+                                        class="img-thumbnail sheet"
                                         style="width: 100px; height: auto;">
                                     <br>
                                     <?php echo htmlspecialchars($item['name']); ?>
@@ -154,11 +154,21 @@ if (!empty($cart_items)) {
                                 <td><?php echo htmlspecialchars($item['description']); ?></td>
                                 <td>$<?php echo htmlspecialchars($item['price']); ?></td>
 
-                                <!-- ADD a .quantity class so we can update it with jQuery -->
-                                <td class="quantity"><?php echo htmlspecialchars($item['quantity']); ?></td>
+                                <!-- Quantity Input -->
+                                <td>
+                                    <input
+                                        type="number"
+                                        class=" quantity-input"
+                                        style="width: 60px"
+                                        data-product-id="<?php echo $item['id']; ?>"
+                                        value="<?php echo htmlspecialchars($item['quantity']); ?>"
+                                        min="1">
+                                </td>
 
-                                <!-- ADD a .total class so we can update it with jQuery -->
-                                <td class="total">$<?php echo htmlspecialchars(number_format($item['total'], 2)); ?></td>
+                                <!-- Total Price -->
+                                <td class="item-total">
+                                    $<?php echo htmlspecialchars(number_format($item['total'], 2)); ?>
+                                </td>
                                 <td>
                                     <button onclick="removeOne(<?php echo $item['id']; ?>)"
                                         class="btn btn-design btn-sm mb-1 sheet">
@@ -167,7 +177,7 @@ if (!empty($cart_items)) {
                                     <br>
                                     <button onclick="removeAll(<?php echo $item['id']; ?>)"
                                         class="btn btn-design btn-sm sheet">
-                                        Remove All
+                                        Remove ALL
                                     </button>
                                 </td>
                             </tr>
@@ -184,7 +194,7 @@ if (!empty($cart_items)) {
                         </span>
                     </h3>
                     <div>
-                        <button onclick="clearCart()(<?php echo $item['id']; ?>)" class="btn btn-design">Clear Cart</button>
+                        <button onclick="clearCart()" class="btn btn-design">Clear Cart</button>
                         <button onclick="confirmPurchase()" class="btn btn-design">Buy Now</button>
                     </div>
                 </div>
@@ -196,10 +206,46 @@ if (!empty($cart_items)) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
+        // Update total price when quantity changes
+        $(document).on('input', '.quantity-input', function() {
+            const productId = $(this).data('product-id');
+            const quantity = parseInt($(this).val());
+            if (quantity < 1) {
+                $(this).val(1); // Prevent invalid quantity
+                return;
+            }
+
+            // Send AJAX request to update quantity
+            $.ajax({
+                url: 'cart_action.php',
+                type: 'POST',
+                data: {
+                    action: 'update_quantity',
+                    product_id: productId,
+                    quantity: quantity
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        // Update item total price
+                        $(`#cart-item-${productId} .item-total`).text(`$${response.item_total.toFixed(2)}`);
+
+                        // Update total price
+                        $('#total-price').text(`$${response.total_price.toFixed(2)}`);
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function() {
+                    alert('An error occurred while updating the quantity.');
+                }
+            });
+        });
+
         // Function to display alert messages
         function displayMessage(message, type) {
             const alertBox = `
-                    <div class="alert alert-${type} fixed-alert" role="alert" style="position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 1050; width: 90%; max-width: 500px; text-align: center;">
+                    <div class="alert fixed-alert" role="alert" ">
                         ${message}
                     </div>`;
             document.body.insertAdjacentHTML('beforeend', alertBox);
@@ -226,7 +272,7 @@ if (!empty($cart_items)) {
                         $('tbody').empty();
 
                         // Show the empty cart message
-                        $('.cart-table').replaceWith('<div class="alert alert-info">Your cart is empty.</div>');
+                        $('.cart-table').replaceWith('<div class="alert sheet">Your cart is empty.</div>');
 
                         // Reset total price
                         $('#total-price').text('$0.00');

@@ -87,7 +87,7 @@ $conn->close();
             <h1>Order Confirmation</h1>
 
             <!-- Order Summary -->
-            <div class="alert alert-success">
+            <div class="alert sheet">
                 <strong>Order ID:</strong> <?php echo htmlspecialchars($order_group['order_group_id']); ?><br>
                 <strong>Date:</strong> <?php echo htmlspecialchars($order_group['order_timestamp']); ?><br>
                 <strong>Total Price:</strong> $<?php echo number_format($order_group['total_price'], 2); ?>
@@ -111,7 +111,7 @@ $conn->close();
                             <tr>
                                 <td>
                                     <img src="data:image/jpeg;base64,<?php echo base64_encode($item['photo_blob']); ?>"
-                                        alt="Product Image" class="img-thumbnail " style="width: 100px; height: auto;">
+                                        alt="Product Image" class="img-thumbnail sheet" style="width: 100px; height: auto;">
                                     <br>
                                 </td>
                                 <td>$<?php echo number_format($item['price'], 2); ?></td>

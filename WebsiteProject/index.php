@@ -41,9 +41,9 @@
                             <label>Password</label>
                             <input type="password" name="password" class="form-control" required />
                         </div>
-                        <button class="btn btn-primary" type="submit">Login</button>
+                        <button class="btn btn-design btn-in-cards" type="submit">Login</button>
                     </form>
-                    <p class="mt-3">Don't have an account? <a href="?action=register">Create Account</a></p>
+                    <p class="mt-3">Don't have an account? <a style="color: var(--primary-light);" href="?action=register">Create Account</a></p>
                 </div>
             <?php elseif ($action === 'register'): ?>
                 <!-- Registration Form -->
@@ -74,9 +74,9 @@
                                 <option value="both">Both</option>
                             </select>
                         </div>
-                        <button class="btn btn-success" type="submit">Sign Up</button>
+                        <button class="btn btn-design btn-in-cards" type="submit">Sign Up</button>
                     </form>
-                    <p class="mt-3">Already have an account? <a href="?action=login">Login</a></p>
+                    <p class="mt-3">Already have an account? <a style="color: var(--primary-light);" href="?action=login">Login</a></p>
                 </div>
             <?php endif; ?>
         </div>

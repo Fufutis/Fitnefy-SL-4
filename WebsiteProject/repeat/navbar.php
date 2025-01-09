@@ -5,23 +5,24 @@ $role = $_SESSION['role'] ?? 'user'; // Default role is 'user'
 function displayUserNavbar()
 {
 ?>
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top sheet">
-        <div class="container sheet">
-            <a class="navbar-brand" href="dashboard.php">User Dashboard</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+    <nav class="custom-navbar custom-fixed-top custom-dark">
+        <div class="custom-container">
+            <a class="custom-navbar-brand" href="dashboard.php"><img id="home-logo" src="imgs/house.png" alt="Logo"></a>
+            <!-- Hamburger button -->
+            <button class="custom-navbar-toggler" type="button">
+                <!-- Icon or lines for your hamburger menu -->
+                <span class="custom-navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item "><a class="nav-link" href="seller_store.php">Products</a></li>
-                    <li class="nav-item"><a class="nav-link" href="wishlist_view.php">Wishlist</a></li>
-                    <li class="nav-item"><a class="nav-link" href="order_history.php">Order History</a></li>
+            <div class="custom-navbar-links" id="navbarUser">
+                <ul class="custom-nav custom-left">
+                    <li class="custom-nav-item"><a class="custom-nav-link" href="seller_store.php">Products</a></li>
+                    <li class="custom-nav-item"><a class="custom-nav-link" href="wishlist_view.php">Wishlist</a></li>
+                    <li class="custom-nav-item"><a class="custom-nav-link" href="order_history.php">Order History</a></li>
                 </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="btn bg-item" href="cart_view.php">Cart</a></li>
-                    <li class="nav-item"><a class="btn  "></a></li>
-                    <li class="nav-item"><a class="btn btn-danger" href="logout.php">Logout</a></li>
+                <ul class="custom-nav custom-right">
+                    <li class="custom-nav-item"><a class="custom-btn custom-bg-item" href="cart_view.php">Cart</a></li>
+
+                    <li class="custom-nav-item"><a class="custom-btn custom-danger" href="logout.php"></a></li>
                 </ul>
             </div>
         </div>
@@ -33,22 +34,20 @@ function displayUserNavbar()
 function displaySellerNavbar()
 {
 ?>
-    <nav class="navbar navbar-expand-lg navbar-dark  fixed-top sheet">
-        <div class="container">
-            <a class="navbar-brand" href="dashboard.php">Seller Dashboard</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-toggle="navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+    <nav class="custom-navbar custom-fixed-top custom-dark">
+        <div class="custom-container">
+            <a class="custom-navbar-brand" href="dashboard.php"><img id="home-logo" src="imgs/house.png" alt="Logo"></img></a>
+            <button class="custom-navbar-toggler" type="button">
+                <span class="custom-navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="seller_store.php">My Products</a></li>
-                    <li class="nav-item"><a class="nav-link" href="order_history.php">Order History</a></li>
+            <div class="custom-navbar-links" id="navbarSeller">
+                <ul class="custom-nav custom-left">
+                    <li class="custom-nav-item"><a class="custom-nav-link" href="seller_store.php">My Products</a></li>
+                    <li class="custom-nav-item"><a class="custom-nav-link" href="order_history.php">Sold History</a></li>
                 </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="btn bg-item" href="seller.php">Sell</a></li>
-                    <li class="nav-item"><a class="btn  "></a></li>
-                    <li class="nav-item"><a class="btn btn-danger" href="logout.php">Logout</a></li>
+                <ul class="custom-nav custom-right">
+                    <li class="custom-nav-item"><a class="custom-btn custom-bg-item" href="seller.php">Sell</a></li>
+                    <li class="custom-nav-item"><a class="custom-btn custom-danger" href="logout.php"></a></li>
                 </ul>
             </div>
         </div>
@@ -60,26 +59,24 @@ function displaySellerNavbar()
 function displayBothNavbar()
 {
 ?>
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top sheet">
-        <div class="container">
-            <a class="navbar-brand" href="dashboard.php">Both Dashboard</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+    <nav class="custom-navbar custom-fixed-top custom-dark">
+        <div class="custom-container">
+            <a class="custom-navbar-brand" href="dashboard.php"><img id="home-logo" src="imgs/house.png" alt="Logo"></img></a>
+            <button class="custom-navbar-toggler" type="button">
+                <span class="custom-navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="seller_store.php">Products</a></li>
-                    <li class="nav-item"><a class="nav-link" href="wishlist_view.php">Wishlist</a></li>
-                    <li class="nav-item"><a class="nav-link" href="order_history.php">Order History</a></li>
+            <div class="custom-navbar-links" id="navbarBoth">
+                <ul class="custom-nav custom-left">
+                    <li class="custom-nav-item"><a class="custom-nav-link" href="seller_store.php">Products</a></li>
+                    <li class="custom-nav-item"><a class="custom-nav-link" href="wishlist_view.php">Wishlist</a></li>
+                    <li class="custom-nav-item"><a class="custom-nav-link" href="order_history.php">History</a></li>
                 </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="btn bg-item" href="cart_view.php">Cart</a></li>
-                    <li class="nav-item"><a class="btn  "></a></li>
-                    <li class="nav-item"><a class="btn bg-item" href="seller.php">Sell</a></li>
-                    <li class="nav-item"><a class="btn  "></a></li>
+                <ul class="custom-nav custom-right">
+                    <li class="custom-nav-item"><a class="custom-btn custom-bg-item" href="cart_view.php">Cart</a></li>
 
-                    <li class="nav-item"><a class="btn btn-danger" href="logout.php">Logout</a></li>
+                    <li class="custom-nav-item"><a class="custom-btn custom-bg-item" href="seller.php">Sell</a></li>
+
+                    <li class="custom-nav-item"><a class="custom-btn custom-danger" href="logout.php"></a></li>
                 </ul>
             </div>
         </div>
@@ -96,3 +93,13 @@ if ($role === 'user') {
     displayBothNavbar();
 }
 ?>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const toggler = document.querySelector(".custom-navbar-toggler");
+        const navbarLinks = document.querySelector(".custom-navbar-links");
+
+        toggler.addEventListener("click", () => {
+            navbarLinks.classList.toggle("active");
+        });
+    });
+</script>

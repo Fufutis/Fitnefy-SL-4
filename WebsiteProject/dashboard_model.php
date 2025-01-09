@@ -63,11 +63,25 @@ if ($view_type === 'my_products' && ($role === 'seller' || $role === 'both')) {
 }
 
 if ($view_type === 'all_products' && ($role === 'user' || $role === 'both')) {
-    $query = "SELECT id, name, description, price, product_type, photo_blob, upload_timestamp FROM products WHERE 1=1";
+    $query = "
+        SELECT 
+            p.id, 
+            p.name, 
+            p.description, 
+            p.price, 
+            p.product_type, 
+            p.photo_blob, 
+            p.upload_timestamp, 
+            u.username AS seller_username 
+        FROM products p
+        JOIN users u ON p.seller_id = u.id
+        WHERE 1=1
+    ";
+
     if (!empty($category)) {
-        $query .= " AND product_type = ?";
+        $query .= " AND p.product_type = ?";
     }
-    $query .= " ORDER BY " . ($sort_by === 'price' ? "price" : "upload_timestamp") . " " . ($sort_order === 'asc' ? "ASC" : "DESC");
+    $query .= " ORDER BY " . ($sort_by === 'price' ? "p.price" : "p.upload_timestamp") . " " . ($sort_order === 'asc' ? "ASC" : "DESC");
 
     $stmt = $conn->prepare($query);
     if (!empty($category)) {

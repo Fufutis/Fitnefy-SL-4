@@ -19,6 +19,41 @@ $response = [
     'success' => false,
     'message' => 'Invalid action.'
 ];
+if ($_POST['action'] === 'update_quantity') {
+    $product_id = intval($_POST['product_id']);
+    $quantity = intval($_POST['quantity']);
+
+    if ($quantity < 1) {
+        echo json_encode(['success' => false, 'message' => 'Invalid quantity.']);
+        exit;
+    }
+
+    // Update session cart
+    if (isset($_SESSION['cart'][$product_id])) {
+        $_SESSION['cart'][$product_id]['quantity'] = $quantity;
+    }
+
+    // Recalculate total price
+    $cart_items = $_SESSION['cart'];
+    $total_price = 0;
+    $item_total = 0;
+
+    foreach ($cart_items as $id => $item) {
+        $stmt = $conn->prepare("SELECT price FROM products WHERE id = ?");
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+
+        if ($id == $product_id) {
+            $item_total = $result['price'] * $quantity;
+        }
+
+        $total_price += $result['price'] * $item['quantity'];
+    }
+
+    echo json_encode(['success' => true, 'item_total' => $item_total, 'total_price' => $total_price]);
+    exit;
+}
 
 // Optional: If you need the item price or something else, you might connect to DB or do more logic here
 
