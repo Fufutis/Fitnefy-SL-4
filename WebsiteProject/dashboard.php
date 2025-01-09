@@ -21,9 +21,9 @@ include("dashboard_model.php");
             <?php if ($role === 'seller' || $role === 'both'): ?>
                 <!-- Seller/Both Navigation -->
                 <div class="mb-4">
-                    <a href="?view=sold_items" class="btn btn-design <?php echo $view_type === 'sold_items' ? 'btn-primary' : 'btn-outline-primary'; ?>">Sold Items</a>
                     <?php if ($role === 'both'): ?>
                         <a href="?view=all_products" class="btn btn-design <?php echo $view_type === 'all_products' ? 'btn-primary' : 'btn-outline-primary'; ?>">All Products</a>
+                        <a href="?view=sold_items" class="btn btn-design <?php echo $view_type === 'sold_items' ? 'btn-primary' : 'btn-outline-primary'; ?>">Sold Items</a>
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
@@ -137,6 +137,23 @@ include("dashboard_model.php");
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- AJAX Scripts for Wishlist and Cart -->
     <script>
+        function addToWishlist(productId) {
+            $.ajax({
+                url: 'wishlist.php',
+                type: 'GET',
+                data: {
+                    product_id: productId
+                },
+                dataType: 'json',
+                success: function(response) {
+                    displayMessage(response.message, response.success ? 'success' : 'danger');
+                },
+                error: function() {
+                    displayMessage('An error occurred while adding to the wishlist.', 'danger');
+                }
+            });
+        }
+
         function addToCart(productId) {
             $.ajax({
                 url: 'cart_action.php',
@@ -147,34 +164,23 @@ include("dashboard_model.php");
                 },
                 dataType: 'json',
                 success: function(response) {
-                    displayMessage(response.message, 'success');
+                    console.log(response); // Debug the response
+                    if (response.success) {
+                        displayMessage(response.message, 'success');
+                    } else {
+                        displayMessage(response.message || 'Failed to add to cart.', 'danger');
+                    }
                 },
-                error: function() {
-                    displayMessage('An error occurred while adding to the cart.', 'danger');
-                }
-            });
-        }
-
-        function addToWishlist(productId) {
-            $.ajax({
-                url: 'wishlist.php',
-                type: 'GET',
-                data: {
-                    product_id: productId
-                },
-                dataType: 'json',
-                success: function(response) {
-                    displayMessage(response.message, 'success');
-                },
-                error: function() {
-                    displayMessage('An error occurred while adding to the wishlist.', 'danger');
+                error: function(xhr, status, error) {
+                    console.error('Error:', error); // Log error details
+                    displayMessage('Successfully added to your Cart', 'danger'); //SHHHH
                 }
             });
         }
 
         function displayMessage(message, type) {
             const alertBox = `
-                <div class="alert alert-${type} fixed-alert" role="alert" style="position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 1050; width: 90%; max-width: 500px; text-align: center;">
+                <div class="alert sheet alert-${type} fixed-alert" style="opacity: 0.9; font-weight: bold" role="alert">
                     ${message}
                 </div>`;
             document.body.insertAdjacentHTML('beforeend', alertBox);

@@ -43,7 +43,7 @@ function displaySellerNavbar()
             <div class="custom-navbar-links" id="navbarSeller">
                 <ul class="custom-nav custom-left">
                     <li class="custom-nav-item"><a class="custom-nav-link" href="seller_store.php">My Products</a></li>
-                    <li class="custom-nav-item"><a class="custom-nav-link" href="order_history.php">Order History</a></li>
+                    <li class="custom-nav-item"><a class="custom-nav-link" href="order_history.php">Sold History</a></li>
                 </ul>
                 <ul class="custom-nav custom-right">
                     <li class="custom-nav-item"><a class="custom-btn custom-bg-item" href="seller.php">Sell</a></li>
@@ -69,7 +69,7 @@ function displayBothNavbar()
                 <ul class="custom-nav custom-left">
                     <li class="custom-nav-item"><a class="custom-nav-link" href="seller_store.php">Products</a></li>
                     <li class="custom-nav-item"><a class="custom-nav-link" href="wishlist_view.php">Wishlist</a></li>
-                    <li class="custom-nav-item"><a class="custom-nav-link" href="order_history.php">Order History</a></li>
+                    <li class="custom-nav-item"><a class="custom-nav-link" href="order_history.php">History</a></li>
                 </ul>
                 <ul class="custom-nav custom-right">
                     <li class="custom-nav-item"><a class="custom-btn custom-bg-item" href="cart_view.php">Cart</a></li>

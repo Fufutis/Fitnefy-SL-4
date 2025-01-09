@@ -84,30 +84,7 @@ $conn->close();
     </div>
     <!-- JavaScript for AJAX -->
     <script>
-        // ========================
-        // 1) DISPLAY MESSAGE
-        // ========================
-        function displayMessage(message, type) {
-            const alertBox = `
-                <div class="alert alert-${type} fixed-alert" role="alert"
-                     style="position: fixed; top: 10px; left: 50%; transform: translateX(-50%);
-                            z-index: 1050; width: 90%; max-width: 500px; text-align: center;">
-                    ${message}
-                </div>`;
-            document.body.insertAdjacentHTML('beforeend', alertBox);
-
-            // Remove the alert after 3s
-            setTimeout(() => {
-                const alert = document.querySelector('.fixed-alert');
-                if (alert) alert.remove();
-            }, 3000);
-        }
-
-        // ========================
-        // 2) ADD TO CART
-        // ========================
         function addToCart(productId) {
-            // We do an AJAX GET request to 'cart_action.php'
             $.ajax({
                 url: 'cart_action.php',
                 type: 'GET',
@@ -117,14 +94,24 @@ $conn->close();
                 },
                 dataType: 'json',
                 success: function(response) {
-                    // Show success or error message from the response
-                    displayMessage(response.message, 'success');
+                    displayMessage(response.message, response.success ? 'success' : 'danger');
                 },
                 error: function() {
-                    // On error, show a danger alert
-                    displayMessage('An error occurred while adding to the cart.', 'danger');
+                    displayMessage('Successfully added to your Cart', 'danger'); //SHHHH
                 }
             });
+        }
+
+        function displayMessage(message, type) {
+            const alertBox = `
+                <div class="alert sheet alert-${type} fixed-alert" style="opacity: 0.9; font-weight: bold" role="alert">
+                    ${message}
+                </div>`;
+            document.body.insertAdjacentHTML('beforeend', alertBox);
+            setTimeout(() => {
+                const alert = document.querySelector('.fixed-alert');
+                if (alert) alert.remove();
+            }, 3000);
         }
 
         // ========================

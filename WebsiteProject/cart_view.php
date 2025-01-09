@@ -145,8 +145,8 @@ if (!empty($cart_items)) {
                             <tr id="cart-item-<?php echo $item['id']; ?>">
                                 <td>
                                     <img src="data:image/jpeg;base64,<?php echo base64_encode($item['photo_blob']); ?>"
-                                        alt="Product Image"
-                                        class="img-thumbnail"
+                                        alt="Product Image "
+                                        class="img-thumbnail sheet"
                                         style="width: 100px; height: auto;">
                                     <br>
                                     <?php echo htmlspecialchars($item['name']); ?>
@@ -177,7 +177,7 @@ if (!empty($cart_items)) {
                                     <br>
                                     <button onclick="removeAll(<?php echo $item['id']; ?>)"
                                         class="btn btn-design btn-sm sheet">
-                                        Remove All
+                                        Remove ALL
                                     </button>
                                 </td>
                             </tr>
