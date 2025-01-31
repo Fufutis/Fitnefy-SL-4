@@ -1,16 +1,17 @@
 <?php
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' &&
-    isset($_POST['signupUsername'], $_POST['signupEmail'], $_POST['signupPassword'], $_POST['signupConfirmPassword'], $_POST['role'])) {
-    
+if (
+    $_SERVER['REQUEST_METHOD'] === 'POST' &&
+    isset($_POST['signupUsername'], $_POST['signupEmail'], $_POST['signupPassword'], $_POST['signupConfirmPassword'])
+) {
+
     include("repeat/config.php"); // Contains DB connection info and connects to DB
-    
+
     $username = trim($_POST['signupUsername']);
     $email = trim($_POST['signupEmail']);
     $password = $_POST['signupPassword'];
     $confirmPassword = $_POST['signupConfirmPassword'];
-    $role = $_POST['role']; // 'user', 'seller', or 'both'
 
     // Validate password match
     if ($password !== $confirmPassword) {
@@ -37,8 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' &&
 
     // Insert new user
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $stmt = $conn->prepare('INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)');
-    $stmt->bind_param('ssss', $username, $email, $hashedPassword, $role);
+    $stmt = $conn->prepare('INSERT INTO users (username, email, password) VALUES (?, ?, ?, ?)');
+    $stmt->bind_param('ssss', $username, $email, $hashedPassword);
 
     if ($stmt->execute()) {
         $_SESSION['message'] = "Account created successfully! You can now log in.";
@@ -53,7 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' &&
         header("Location: index.php");
         exit;
     }
-
 } else {
     // If accessed without POST or missing fields
     // Even though we might not have a $stmt, we definitely have $conn from config.php

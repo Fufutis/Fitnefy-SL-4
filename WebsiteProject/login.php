@@ -21,19 +21,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['p
         if (password_verify($password, $user['password'])) {
             // Set session variables
             $_SESSION['username'] = $user['username'];
-            $_SESSION['role'] = $user['role']; // Add role to session
             $_SESSION['user_id'] = $user['id'];
 
             // Close resources before redirect
             $stmt->close();
             $conn->close();
 
-            // Redirect based on role
-            if ($user['role'] === 'seller') {
-                header("Location: dashboard.php"); // Redirect sellers
-            } else {
-                header("Location: dashboard.php"); // Redirect other users
-            }
+            header("Location: dashboard.php");
+
             exit;
         } else {
             $_SESSION['message'] = "Invalid password.";

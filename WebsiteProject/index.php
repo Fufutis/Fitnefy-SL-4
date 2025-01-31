@@ -10,16 +10,6 @@
     }
     ?>
 
-    <!-- Tiled Background -->
-    <div class="bg-container">
-        <?php
-        // Generate 600 tiles dynamically
-        for ($i = 0; $i < 3000; $i++) {
-            echo '<div class="tile"></div>';
-        }
-        ?>
-    </div>
-
     <!-- Main Content -->
     <div class="container mt-5 main-content login">
         <div class="row">
@@ -65,14 +55,6 @@
                         <div class="mb-3">
                             <label>Confirm Password</label>
                             <input type="password" name="signupConfirmPassword" class="form-control" required />
-                        </div>
-                        <div class="mb-3">
-                            <label>Role</label>
-                            <select name="role" class="form-select" required>
-                                <option value="user">User</option>
-                                <option value="seller">Seller</option>
-                                <option value="both">Both</option>
-                            </select>
                         </div>
                         <button class="btn btn-design btn-in-cards" type="submit">Sign Up</button>
                     </form>
