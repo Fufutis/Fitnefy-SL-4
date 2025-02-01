@@ -38,8 +38,8 @@ if (
 
     // Insert new user
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $stmt = $conn->prepare('INSERT INTO users (username, email, password) VALUES (?, ?, ?, ?)');
-    $stmt->bind_param('ssss', $username, $email, $hashedPassword);
+    $stmt = $conn->prepare('INSERT INTO users (username, email, password) VALUES (?, ?, ?)');
+    $stmt->bind_param('sss', $username, $email, $hashedPassword);
 
     if ($stmt->execute()) {
         $_SESSION['message'] = "Account created successfully! You can now log in.";

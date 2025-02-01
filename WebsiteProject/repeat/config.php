@@ -11,7 +11,7 @@ if (session_status() === PHP_SESSION_NONE) {
 $host = 'localhost';
 $db_user = 'root';
 $db_pass = '';
-$db_name = 'sql7750640';
+$db_name = 'fitnefy';
 
 $conn = new mysqli($host, $db_user, $db_pass, $db_name);
 
